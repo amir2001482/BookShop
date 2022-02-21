@@ -1,0 +1,65 @@
+﻿@model BookShop.Models.ViewModels.SignInViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>فروشگاه کتاب میزفا</title>
+    <link href="~/css/styles.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div class="page-wrapper flex-row align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-5">
+                    <div class="card p-4">
+                        <div class="card-header text-center text-uppercase h4 font-weight-light">
+                            ورود به سایت
+                        </div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <form asp-action="SignIn">
+                            <div class="card-body py-5">
+                                <div class="form-group">
+                                    <label class="form-control-label" asp-for="UserName"></label>
+                                    <input type="text" class="form-control" asp-for="UserName" placeholder="نام کاربری">
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label" asp-for="Password"></label>
+                                    <input type="password" class="form-control" asp-for="Password" placeholder="کلمه عبور">
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="custom-control custom-checkbox mt-4">
+                                    <input type="checkbox" class="custom-control-input" id="login" asp-for="RememberMe">
+                                    <label class="custom-control-label" for="login" asp-for="RememberMe"></label>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-primary px-3">ورود به سایت</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="#" class="btn btn-link">فراموشی کلمه عبور ؟</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

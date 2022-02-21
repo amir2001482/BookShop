@@ -1,0 +1,53 @@
+﻿@model IEnumerable<BookShop.Models.Provice>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-light">
+                    لیست استان ها
+                </div>
+                <div class="card-body">
+                    <p>
+                        <a asp-action="Create" class="btn btn-primary"> افزودن استان جدید </a>
+                    </p>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th> نام استان </th>
+                                <th> نام شهر ها</th>
+                                <th> عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td> @item.ProvinceName</td>
+                                    <td class=" btn btn-sm btn-info ">
+                                        <a href="/Admin/City/Index/@item.ProvinceID">نمایش شهر ها </a>
+                                    </td>
+                                    <td>
+                                        <a href="/Admin/Province/Edit/@item.ProvinceID" class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
+                                        <a href="/Admin/Province/Delete/@item.ProvinceID" class="btn btn-danger btn-icon"><i class="fa fa-trash text-white"></i></a>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

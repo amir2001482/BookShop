@@ -1,0 +1,238 @@
+﻿@model BookShop.Models.ViewModels.UsersManagerViewModel
+@inject BookShop.Classes.ConvertData converDate
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<style>
+    .nav {
+        padding-right: 0px !important;
+    }
+</style>
+<div class="col-md-9">
+    <div class="row">
+        <div class="col-md-3 col-sm-4 col-xs-12 user-profil-part pull-left">
+            <div class="row ">
+                <div class="col-md-12 col-md-12-sm-12 col-xs-12 user-image text-center">
+                    @if (Model.Image != null)
+                    {
+
+                    }
+
+                    else
+                    {
+                        <img src="/images/UserPic.png" height="140" />
+                    }
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 user-detail-section1 text-center">
+                    <button class="btn btn-success btn-block follow">ویرایش اطلاعات کاربر </button>
+                    <button class="btn btn-warning btn-block mb-2">تنظیم مجدد رمز عبور</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 col-sm-8 col-xs-12 pull-right profile-right-section">
+            <div class="row profile-right-section-row">
+                <div class="col-md-12 profile-header">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-6 col-xs-6 profile-header-section1 pull-left">
+                            <h5>@Model.FirstName  @Model.LastName</h5>
+                            <h6>
+                                @foreach (var item in Model.Roles)
+                                {
+                                    <span class="badge badge-dark">@item</span>
+                                }
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#profile" role="tab" data-toggle="tab"><i class="fas fa-user-circle"></i>اطلاعات شخصی</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#buzz" role="tab" data-toggle="tab"><i class="fas fa-edit"></i>مدیریت کاربر</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade show active" id="profile">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>نام</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>@Model.FirstName</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>نام خانوادگی</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>@Model.LastName</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>ایمیل</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>@Model.Email</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>شماره موبایل</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>@Model.PhoneNumber</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>تاریخ تولد</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>@converDate.ConvertMiladiToShamsi(Model.BirthDate, "yyyy/MM/dd")</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>تاریخ عضویت</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>@converDate.ConvertMiladiToShamsi(Model.RegisterDate, "dddd d MMMM yyyy ساعت HH:mm:ss")</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>آخرین بازدید</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>
+                                                @if (Model.LastVisitDateTime != null)
+                                                {
+                                                    @converDate.ConvertMiladiToShamsi((DateTime)Model.LastVisitDateTime, "dddd d MMMM yyyy ساعت HH:mm:ss")
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="buzz">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered ">
+                                            <thead>
+                                                <tr>
+                                                    <td>
+                                                        ویژگی کاربر
+                                                    </td>
+                                                    <td>
+                                                        وضعیت
+                                                    </td>
+                                                    <td>
+                                                        عملیات
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        نام کاربری
+                                                    </td>
+                                                    <td>
+                                                        @Model.UserName
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-info btn-sm">ویراش اطلاعات کاربر</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        وضعیت حساب کاربری
+                                                    </td>
+                                                    <td>
+                                                        <label class="badge @(Model.IsActive==true?"badge-success":"badge-danger")">
+                                                            @(Model.IsActive==true?"فعال":"غیرفعال")
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger btn-sm">غیرفعال شود</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        وضعیت ایمیل
+                                                    </td>
+                                                    <td>
+                                                        <label class="badge @(Model.EmailConfirmed==true?"badge-success":"badge-danger")">
+                                                            @(Model.EmailConfirmed==true?"تایید شده":"تایید نشده")
+                                                        </label>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        وضعیت شماره موبایل
+                                                    </td>
+                                                    <td>
+                                                        <label class="badge @(Model.PhoneNumberConfirmed==true?"badge-success":"badge-danger")">
+                                                            @(Model.PhoneNumberConfirmed == true ? "تایید شده" : "تایید نشده")
+                                                        </label>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        امکان قفل شدن حساب کاربری
+                                                    </td>
+                                                    <td>
+                                                        <label class="badge @(Model.LockoutEnabled==true?"badge-success":"badge-danger")">
+                                                            @(Model.LockoutEnabled == true ? "فعال" : "غیرفعال")
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-success btn-sm">فعال شود</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        اعتبارسنجی دو مرحله ای
+                                                    </td>
+                                                    <td>
+                                                        <label class="badge @(Model.TwoFactorEnabled==true?"badge-success":"badge-danger")">
+                                                            @(Model.TwoFactorEnabled == true ? "فعال" : "غیرفعال")
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-success btn-sm">فعال شود</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>زمان خروج از حالت قفل</td>
+                                                    <td>
+                                                        @Model.LockoutEnd
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

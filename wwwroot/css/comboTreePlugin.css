@@ -1,0 +1,99 @@
+.comboTreeWrapper{
+	position: relative;
+	text-align: right !important;
+}
+
+.comboTreeInputWrapper{
+	position: relative;
+}
+
+.comboTreeArrowBtn {
+	position: absolute;
+    right: 1px;
+    bottom: 1px;
+    top: 1px;
+    box-sizing: border-box;
+	border: none;
+    border-radius: 0 3px 3px 0;
+    background-color:#fff;
+}
+
+.comboTreeDropDownContainer {
+	display: none;
+	background: #fff;
+	border: 1px solid #aaa;
+	max-height: 250px;
+	overflow-y: auto;
+	position: absolute;
+    width: 100%;
+    box-sizing: border-box;
+    z-index:9999;
+}
+
+.comboTreeDropDownContainer ul{
+	padding: 0px;
+	margin: 0;
+}
+
+.comboTreeDropDownContainer li{
+	list-style-type: none;
+	padding-right: 15px;
+    cursor: pointer;
+}
+
+.comboTreeDropDownContainer li:hover{
+	background-color: #ddd;}
+.comboTreeDropDownContainer li:hover ul{
+	background-color: #fff;}
+.comboTreeDropDownContainer li span.comboTreeItemTitle.comboTreeItemHover{
+	background-color: #418EFF;
+	color: #fff;}
+
+span.comboTreeItemTitle{
+	display: block;
+	padding: 2px 4px;
+}
+.comboTreeDropDownContainer label{
+    cursor: pointer;
+	width: 100%;
+    display: block;
+}
+.comboTreeDropDownContainer .comboTreeItemTitle input {
+	position: relative;
+    top: 2px;
+	margin: 0px 4px 0px 0px;
+}
+.comboTreeParentPlus{
+    position: relative;
+    right: -12px;
+    top: 4px;
+    width: 4px;
+    float: right;
+}
+
+
+.comboTreeInputBox {
+    padding: 3px 6px 9px 0px;
+    border: 1px solid #ced4da !important;
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 20px;
+}
+
+.comboTreeArrowBtnImg{
+	font-size: 10px;
+}
+
+/*****CustomStyle******/
+.comboTreeArrowBtnImg b {
+    border-color: #888 transparent transparent transparent;
+    border-style: solid;
+    border-width: 5px 4px 0 4px;
+    height: 0;
+    left: 50%;
+    margin-left: -6px;
+    margin-top: -6px;
+    position: absolute;
+    top: 50%;
+    width: 0;
+}

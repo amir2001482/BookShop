@@ -1,0 +1,37 @@
+﻿@page
+@model BookShop.Areas.Admin.Pages.Publishers.CreateModel
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                افزودن ناشر جدید
+            </div>
+            <form method="post">
+                <div class="row card-body mb-3">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="col-md-2">
+                                <label asp-for="publisher.PublisherName" class="control-label"></label>
+                            </div>
+                            <div class="col-md-10">
+                                <input asp-for="publisher.PublisherName" class="form-control" />
+                                <span asp-validation-for="publisher.PublisherName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-info float-right">افزودن ناشر</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

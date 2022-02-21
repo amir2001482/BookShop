@@ -1,0 +1,74 @@
+﻿@model BookShop.Models.Translator
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container-fluid">
+    <form asp-action="Edit">
+        @if (ViewBag.MsgFail != null)
+        {
+            <div class="alert alert-danger alert-dismissable ">
+                @ViewBag.MsgFail
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+
+        }
+        @if (ViewBag.MsgSuc != null)
+        {
+            <div class="alert alert-success alert-dismissable">
+                @ViewBag.MsgSuc
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+        }
+        <div class="row">
+           
+                <div class="card col-md-12">
+                    <div class="card-header bg-light">
+                        افزودن اطلاعات مترجم
+                        <a href="/Admin/Translator/Index" class="float-left"><i class="fa fa-arrow-circle-left"></i>  بازگشت به لیست کتاب ها   </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <input type="hidden" asp-for="TranslatorID" />
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" asp-for="Name"></label>
+                                        <input asp-for="Name" class="form-control" placeholder=" نام">
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Family" class="form-control-label"></label>
+                                        <input asp-for="Family" class="form-control" placeholder="نام خانوادگی">
+                                        <span asp-validation-for="Family" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light text-right">
+                        <button type="submit" class="btn btn-success float-left"> ذخیره تغیرات</button>
+                    </div>
+                </div>
+            
+        </div>
+    </form>
+    <div class="col-md-4">
+       
+    </div>
+
+</div>
+
+

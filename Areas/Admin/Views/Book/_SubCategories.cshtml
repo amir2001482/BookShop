@@ -1,0 +1,32 @@
+﻿@model BookShop.Models.ViewModels.BookSubCategoriesViewModel
+
+<ul>
+    @foreach (var item in Model.Categories)
+    {
+        <li>
+            @if (Model.CategoryID != null)
+            {
+                if (Model.CategoryID.Contains(item.id))
+                {
+                    <input type="checkbox" name="CategoryID" value="@item.id" checked /> @item.title
+                }
+                else
+                {
+                    <input type="checkbox" name="CategoryID" value="@item.id" /> @item.title
+                }
+            }
+            else
+            {
+
+                <input type="checkbox" name="CategoryID" value="@item.id" /> @item.title
+
+
+            }
+            @{Model.Categories = item.subs;}
+            @await Html.PartialAsync("_SubCategories", Model)
+
+
+        </li>
+
+    }
+</ul>

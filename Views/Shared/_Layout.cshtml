@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>فروشگاه کتاب میزفا</title>
+    <link href="~/css/styles.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand navbar-light bg-primary">
+            <a class="navbar-brand text-white">فروشگاه کتاب میزفا</a>
+            <partial name="_LoginPartial" />
+        </nav>
+    </header>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+

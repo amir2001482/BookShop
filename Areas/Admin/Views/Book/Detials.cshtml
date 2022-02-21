@@ -1,0 +1,114 @@
+﻿@model BookShop.Models.ViewModels.ReadAllBook
+@inject BookShop.Classes.ConvertData Convert
+@{
+    ViewData["Title"] = "Detials";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-light">
+                    اطلاعات کتاب @Model.Title
+                    <a href="/Admin/Book/Index" class="float-left"><i class="fa fa-arrow-circle-left"></i>  بازگشت به لیست کتاب ها   </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div>
+                <span>
+                    <img src="~/images/download.png"  style="width:235px"/>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-3" style="margin-right:100px">
+            <p>عنوان : @Model.Title </p>
+            <p> شابک : @Model.ISBN</p>
+            <p> وزن : @Model.Weight</p>
+            <p> تعداد صفحات : @Model.NumOfPages</p>
+            <p> قیمت : @Model.Price</p>
+            <p>
+                وضعیت :
+                @if (Model.IsPublish == true)
+                 {
+                    <span> منتشر شده</span>
+                 }
+
+                else
+                {
+                    <span> پیش نویس</span>
+                }
+            </p>
+            <p> زبان : @Model.LanguageName</p>    
+        </div>
+        <div class="col-md-3">
+            <p>
+                تاریخ انتشار :
+                @if (Model.PublishDate != null)
+                 {
+                    <span> @Convert.ConvertMiladiToShamsi((DateTime)Model.PublishDate, "yyyy/M/dd")</span>
+
+                 }
+                else
+                {
+                    <span> --- </span>
+                }
+            </p>
+            <p> انتشارات : @Model.PublisherName</p>
+            <p> سال انتشار : @Model.PublishYear</p>
+            <p> موجودی : @Model.Stock</p> 
+            <p>
+                نویسندگان :
+                @*@{string Aouthers = "";}
+                @foreach (var item in ViewBag.Aouthers as List<BookSope2.Models.Author>)
+                {
+
+                    if (Aouthers != "")
+                    {
+                        Aouthers = Aouthers + "-" + item.FirstName + " " + item.LastName;
+                    }
+                    else
+                    {
+                        Aouthers = item.FirstName + " " + item.LastName;
+                    }
+                }
+                @Aouthers*@
+                @* ********************************************************************************** *@
+                @Model.Aouthers
+            </p>
+            <p>
+                مترجمان : 
+                @Model.Translators
+            </p>
+            <p>
+                دسته بندی :
+                @*@{ var Categorylist = ViewBag.Categories as List<BookSope2.Models.Category>; }
+                @{ string Categories = ""; }
+
+                @foreach (var item in Categorylist)
+                 {
+                    if (Categories != "")
+                    {
+                        Categories = Categories + "-" + item.CategoryName;
+                    }
+                    else
+                    {
+                        Categories = item.CategoryName;
+                    }
+                 }
+                @Categories*@
+                @*******************************************************************************************@
+                 @Model.Categories
+            </p>
+        </div>
+    </div>
+    <div class="row" style="margin-right:20px">
+        
+        <p> 
+            خلاصه کتاب :  
+            @Model.Summary
+        </p>
+    </div>
+
+

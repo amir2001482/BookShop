@@ -1,0 +1,23 @@
+﻿using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace BookShop.Areas.Identity.Data
+{
+    public class ApplicationIdentityErrorDescriber : IdentityErrorDescriber
+    {
+        public override IdentityError DuplicateUserName(string userName) => new IdentityError { Code = nameof(DuplicateUserName), Description = $"نام کاربری '{userName}' قبلا به کار رفته است  " };
+        public override IdentityError PasswordRequiresNonAlphanumeric() => new IdentityError { Code = nameof(PasswordRequiresNonAlphanumeric), Description = "کلمه عبور باید شامل حد اقل یک کارکتار خاص باشد (!.@.#.$...)" };
+        public override IdentityError PasswordRequiresDigit() => new IdentityError { Code = nameof(PasswordRequiresDigit), Description = "کلمه عبور باید شامل یک کارکتر عددی باشد (1-9)" };
+        public override IdentityError PasswordRequiresLower() => new IdentityError { Code = nameof(PasswordRequiresLower), Description = "کلمه عبور باید حداقل شامل یک حرف کوچک باشد (a-z)" };
+        public override IdentityError PasswordRequiresUpper() => new IdentityError { Code = nameof(PasswordRequiresUpper), Description = "کلمه عبور باید حداقل شامل یک حرف بزرگ باشد (A-Z)" };
+        public override IdentityError PasswordTooShort(int length) => new IdentityError { Code = nameof(PasswordTooShort), Description = $"کلمه عبور باید شامل حداقل {length} کارکتر باشد." };
+        public override IdentityError InvalidUserName(string userName) => new IdentityError { Code = nameof(InvalidUserName), Description = " باشد نام کابری باید شامل حروف (A-z) و اعداد (1-9)" };
+        public override IdentityError DuplicateRoleName(string role) => new IdentityError { Code = nameof(DuplicateRoleName), Description = $"'{role}' قبلا مورد استفاده قرار گرفته است ." };
+
+
+
+    }
+}

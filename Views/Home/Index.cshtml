@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+    <div class="mt-4">
+        @if (ViewBag.Msg != null)
+        {
+        <p class="alert alert-info">@ViewBag.Msg</p>
+        }
+    </div>

@@ -1,0 +1,276 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\css\jquery.md.bootstrap.datetimepicker.style.css.map" />
+    <Content Remove="wwwroot\js\jquery.md.bootstrap.datetimepicker.js" />
+    <Content Remove="wwwroot\js\jquery.md.bootstrap.datetimepicker.js.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="node_modules\almond\package.json" />
+    <Content Include="node_modules\jquery-mousewheel\LICENSE.txt" />
+    <Content Include="node_modules\jquery-mousewheel\package.json" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\demo\demo.css" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\demo\Samples1.html" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\dist\jquery.md.bootstrap.datetimepicker.style.css" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\package.json" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\src\jquery.md.bootstrap.datetimepicker.style.css" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\src\MdPersianDateTimePicker.jpg" />
+    <Content Include="node_modules\md.bootstrappersiandatetimepicker\src\template.html" />
+    <Content Include="node_modules\select2\dist\css\select2.css" />
+    <Content Include="node_modules\select2\dist\css\select2.min.css" />
+    <Content Include="node_modules\select2\dist\js\i18n\build.txt" />
+    <Content Include="node_modules\select2\package.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MD.PersianDateTime.Core" Version="2.3.5" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
+    <PackageReference Include="ReflectionIT.Mvc.Paging" Version="3.1.0" />
+    <PackageReference Include="summernote" Version="1.0.3" />
+    <PackageReference Include="summernote.editor" Version="0.8.10" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="node_modules\almond\almond.js" />
+    <None Include="node_modules\almond\LICENSE" />
+    <None Include="node_modules\almond\README.md" />
+    <None Include="node_modules\jquery-mousewheel\ChangeLog.md" />
+    <None Include="node_modules\jquery-mousewheel\jquery.mousewheel.js" />
+    <None Include="node_modules\jquery-mousewheel\README.md" />
+    <None Include="node_modules\md.bootstrappersiandatetimepicker\.gitattributes" />
+    <None Include="node_modules\md.bootstrappersiandatetimepicker\.jshintrc" />
+    <None Include="node_modules\md.bootstrappersiandatetimepicker\dist\jquery.md.bootstrap.datetimepicker.js" />
+    <None Include="node_modules\md.bootstrappersiandatetimepicker\dist\jquery.md.bootstrap.datetimepicker.js.map" />
+    <None Include="node_modules\md.bootstrappersiandatetimepicker\dist\jquery.md.bootstrap.datetimepicker.style.css.map" />
+    <None Include="node_modules\md.bootstrappersiandatetimepicker\README.md" />
+    <None Include="node_modules\md.bootstrappersiandatetimepicker\src\jquery.md.bootstrap.datetimepicker.js" />
+    <None Include="node_modules\md.bootstrappersiandatetimepicker\webpack.config.js" />
+    <None Include="node_modules\select2\CHANGELOG.md" />
+    <None Include="node_modules\select2\dist\js\i18n\af.js" />
+    <None Include="node_modules\select2\dist\js\i18n\ar.js" />
+    <None Include="node_modules\select2\dist\js\i18n\az.js" />
+    <None Include="node_modules\select2\dist\js\i18n\bg.js" />
+    <None Include="node_modules\select2\dist\js\i18n\bs.js" />
+    <None Include="node_modules\select2\dist\js\i18n\ca.js" />
+    <None Include="node_modules\select2\dist\js\i18n\cs.js" />
+    <None Include="node_modules\select2\dist\js\i18n\da.js" />
+    <None Include="node_modules\select2\dist\js\i18n\de.js" />
+    <None Include="node_modules\select2\dist\js\i18n\dsb.js" />
+    <None Include="node_modules\select2\dist\js\i18n\el.js" />
+    <None Include="node_modules\select2\dist\js\i18n\en.js" />
+    <None Include="node_modules\select2\dist\js\i18n\es.js" />
+    <None Include="node_modules\select2\dist\js\i18n\et.js" />
+    <None Include="node_modules\select2\dist\js\i18n\eu.js" />
+    <None Include="node_modules\select2\dist\js\i18n\fa.js" />
+    <None Include="node_modules\select2\dist\js\i18n\fi.js" />
+    <None Include="node_modules\select2\dist\js\i18n\fr.js" />
+    <None Include="node_modules\select2\dist\js\i18n\gl.js" />
+    <None Include="node_modules\select2\dist\js\i18n\he.js" />
+    <None Include="node_modules\select2\dist\js\i18n\hi.js" />
+    <None Include="node_modules\select2\dist\js\i18n\hr.js" />
+    <None Include="node_modules\select2\dist\js\i18n\hsb.js" />
+    <None Include="node_modules\select2\dist\js\i18n\hu.js" />
+    <None Include="node_modules\select2\dist\js\i18n\hy.js" />
+    <None Include="node_modules\select2\dist\js\i18n\id.js" />
+    <None Include="node_modules\select2\dist\js\i18n\is.js" />
+    <None Include="node_modules\select2\dist\js\i18n\it.js" />
+    <None Include="node_modules\select2\dist\js\i18n\ja.js" />
+    <None Include="node_modules\select2\dist\js\i18n\km.js" />
+    <None Include="node_modules\select2\dist\js\i18n\ko.js" />
+    <None Include="node_modules\select2\dist\js\i18n\lt.js" />
+    <None Include="node_modules\select2\dist\js\i18n\lv.js" />
+    <None Include="node_modules\select2\dist\js\i18n\mk.js" />
+    <None Include="node_modules\select2\dist\js\i18n\ms.js" />
+    <None Include="node_modules\select2\dist\js\i18n\nb.js" />
+    <None Include="node_modules\select2\dist\js\i18n\nl.js" />
+    <None Include="node_modules\select2\dist\js\i18n\pl.js" />
+    <None Include="node_modules\select2\dist\js\i18n\ps.js" />
+    <None Include="node_modules\select2\dist\js\i18n\pt-BR.js" />
+    <None Include="node_modules\select2\dist\js\i18n\pt.js" />
+    <None Include="node_modules\select2\dist\js\i18n\ro.js" />
+    <None Include="node_modules\select2\dist\js\i18n\ru.js" />
+    <None Include="node_modules\select2\dist\js\i18n\sk.js" />
+    <None Include="node_modules\select2\dist\js\i18n\sl.js" />
+    <None Include="node_modules\select2\dist\js\i18n\sr-Cyrl.js" />
+    <None Include="node_modules\select2\dist\js\i18n\sr.js" />
+    <None Include="node_modules\select2\dist\js\i18n\sv.js" />
+    <None Include="node_modules\select2\dist\js\i18n\th.js" />
+    <None Include="node_modules\select2\dist\js\i18n\tk.js" />
+    <None Include="node_modules\select2\dist\js\i18n\tr.js" />
+    <None Include="node_modules\select2\dist\js\i18n\uk.js" />
+    <None Include="node_modules\select2\dist\js\i18n\vi.js" />
+    <None Include="node_modules\select2\dist\js\i18n\zh-CN.js" />
+    <None Include="node_modules\select2\dist\js\i18n\zh-TW.js" />
+    <None Include="node_modules\select2\dist\js\select2.full.js" />
+    <None Include="node_modules\select2\dist\js\select2.full.min.js" />
+    <None Include="node_modules\select2\dist\js\select2.js" />
+    <None Include="node_modules\select2\dist\js\select2.min.js" />
+    <None Include="node_modules\select2\LICENSE.md" />
+    <None Include="node_modules\select2\README.md" />
+    <None Include="node_modules\select2\src\js\banner.end.js" />
+    <None Include="node_modules\select2\src\js\banner.start.js" />
+    <None Include="node_modules\select2\src\js\jquery.mousewheel.shim.js" />
+    <None Include="node_modules\select2\src\js\jquery.select2.js" />
+    <None Include="node_modules\select2\src\js\jquery.shim.js" />
+    <None Include="node_modules\select2\src\js\select2\compat\containerCss.js" />
+    <None Include="node_modules\select2\src\js\select2\compat\dropdownCss.js" />
+    <None Include="node_modules\select2\src\js\select2\compat\initSelection.js" />
+    <None Include="node_modules\select2\src\js\select2\compat\inputData.js" />
+    <None Include="node_modules\select2\src\js\select2\compat\matcher.js" />
+    <None Include="node_modules\select2\src\js\select2\compat\query.js" />
+    <None Include="node_modules\select2\src\js\select2\compat\utils.js" />
+    <None Include="node_modules\select2\src\js\select2\core.js" />
+    <None Include="node_modules\select2\src\js\select2\data\ajax.js" />
+    <None Include="node_modules\select2\src\js\select2\data\array.js" />
+    <None Include="node_modules\select2\src\js\select2\data\base.js" />
+    <None Include="node_modules\select2\src\js\select2\data\maximumInputLength.js" />
+    <None Include="node_modules\select2\src\js\select2\data\maximumSelectionLength.js" />
+    <None Include="node_modules\select2\src\js\select2\data\minimumInputLength.js" />
+    <None Include="node_modules\select2\src\js\select2\data\select.js" />
+    <None Include="node_modules\select2\src\js\select2\data\tags.js" />
+    <None Include="node_modules\select2\src\js\select2\data\tokenizer.js" />
+    <None Include="node_modules\select2\src\js\select2\defaults.js" />
+    <None Include="node_modules\select2\src\js\select2\diacritics.js" />
+    <None Include="node_modules\select2\src\js\select2\dropdown.js" />
+    <None Include="node_modules\select2\src\js\select2\dropdown\attachBody.js" />
+    <None Include="node_modules\select2\src\js\select2\dropdown\attachContainer.js" />
+    <None Include="node_modules\select2\src\js\select2\dropdown\closeOnSelect.js" />
+    <None Include="node_modules\select2\src\js\select2\dropdown\hidePlaceholder.js" />
+    <None Include="node_modules\select2\src\js\select2\dropdown\infiniteScroll.js" />
+    <None Include="node_modules\select2\src\js\select2\dropdown\minimumResultsForSearch.js" />
+    <None Include="node_modules\select2\src\js\select2\dropdown\search.js" />
+    <None Include="node_modules\select2\src\js\select2\dropdown\selectOnClose.js" />
+    <None Include="node_modules\select2\src\js\select2\dropdown\stopPropagation.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\af.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\ar.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\az.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\bg.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\bs.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\ca.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\cs.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\da.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\de.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\dsb.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\el.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\en.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\es.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\et.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\eu.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\fa.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\fi.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\fr.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\gl.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\he.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\hi.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\hr.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\hsb.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\hu.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\hy.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\id.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\is.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\it.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\ja.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\km.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\ko.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\lt.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\lv.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\mk.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\ms.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\nb.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\nl.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\pl.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\ps.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\pt-BR.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\pt.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\ro.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\ru.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\sk.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\sl.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\sr-Cyrl.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\sr.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\sv.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\th.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\tk.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\tr.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\uk.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\vi.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\zh-CN.js" />
+    <None Include="node_modules\select2\src\js\select2\i18n\zh-TW.js" />
+    <None Include="node_modules\select2\src\js\select2\keys.js" />
+    <None Include="node_modules\select2\src\js\select2\options.js" />
+    <None Include="node_modules\select2\src\js\select2\results.js" />
+    <None Include="node_modules\select2\src\js\select2\selection\allowClear.js" />
+    <None Include="node_modules\select2\src\js\select2\selection\base.js" />
+    <None Include="node_modules\select2\src\js\select2\selection\clickMask.js" />
+    <None Include="node_modules\select2\src\js\select2\selection\eventRelay.js" />
+    <None Include="node_modules\select2\src\js\select2\selection\multiple.js" />
+    <None Include="node_modules\select2\src\js\select2\selection\placeholder.js" />
+    <None Include="node_modules\select2\src\js\select2\selection\search.js" />
+    <None Include="node_modules\select2\src\js\select2\selection\single.js" />
+    <None Include="node_modules\select2\src\js\select2\selection\stopPropagation.js" />
+    <None Include="node_modules\select2\src\js\select2\translation.js" />
+    <None Include="node_modules\select2\src\js\select2\utils.js" />
+    <None Include="node_modules\select2\src\js\wrapper.end.js" />
+    <None Include="node_modules\select2\src\js\wrapper.start.js" />
+    <None Include="node_modules\select2\src\scss\core.scss" />
+    <None Include="node_modules\select2\src\scss\mixins\_gradients.scss" />
+    <None Include="node_modules\select2\src\scss\theme\classic\layout.scss" />
+    <None Include="node_modules\select2\src\scss\theme\classic\_defaults.scss" />
+    <None Include="node_modules\select2\src\scss\theme\classic\_multiple.scss" />
+    <None Include="node_modules\select2\src\scss\theme\classic\_single.scss" />
+    <None Include="node_modules\select2\src\scss\theme\default\layout.scss" />
+    <None Include="node_modules\select2\src\scss\theme\default\_multiple.scss" />
+    <None Include="node_modules\select2\src\scss\theme\default\_single.scss" />
+    <None Include="node_modules\select2\src\scss\_dropdown.scss" />
+    <None Include="node_modules\select2\src\scss\_multiple.scss" />
+    <None Include="node_modules\select2\src\scss\_single.scss" />
+    <None Include="wwwroot\css\jquery.md.bootstrap.datetimepicker.style.css.map" />
+    <None Include="wwwroot\images\banner1.svg" />
+    <None Include="wwwroot\images\banner2.svg" />
+    <None Include="wwwroot\images\banner3.svg" />
+    <None Include="wwwroot\js\jquery.md.bootstrap.datetimepicker.js" />
+    <None Include="wwwroot\js\jquery.md.bootstrap.datetimepicker.js.map" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\js\site.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\npm.js" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+  </ItemGroup>
+
+</Project>

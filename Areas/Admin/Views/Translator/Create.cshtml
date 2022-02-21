@@ -1,0 +1,42 @@
+﻿@model BookShop.Models.Translator
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                افزودن مترجم جدید
+                <a href="/Admin/Translator/Index" class="float-left"><i class="fa fa-arrow-circle-left"></i>  بازگشت به لیست  نویسندگان   </a>
+            </div>
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Family" class="control-label"></label>
+                            <input asp-for="Family" class="form-control" />
+                            <span asp-validation-for="Family" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer clearfix bg-light text-right">
+                    <button type="submit" class="btn btn-info float-left">افزودن مترجم</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

@@ -1,0 +1,270 @@
+﻿@model BookShop.Models.ViewModels.BooksCreateViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container-fluid">
+    <form asp-action="Edit">
+        @if (ViewBag.MSGFaid != null)
+        {
+            <div class="alert alert-danger alert-dismissable ">
+                @ViewBag.MSGFaid
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+
+        }
+        @if (ViewBag.MSGSucsses != null)
+        {
+            <div class="alert alert-success alert-dismissable">
+                @ViewBag.MSGSucsses
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                افزودن تصویر جلد کتاب
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <div class="col-md-12 text-center">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-new thumbnail" style="height: 150px;">
+                                                <img src="/images/No_Image_Available.jpg" />
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail" style="height:200px"> </div>
+                                            <div>
+                                                <span class="btn default btn-file">
+                                                    <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
+                                                    <span class="fileinput-exists btn btn-default"> تغییر عکس </span>
+                                                    <input type="file" name="Image" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" />
+                                                </span>
+                                                <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                افزودن دسته بندی کتاب
+                            </div>
+                            <div class="card-body">
+                                <ul id="category" class="demo1">
+                                    @foreach (var item in Model.SubCategories.Categories)
+                                    {
+                                        <li>
+                                            @if (Model.SubCategories.CategoryID != null)
+                                            {
+                                                @if (Model.SubCategories.CategoryID.Contains(item.id))
+                                                {
+                                                    <input checked  type="checkbox" name="CategoryID" value="@item.id" /> @item.title
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" name="CategoryID" value="@item.id" /> @item.title
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" name="CategoryID" value="@item.id" />@item.title
+                                            }
+
+                                            @{Model.SubCategories.Categories = item.subs;}
+                                            @await Html.PartialAsync("_SubCategories", Model.SubCategories)
+
+                                            
+                                        </li>
+
+
+
+
+
+                                    }
+
+
+
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        افزودن اطلاعات کتاب
+                        <a href="/Admin/Book/Index" class="float-left"><i class="fa fa-arrow-circle-left"></i>  بازگشت به لیست کتاب ها   </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <input type="hidden" asp-for="BookId" />
+                                <input type="hidden" asp-for="RecentIsPublish" />
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" asp-for="Title"></label>
+                                        <input asp-for="Title" class="form-control" placeholder="عنوان کتاب">
+                                        <span asp-validation-for="Title" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="ISBN" class="form-control-label"></label>
+                                        <input asp-for="ISBN" class="form-control" placeholder="شابک">
+                                        <span asp-validation-for="ISBN" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="NumOfPages" class="form-control-label"></label>
+                                        <input asp-for="NumOfPages" class="form-control" placeholder="تعداد صفحات">
+                                        <span asp-validation-for="NumOfPages" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Weight" class="form-control-label"></label>
+                                        <input asp-for="Weight" class="form-control" placeholder="وزن">
+                                        <span asp-validation-for="Weight" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Price" class="form-control-label"></label>
+                                        <input asp-for="Price" class="form-control" placeholder="قیمت">
+                                        <span asp-validation-for="Price" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Stock" class="form-control-label"></label>
+                                        <input asp-for="Stock" type="number" class="form-control" placeholder="موجودی">
+                                        <span asp-validation-for="Stock" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="PublishYear" class="form-control-label"></label>
+                                        <input asp-for="PublishYear" type="number" class="form-control" placeholder="سال انتشار">
+                                        <span asp-validation-for="PublishYear" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="LanguageID" class="form-control-label"></label>
+                                        <select asp-for="LanguageID" asp-items="ViewBag.LanguageID" class="select2 js-states form-control">
+                                            <option value="">انتخاب کنید</option>
+                                        </select>
+                                        <span asp-validation-for="LanguageID" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="PublisherID" class="form-control-label"></label>
+                                        <select asp-for="PublisherID" asp-items="ViewBag.PublisherID" class="select2 js-states form-control">
+                                            <option value="">انتخاب کنید</option>
+                                        </select>
+                                        <span asp-validation-for="PublisherID" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="AuthorID" class="form-control-label"></label>
+                                        <select asp-for="AuthorID" asp-items="ViewBag.AuthorID" class="select2 js-states form-control" multiple="multiple">
+                                            <option value="">انتخاب کنید</option>
+                                        </select>
+                                        <span asp-validation-for="AuthorID" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="TranslatorID" class="form-control-label"></label>
+                                        <select asp-for="TranslatorID" asp-items="ViewBag.TranslatorID" class="select2 js-states form-control" multiple="multiple">
+                                            <option value="">انتخاب کنید</option>
+                                        </select>
+                                        <span asp-validation-for="TranslatorID" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="Summary" class="form-control-label"> </label>
+                                        <textarea asp-for="Summary" class="form-control">
+
+                                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input type="checkbox" asp-for="IsPublish" class="ml-1" />
+                                        <label asp-for="IsPublish" class="form-control-label"> </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label">بارگزاری فایل کتاب</label>
+                                        <div class="fileinput fileinput-custom fileinput-new" data-provides="fileinput">
+                                            <div class="input-group input-large">
+                                                <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                                    <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                                    <span class="fileinput-filename"></span>
+                                                </div>
+                                                <span class="input-group-addon btn default btn-file">
+                                                    <span class="fileinput-new"> انتخاب کنید </span>
+                                                    <span class="fileinput-exists"> تغییر فایل </span>
+                                                    <input value="" name="..." type="hidden">
+                                                    <input name="files" accept=".pdf,.doc,.docx,.zip,.rar,.jpg,.png,.gif,.jpeg,.tif,.tiff,.JPG,.PNG" type="file">
+                                                </span>
+                                                <a href="javascript:;" class="input-group-addon btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف فایل </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light text-right">
+                        <button type="submit" class="btn btn-success float-left"> ذخیره تغیرات</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

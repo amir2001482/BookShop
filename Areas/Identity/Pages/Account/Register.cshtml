@@ -1,0 +1,156 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    
+}
+
+<div class="card">
+    <div class="card-header bg-light">
+        عضویت کاربر جدید
+    </div>
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="col-md-12 text-center">
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <div class="fileinput-new thumbnail" style="height: 150px;">
+                                <img src="~/images/UserPic.png" />
+                            </div>
+                            <div class="fileinput-preview fileinput-exists thumbnail" style="height:200px"> </div>
+                            <div>
+                                <span class="btn default btn-file">
+                                    <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
+                                    <span class="fileinput-exists btn btn-default"> تغییر عکس </span>
+                                    <input type="file" name="Image" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" />
+                                </span>
+                                <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-md-8">
+                    <div asp-validation-summary="All" class="text-danger col-md-6"></div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Input.Name"></label>
+                            <input asp-for="Input.Name" class="form-control" />
+                            <span asp-validation-for="Input.Name" class="text-danger" id="InputName"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Input.Family"></label>
+                            <input asp-for="Input.Family" class="form-control" />
+                            <span asp-validation-for="Input.Family" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Input.userName"></label>
+                            <input asp-for="Input.userName" class="form-control" />
+                            <span asp-validation-for="Input.userName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Input.PhoneNumber"></label>
+                            <input asp-for="Input.PhoneNumber" class="form-control" />
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Input.BirthDate"></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text cursor-pointer" id="BirthDate">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                                <input asp-for="Input.BirthDate" class="form-control" id="InputBirthDate" style="direction:ltr" />
+                                <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Input.Email"></label>
+                            <input asp-for="Input.Email" class="form-control" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Input.Password"></label>
+                            <input asp-for="Input.Password" class="form-control" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Input.ConfirmPassword"></label>
+                            <input asp-for="Input.ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <button class="btn btn-primary mb-3" type="button" data-toggle="collapse" data-target="#demo">افزودن نقش کاربر</button>
+                            <div id="demo" class="collapse">
+
+                                <ul class="list-unstyled">
+                                    @foreach (var Role in Model.Roles)
+                                    {
+                                        <li class="p-1">
+                                            <input type="checkbox" value="@Role.Name" name="userRoles" />
+                                            @Role.Name
+                                        </li>
+                                    }
+                                </ul>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="card-footer clearfix bg-light">
+                <button type="submit" class="btn btn-primary float-left">عضویت</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<script>
+    $("#BirthDate").MdPersianDateTimePicker({
+         targetTextSelector:"#InputBirthDate",
+         placement:'top',
+    });
+
+    $(document).ready(function()
+    {
+     //Persian character and numbers (and space!)
+     Inputmask.extendDefinitions({
+        'f': {
+            validator: "[۰-۹\u060C-\u0638\u0639-\u0648\u06A9\u06AF\u06CC\u067E\u0686\u064A\u0649\u0626\u0698 ]",
+            cardinality: 1
+        },
+
+        'n':
+        {
+           validator:"[1-9]",
+        },
+
+        'm':
+        {
+            validator:"[۰-۹]",
+        },
+
+        'z':
+        {
+           validator:"[۱-۹]",
+        }
+     });
+
+     $("#InputBirthDate").inputmask("(n999|zmmm)/(0n|10|11|12|۰z|۱۰|۱۱|۱۲)/(0n|19|29|30|31|۰z|۱m|۲m|۳۰|۳۱)",{"placeholder":"_"});
+     $("#InputName").inputmask( "f{*}");
+
+    });
+</script>
+

@@ -1,0 +1,44 @@
+﻿@charset "UTF-8";
+
+.bonsai,
+.bonsai > li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+}
+
+.bonsai > li {
+   position: relative;
+   padding-right: 1.3em; /* padding for the thumb */
+   margin: 4px 0px;
+}    
+
+li .thumb {
+    margin: 0px -15px 0 -1em; /* negative margin into the padding of the li */
+    position: absolute;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+li.has-children > .thumb:after {
+  content: '▸';
+}
+
+li.has-children.expanded > .thumb:after {
+  content: '▾';
+}
+
+li.collapsed > ol.bonsai {
+  height: 0;
+  overflow: hidden;
+}
+
+.bonsai .all,
+.bonsai .none {
+  cursor: pointer;
+}
+
+#category input{
+    margin-left: 5px;
+}
