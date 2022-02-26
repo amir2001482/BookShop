@@ -37,6 +37,17 @@
                                     <input type="password" class="form-control" asp-for="Password" placeholder="کلمه عبور">
                                     <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
+                                <div class="form-group">
+                                    <label class="form-control-label" asp-for="CaptchaCode"></label>
+                                    <a id="GenerateCapcha" class="pr-2 text-primary" style="cursor:pointer;"><i class="fa fa-redo" style="font-size:12px" aria-hidden="true"></i></a>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <img id="img-captcha" src="~/get-captcha-image" />
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="کد امنیتی" asp-for="CaptchaCode" maxlength="4" />
+                                    </div>
+                                    <span asp-validation-for="CaptchaCode" class="text-danger"></span>
+                                </div>
                                 <div class="custom-control custom-checkbox mt-4">
                                     <input type="checkbox" class="custom-control-input" id="login" asp-for="RememberMe">
                                     <label class="custom-control-label" for="login" asp-for="RememberMe"></label>
@@ -63,3 +74,9 @@
 </html>
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $("#img-captcha,#GenerateCapcha").click(function () {
+        d = new Date();
+        $("#img-captcha").attr("src", "/get-captcha-image?" + d.getTime());
+    });
+</script>

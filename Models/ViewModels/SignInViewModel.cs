@@ -19,5 +19,9 @@ namespace BookShop.Models.ViewModels
 
         [Display(Name = "مرا به خاطر بسپار؟")]
         public bool RememberMe { get; set; }
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+        [Display(Name = "کلمه امنیتی")]
+        public string CaptchaCode { get; set; }
+       
     }
 }

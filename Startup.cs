@@ -68,7 +68,8 @@ namespace BookShop
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSession(options =>
             {
-
+                options.IdleTimeout = TimeSpan.FromMinutes(2);
+                options.Cookie.HttpOnly = true;
             });
         }
 
@@ -94,6 +95,7 @@ namespace BookShop
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+            app.UseSession();
 
 
             app.UseMvc(routes =>

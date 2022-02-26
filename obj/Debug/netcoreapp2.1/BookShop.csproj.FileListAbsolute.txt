@@ -246,5 +246,6 @@ D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\BookSho
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\BookShop.csproj.CopyComplete
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Account\SignIn.cshtml.g.cs
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Views\Dushbord\Index.cshtml.g.cs
-D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\BookShop.csprojAssemblyReference.cache
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_AdminLoginPartial.cshtml.g.cs
+D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\BookShop.csproj.CoreCompileInputs.cache
+D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\BookShop.csprojAssemblyReference.cache

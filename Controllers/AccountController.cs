@@ -95,10 +95,14 @@ namespace BookShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(VM.UserName, VM.Password , VM.RememberMe ,false);
-                if (result.Succeeded)
-                    return RedirectToAction("Index", "Home");
-                ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور شما صحیح نمی باشد");
+                if(Captcha.ValidateCaptchaCode(VM.CaptchaCode , HttpContext))
+                {
+                    var result = await _signInManager.PasswordSignInAsync(VM.UserName, VM.Password, VM.RememberMe, false);
+                    if (result.Succeeded)
+                        return RedirectToAction("Index", "Home");
+                    ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور شما صحیح نمی باشد");
+                }
+                ModelState.AddModelError(string.Empty, "کلمه امنیتی صحیح نمی باشد");
             }
            
             return View();
@@ -111,6 +115,7 @@ namespace BookShop.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+        [Route("get-captcha-image")]
         public IActionResult GetCaptchaImage()
         {
             int width = 100;
