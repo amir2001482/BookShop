@@ -38,6 +38,10 @@
       "frameworks": {
         "netcoreapp2.1": {
           "dependencies": {
+            "Kavenegar": {
+              "target": "Package",
+              "version": "[1.2.4, )"
+            },
             "MD.PersianDateTime.Core": {
               "target": "Package",
               "version": "[2.3.5, )"

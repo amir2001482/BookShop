@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "FzXHW2PlA/DGB0/nVtpHXmfn2BFK78KKEgIeKPCVCmsvwyj00hnoYZde87b8cikPv3QEveTu4fEnEJltj3L7Ng==",
+  "dgSpecHash": "jKa4XkBfWQF/UMQPK7CuWrgUOSJQnPdbAI4CLpapvoJn+6GBURXGZHY/+spM+Lv+KJKDr1ViRyvAaR05frEGOw==",
   "success": true,
   "projectFilePath": "D:\\Amir\\Programing\\ASP.NetCore\\exarsise\\BookShop\\BookShop.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\amir hossein\\.nuget\\packages\\fontawesome\\4.2.0\\fontawesome.4.2.0.nupkg.sha512",
+    "C:\\Users\\amir hossein\\.nuget\\packages\\kavenegar\\1.2.4\\kavenegar.1.2.4.nupkg.sha512",
     "C:\\Users\\amir hossein\\.nuget\\packages\\md.persiandatetime.core\\2.3.5\\md.persiandatetime.core.2.3.5.nupkg.sha512",
     "C:\\Users\\amir hossein\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.6\\microsoft.aspnet.webapi.client.5.2.6.nupkg.sha512",
     "C:\\Users\\amir hossein\\.nuget\\packages\\microsoft.aspnetcore\\2.1.1\\microsoft.aspnetcore.2.1.1.nupkg.sha512",
@@ -183,7 +184,7 @@
     "C:\\Users\\amir hossein\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
     "C:\\Users\\amir hossein\\.nuget\\packages\\microsoft.win32.systemevents\\4.5.0\\microsoft.win32.systemevents.4.5.0.nupkg.sha512",
     "C:\\Users\\amir hossein\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
-    "C:\\Users\\amir hossein\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
+    "C:\\Users\\amir hossein\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\amir hossein\\.nuget\\packages\\newtonsoft.json.bson\\1.0.1\\newtonsoft.json.bson.1.0.1.nupkg.sha512",
     "C:\\Users\\amir hossein\\.nuget\\packages\\nuget.frameworks\\4.7.0\\nuget.frameworks.4.7.0.nupkg.sha512",
     "C:\\Users\\amir hossein\\.nuget\\packages\\reflectionit.mvc.paging\\3.1.0\\reflectionit.mvc.paging.3.1.0.nupkg.sha512",
