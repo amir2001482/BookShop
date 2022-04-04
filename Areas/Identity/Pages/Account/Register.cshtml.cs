@@ -14,6 +14,7 @@ using BookShop.Classes;
 
 namespace BookShop.Areas.Identity.Pages.Account
 {
+    [Area("Admin")]
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {

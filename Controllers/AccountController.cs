@@ -19,7 +19,7 @@ namespace BookShop.Controllers
         private readonly IEmailSender _emailSender;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(IApplicationRoleManager roleManager, IApplicationUserManager userManager, IEmailSender emailSender , SignInManager<ApplicationUser> signInManager)
+        public AccountController(IApplicationRoleManager roleManager, IApplicationUserManager userManager, IEmailSender emailSender, SignInManager<ApplicationUser> signInManager)
         {
             _roleManager = roleManager;
             _emailSender = emailSender;
@@ -45,7 +45,7 @@ namespace BookShop.Controllers
                     Register = DateTime.Now,
                     IsActive = true
                 };
-                IdentityResult result = await _userManager.CreateAsync(user , viewModel.Password);
+                IdentityResult result = await _userManager.CreateAsync(user, viewModel.Password);
                 if (result.Succeeded)
                 {
                     var role = await _roleManager.FindByNameAsync("کاربر");
@@ -54,7 +54,7 @@ namespace BookShop.Controllers
                     result = await _userManager.AddToRoleAsync(user, "کاربر");
                     if (result.Succeeded)
                     {
-                        var Code =  await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var Code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         var callBackUrl = Url.Action("ConfirmEmail", "Account", values: new { user.Id, Code }, protocol: Request.Scheme);
                         await _emailSender.SendEmailAsync(user.Email, "تایید ایمیل حساب کاربری سایت پنجره نو", $"<div dir='rtl' style='font-family:tahoma;font-size:14px'>لطفا با کلیک روی لینک رویه رو ایمیل خود را تایید کنید.  <a href='{HtmlEncoder.Default.Encode(callBackUrl)}'>کلیک کنید</a></div>");
                         return RedirectToAction("Index", "Home", new { Id = "ConfirmedEmail" });
@@ -66,11 +66,11 @@ namespace BookShop.Controllers
                     ModelState.AddModelError("", item.Description);
                 }
 
-                return View();   
+                return View();
             }
             return View();
         }
-        public async Task<IActionResult> ConfirmEmail(string Id , string Code)
+        public async Task<IActionResult> ConfirmEmail(string Id, string Code)
         {
             if (Id == null || Code == null)
                 return RedirectToAction("Index", "Home");
@@ -93,23 +93,39 @@ namespace BookShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(Captcha.ValidateCaptchaCode(VM.CaptchaCode , HttpContext))
+                if (Captcha.ValidateCaptchaCode(VM.CaptchaCode, HttpContext))
                 {
-                    var result = await _signInManager.PasswordSignInAsync(VM.UserName, VM.Password, VM.RememberMe, false);
-                    if (result.Succeeded)
-                        return RedirectToAction("Index", "Home");
-                    ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور شما صحیح نمی باشد");
+                    var user = await _userManager.FindByNameAsync(VM.UserName);
+                    if (user != null)
+                    {
+                        if (user.IsActive)
+                        {
+                            var result = await _signInManager.PasswordSignInAsync(VM.UserName, VM.Password, VM.RememberMe, true);
+                            if (result.Succeeded)
+                            {
+                                if (result.IsLockedOut)
+                                {
+                                    ModelState.AddModelError(string.Empty, "حساب کاربری شما به مدت 20 دقیقه به دلیل تلاش های ناموفق قفل شد. ");
+                                    return View();
+                                }
+                                else
+                                    return RedirectToAction("Index", "Home");
+                                
+                            }
+                            ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور شما صحیح نمی باشد");
+                        }
+                        else
+                            ModelState.AddModelError(string.Empty, "کلمه امنیتی صحیح نمی باشد");
+                    }
                 }
-                ModelState.AddModelError(string.Empty, "کلمه امنیتی صحیح نمی باشد");
             }
-           
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignOut()
         {
-     
+
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
@@ -168,7 +184,7 @@ namespace BookShop.Controllers
                 var VM = new ResetPasswordViewModel { Code = code };
                 return View(VM);
             }
-            
+
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -183,8 +199,8 @@ namespace BookShop.Controllers
                 }
                 else
                 {
-                    var result =  await _userManager.ResetPasswordAsync(user, VM.Code, VM.Password);
-                    if(result.Succeeded)
+                    var result = await _userManager.ResetPasswordAsync(user, VM.Code, VM.Password);
+                    if (result.Succeeded)
                         return RedirectToAction("resetPasswordConfirmation");
                     else
                     {
@@ -201,6 +217,9 @@ namespace BookShop.Controllers
         {
             return View();
         }
+
+
+
 
     }
 }

@@ -47,11 +47,12 @@ namespace BookShop
             services.AddTransient<ConvertData>();
             services.AddScoped<IConvertData,ConvertData>();
             services.AddScoped<IApplicationRoleManager, ApplicationRoleManager>();
-            services.AddScoped<ApplicationUser>();
+            //services.AddScoped<ApplicationUser>();
             services.AddScoped<IApplicationUserManager, ApplicationUserManager>();
             services.AddScoped<ApplicationIdentityErrorDescriber>();
             services.AddScoped<IEmailSender, EmailSender>();
-            //services.AddTransient<RoleManager<ApplicationRole>>();
+            //services.AddTransient<RoleManager<ApplicationRoles>>();
+
             //services.AddMvc(options =>
             //{
             //    var F = services.BuildServiceProvider().GetService<IStringLocalizerFactory>();

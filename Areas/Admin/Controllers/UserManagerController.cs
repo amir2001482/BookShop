@@ -30,8 +30,8 @@ namespace BookShop.Areas.Admin.Controllers
         {
             var PagingModel = PagingList.Create(await _userManager.GetAllUsersWithRolesAsync(), row, page);
             if (MSG == "Sucsess")
-                 ViewBag.Alert = "عملیات با موفقیت انجام گرفت";
-            
+                ViewBag.Alert = "عملیات با موفقیت انجام گرفت";
+
             if (MSG == "SendEmailSuccses")
                 ViewBag.Alert = "ایمیل با موفقیت به کاربران ارسال شد";
             return View(PagingModel);
@@ -135,13 +135,13 @@ namespace BookShop.Areas.Admin.Controllers
                 ViewBag.AlertError = "در حذف اطلاعات خطایی رخ داده است.";
                 return View(User);
             }
-           
+
         }
-        public async Task<IActionResult> SendEmail(string[] emails , string subject , string massege)
+        public async Task<IActionResult> SendEmail(string[] emails, string subject, string massege)
         {
-            if (emails!=null)
+            if (emails != null)
             {
-                for (int i=0;i<emails.Length;i++)
+                for (int i = 0; i < emails.Length; i++)
                 {
                     await _emailSender.SendEmailAsync(emails[i], subject, massege);
                 }
@@ -149,6 +149,95 @@ namespace BookShop.Areas.Admin.Controllers
             }
             return View("Index");
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeLockOutEnd(string userId, bool status)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+            else
+            {
+                var result = await _userManager.SetLockoutEnabledAsync(user, status);
+                return RedirectToAction("Details", new { Id = userId });
+            }
 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LockUserAccount(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+            else
+            {
+                var result = await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddMinutes(5));
+                return RedirectToAction("Details", new { Id = userId });
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UnLockUserAccount(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+            else
+            {
+                var result = await _userManager.SetLockoutEndDateAsync(user, null);
+                return RedirectToAction("Details", new { Id = userId });
+            }
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> InActiveOrActive(string userId, bool status)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+            user.IsActive = status;
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction("Details", new { Id = userId });
+        }
+        [HttpGet]
+        public async Task<IActionResult> ResetPassword(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+            UserResetPasswordViewModel VM = new UserResetPasswordViewModel
+            {
+                Email = user.Email,
+                Id = user.Id,
+                UserName = user.UserName
+            };
+            return View(VM);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(UserResetPasswordViewModel VM)
+        {  
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(VM.Id);
+                if (user == null)
+                    return NotFound();
+                await _userManager.RemovePasswordAsync(user);
+                var result = await _userManager.AddPasswordAsync(user, VM.NewPassword);
+                if (result.Succeeded)
+                    ViewBag.MSG = "کلمه عبور با موفقیت تغییر کرد";
+                else
+                    ModelState.AddModelError(string.Empty, "خطایی رخ داده است لطفا دوباره امتحان کنید");
+                return View(VM);
+            }
+            else
+            {
+                ViewBag.MSG = "اطلاعات فرم نا معتبر است ";
+                return View(VM);
+            }
+           
+        }
     }
 }

@@ -26,8 +26,8 @@
                     }
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 user-detail-section1 text-center">
-                    <button class="btn btn-success btn-block follow">ویرایش اطلاعات کاربر </button>
-                    <button class="btn btn-warning btn-block mb-2">تنظیم مجدد رمز عبور</button>
+                    <a href="/Admin/UsersManager/Edit/@Model.Id" class="btn btn-success btn-block follow">ویرایش اطلاعات کاربر </a>
+                    <a asp-action="ResetPassword" asp-controller="UsersManager" asp-route-UserId="@Model.Id" class="btn btn-warning btn-block mb-2">تنظیم مجدد کلمه عبور</a>
                 </div>
             </div>
         </div>
@@ -156,12 +156,18 @@
                                                         وضعیت حساب کاربری
                                                     </td>
                                                     <td>
-                                                        <label class="badge @(Model.IsActive==true?"badge-success":"badge-danger")">
-                                                            @(Model.IsActive==true?"فعال":"غیرفعال")
+                                                        <label class="badge @(Model.IsActive == true ? "badge-success" : "badge-danger")">
+                                                            @(Model.IsActive == true ? "فعال" : "غیرفعال")
                                                         </label>
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-danger btn-sm">غیرفعال شود</button>
+                                                        <form asp-action="InActiveOrActive">
+                                                            <input type="hidden" value="@Model.Id" name="userId" />
+                                                            <input type="hidden" value="@(Model.IsActive==true ? false : true)" name="status" />
+                                                            <button type="submit" class="btn btn-sm @(Model.IsActive == true ? "btn-danger" : "btn-success")">
+                                                                @(Model.IsActive == true ? "غیرفعال شود" : "فعال شود")
+                                                            </button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -169,8 +175,8 @@
                                                         وضعیت ایمیل
                                                     </td>
                                                     <td>
-                                                        <label class="badge @(Model.EmailConfirmed==true?"badge-success":"badge-danger")">
-                                                            @(Model.EmailConfirmed==true?"تایید شده":"تایید نشده")
+                                                        <label class="badge @(Model.EmailConfirmed == true ? "badge-success" : "badge-danger")">
+                                                            @(Model.EmailConfirmed == true ? "تایید شده" : "تایید نشده")
                                                         </label>
                                                     </td>
                                                     <td></td>
@@ -180,7 +186,7 @@
                                                         وضعیت شماره موبایل
                                                     </td>
                                                     <td>
-                                                        <label class="badge @(Model.PhoneNumberConfirmed==true?"badge-success":"badge-danger")">
+                                                        <label class="badge @(Model.PhoneNumberConfirmed == true ? "badge-success" : "badge-danger")">
                                                             @(Model.PhoneNumberConfirmed == true ? "تایید شده" : "تایید نشده")
                                                         </label>
                                                     </td>
@@ -191,12 +197,18 @@
                                                         امکان قفل شدن حساب کاربری
                                                     </td>
                                                     <td>
-                                                        <label class="badge @(Model.LockoutEnabled==true?"badge-success":"badge-danger")">
+                                                        <label class="badge @(Model.LockoutEnabled == true ? "badge-success" : "badge-danger")">
                                                             @(Model.LockoutEnabled == true ? "فعال" : "غیرفعال")
                                                         </label>
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-success btn-sm">فعال شود</button>
+                                                        <form asp-action="ChangeLockOutEnd" method="post">
+                                                            <input type="hidden" value="@Model.Id" name="userId" />
+                                                            <input type="hidden" value="@(Model.LockoutEnabled == true ? "false" : "true")" name="status" />
+                                                            <button type="submit" class="btn btn-sm @(Model.LockoutEnabled == true ? "btn-danger" : "btn-success")">
+                                                                @(Model.LockoutEnabled == true ? "غیرفعال شود" : "فعال شود")
+                                                            </button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -204,7 +216,7 @@
                                                         اعتبارسنجی دو مرحله ای
                                                     </td>
                                                     <td>
-                                                        <label class="badge @(Model.TwoFactorEnabled==true?"badge-success":"badge-danger")">
+                                                        <label class="badge @(Model.TwoFactorEnabled == true ? "badge-success" : "badge-danger")">
                                                             @(Model.TwoFactorEnabled == true ? "فعال" : "غیرفعال")
                                                         </label>
                                                     </td>
@@ -213,10 +225,69 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    @{
+                                                        DateTime? LockOutEnd = null;
+                                                        if (Model.LockoutEnd.HasValue)
+                                                        {
+                                                            LockOutEnd = Model.LockoutEnd.Value.DateTime.ToLocalTime();
+                                                        }
+                                                    }
+                                                    <td>وضعیت قفل حساب کاربری</td>
+                                                    <td>
+                                                        @if (Model.LockoutEnd.HasValue)
+                                                        {
+                                                            <label class="badge @(LockOutEnd > DateTime.Now ? "badge-danger" : "badge-success")">
+                                                                <i class="fa @(LockOutEnd > DateTime.Now ? "fa-lock" : "fa-lock-open")"></i>
+                                                                @(LockOutEnd > DateTime.Now ? "قفل شده" : "قفل نشده")
+                                                            </label>
+                                                        }
+                                                        else
+                                                        {
+                                                            <label class="badge badge-success"><i class="fa fa-lock-open"></i>  قفل نشده </label>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (Model.LockoutEnd.HasValue)
+                                                        {
+                                                            <form asp-action="@(LockOutEnd > DateTime.Now ? "UnLockUserAccount" : "LockUserAccount")" method="post">
+                                                                <input type="hidden" value="@Model.Id" name="userId" />
+                                                                <button type="submit" class="btn btn-sm @(LockOutEnd > DateTime.Now ? "btn-success" : "btn-danger")">
+                                                                    @(LockOutEnd > DateTime.Now ? "خروج از حالت قفل" : "قفل شود")
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                        else
+                                                        {
+                                                            <form asp-action="LockUserAccount" method="post">
+                                                                <input type="hidden" value="@Model.Id" name="UserId" />
+                                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                                    قفل شود
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        تعداد تلاش های ناموفق
+                                                    </td>
+                                                    <td>
+                                                        @Model.AccessFailedCount
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr>
                                                     <td>زمان خروج از حالت قفل</td>
                                                     <td>
-                                                        @Model.LockoutEnd
-                                                    </td>
+                                                        @{
+                                                            DateTime? lockOutEnd = null;
+                                                            @if (Model.LockoutEnd.HasValue)
+                                                            {
+                                                                @converDate.ConvertMiladiToShamsi(Model.LockoutEnd.Value.DateTime.ToLocalTime(), "dddd d MMMM yyyy ساعت HH:mm:ss")
+                                                            }
+                                                         }
+
                                                     <td>
                                                     </td>
                                                 </tr>

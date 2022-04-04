@@ -34,6 +34,8 @@ namespace BookShop.Areas.Identity
                     option.Password.RequireLowercase = false;
                     option.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                     option.SignIn.RequireConfirmedEmail = true;
+                    option.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(3);
+                    option.Lockout.MaxFailedAccessAttempts = 3;
 
 
 
