@@ -252,5 +252,5 @@ D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\BookSho
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Account\ForgetPasswordConfirmation.cshtml.g.cs
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Account\ResetPassword.cshtml.g.cs
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Account\ResetPasswordConfirmation.cshtml.g.cs
-D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\BookShop.csprojAssemblyReference.cache
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Views\UserManager\ResetPassword.cshtml.g.cs
+D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Account\SendSMS.cshtml.g.cs
