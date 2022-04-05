@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BookShop.Areas.Identity.Data;
 using BookShop.Classes;
 using BookShop.Models.ViewModels;
+using BookShop.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -18,13 +19,15 @@ namespace BookShop.Controllers
         private readonly IApplicationUserManager _userManager;
         private readonly IEmailSender _emailSender;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IsmsSender _smsSender;
 
-        public AccountController(IApplicationRoleManager roleManager, IApplicationUserManager userManager, IEmailSender emailSender, SignInManager<ApplicationUser> signInManager)
+        public AccountController(IApplicationRoleManager roleManager, IApplicationUserManager userManager, IEmailSender emailSender, SignInManager<ApplicationUser> signInManager , IsmsSender smsSender)
         {
             _roleManager = roleManager;
             _emailSender = emailSender;
             _userManager = userManager;
             _signInManager = signInManager;
+            _smsSender = smsSender;
         }
         [HttpGet]
         public IActionResult Register()
@@ -216,6 +219,18 @@ namespace BookShop.Controllers
         public IActionResult ResetPasswordConfirmation()
         {
             return View();
+        }
+        public async Task<IActionResult> SendSMS()
+        {
+            var Result = await _smsSender.SendAuthAsync("09398730453", "8585");
+            if (Result == "Sucsess")
+                ViewBag.MSG = "ارسال پیامک با موفقیت انجام شد";
+            else
+                ViewBag.MSG = "خطایی رخ داده است ";
+            return View();
+
+
+
         }
 
 

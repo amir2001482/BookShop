@@ -9,6 +9,7 @@ using BookShop.Classes;
 using BookShop.Models;
 using BookShop.Models.Repository;
 using BookShop.Models.UnitOfWork;
+using BookShop.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -51,6 +52,7 @@ namespace BookShop
             services.AddScoped<IApplicationUserManager, ApplicationUserManager>();
             services.AddScoped<ApplicationIdentityErrorDescriber>();
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IsmsSender, smsSender>();
             //services.AddTransient<RoleManager<ApplicationRoles>>();
 
             //services.AddMvc(options =>
