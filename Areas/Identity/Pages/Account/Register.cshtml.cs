@@ -75,6 +75,9 @@ namespace BookShop.Areas.Identity.Pages.Account
             [Display(Name = "تایید کلمه عبور")]
             [Compare("Password", ErrorMessage = "کلمه عبور و تایید آن مغایرت دارد ")]
             public string ConfirmPassword { get; set; }
+            [Display(Name = "احراز هویت دو مرحله ای")]
+            [Required(ErrorMessage = "وارد کردن {0} الزامی است .")]
+            public bool TwoFactorEnabled { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -99,7 +102,9 @@ namespace BookShop.Areas.Identity.Pages.Account
                     PhoneNumber = Input.PhoneNumber,
                     IsActive = true,
                     Register = DateTime.Now,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    TwoFactorEnabled = Input.TwoFactorEnabled
+                    
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

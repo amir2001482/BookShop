@@ -179,7 +179,14 @@
                                                             @(Model.EmailConfirmed == true ? "تایید شده" : "تایید نشده")
                                                         </label>
                                                     </td>
-                                                    <td></td>
+                                                    <td>
+                                                        <form asp-action="ChangeEmailConfirmed">
+                                                            <input type="hidden" value="@Model.Id" name="Id" /> 
+                                                            <button type="submit" class="btn btn-sm @(Model.EmailConfirmed == true ? "btn-danger" : "btn-success")">
+                                                                @(Model.EmailConfirmed == true ? "عدم تایید" : "تایید")
+                                                            </button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
@@ -190,7 +197,14 @@
                                                             @(Model.PhoneNumberConfirmed == true ? "تایید شده" : "تایید نشده")
                                                         </label>
                                                     </td>
-                                                    <td></td>
+                                                    <td>
+                                                        <form asp-action="ChangePhoneConfirmed">
+                                                            <input type="hidden" value="@Model.Id" name="Id" />
+                                                            <button type="submit" class="btn btn-sm @(Model.IsActive == true ? "btn-danger" : "btn-success")">
+                                                                @(Model.PhoneNumberConfirmed == true ? "عدم تایید" : "تایید")
+                                                            </button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
