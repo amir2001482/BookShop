@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using BookShop.Areas.Identity.Data;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookShop.Controllers
 {
@@ -99,28 +101,28 @@ namespace BookShop.Controllers
                 if (Captcha.ValidateCaptchaCode(VM.CaptchaCode, HttpContext))
                 {
                     var user = await _userManager.FindByNameAsync(VM.UserName);
+                    
                     if (user != null)
                     {
                         if (user.IsActive)
                         {
                             var result = await _signInManager.PasswordSignInAsync(VM.UserName, VM.Password, VM.RememberMe, true);
                             if (result.Succeeded)
+                                return RedirectToAction("Index", "Home");
+
+                            if (result.IsLockedOut)
                             {
-                                if (result.IsLockedOut)
-                                {
-                                    ModelState.AddModelError(string.Empty, "حساب کاربری شما به مدت 20 دقیقه به دلیل تلاش های ناموفق قفل شد. ");
-                                    return View();
-                                }
-                                else
-                                    return RedirectToAction("Index", "Home");
-                                
+                                ModelState.AddModelError(string.Empty, "حساب کاربری شما به مدت 20 دقیقه به دلیل تلاش های ناموفق قفل شد. ");
+                                return View(VM);
                             }
-                            ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور شما صحیح نمی باشد");
+                            if (result.RequiresTwoFactor)
+                                return RedirectToAction("SendCode", new { RememberMe = VM.RememberMe });
                         }
-                        else
-                            ModelState.AddModelError(string.Empty, "کلمه امنیتی صحیح نمی باشد");
                     }
+                    ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور شما صحیح نمی باشد");
                 }
+                ModelState.AddModelError(string.Empty, "کد امنیتی صحیح نمی باشد ");
+
             }
             return View();
         }
@@ -232,9 +234,72 @@ namespace BookShop.Controllers
 
 
         }
+        [HttpGet]
+        public async Task<IActionResult> SendCode(bool RememberMe)
+        {
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (user == null)
+                return NotFound();
+            var Providers = await _userManager.GetValidTwoFactorProvidersAsync(user);
+            Providers.Remove("Authenticator");
+            var FactorOption = Providers.Select(p => new SelectListItem { Text = (p == "Email" ? "ارسال ایمیل" : "ارسال پیامک"), Value = p }).ToList();
+            return View(new SendCodeViewModel { Providers = FactorOption, RememberMe = RememberMe });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendCode(SendCodeViewModel VM)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+                if (user == null)
+                    return NotFound();
+                var Code = await _userManager.GenerateTwoFactorTokenAsync(user, VM.SelectedProvider);
+                if (string.IsNullOrWhiteSpace(Code))
+                    return View("Error");
+                var Massege  = "<p style='direction:rtl;font-size:14px;font-family:tahoma'>کد اعتبارسنجی شما :" + Code + "</p>";
+                if(VM.SelectedProvider=="Email")
+                    await _emailSender.SendEmailAsync(user.Email, "کد اعتبار سنجی", Massege);
+                else if(VM.SelectedProvider== "Phone")
+                {
+                    string ResponsSMS = await _smsSender.SendAuthAsync(user.PhoneNumber, Code);
+                    if(ResponsSMS== "Failed")
+                    {
+                        ModelState.AddModelError(string.Empty, "در ارسال پیامک خطایی رخ داده است");
+                        return View(VM);
+                    }
+                }
+                return RedirectToAction("VerifyCode", new { Provider = VM.SelectedProvider, RememberMe = VM.RememberMe });
+            }
+            return View(VM);
+        }
+        [HttpGet]
+        public async Task<IActionResult> VerifyCode(string Provider, bool RememberMe)
+        {
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (user == null)
+                return NotFound();
+            return View(new VerifyCodeViewModel { Provider = Provider , RememberMe = RememberMe });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> VerifyCode(VerifyCodeViewModel VM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(VM);
+            }
+            var Result = await _signInManager.TwoFactorSignInAsync(VM.Provider, VM.Code, VM.RememberMe, VM.RememberMeBrowser);
+            if (Result.Succeeded)
+                return RedirectToAction("Index", "Home");
+            else if (Result.IsLockedOut)
+                ModelState.AddModelError(string.Empty, "حساب شما قفل می باشد ");
+            else
+                ModelState.AddModelError(string.Empty, "کد اعتبارسنجی صحیح نمی باشد");
+            return View(VM);
 
 
-
+        }
 
     }
 }

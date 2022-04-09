@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -75,6 +76,24 @@ namespace BookShop.Models.ViewModels
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         [Display(Name = " ایمیل")]
         public string Code { get; set; }
+    }
+    public class SendCodeViewModel
+    {
+        public ICollection<SelectListItem> Providers { get; set; }
+        public bool RememberMe { get; set; }
+        public string SelectedProvider { get; set; }
+    }
+    public class VerifyCodeViewModel
+    {
+        [Required]
+        public string Provider { get; set; }
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+        [Display(Name = "کد اعتبارسنجی")]
+        public string Code { get; set; }
+        [Display(Name = "مرا به خاطر بسپار؟")]
+        public bool RememberMeBrowser { get; set; }
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
     }
 
 

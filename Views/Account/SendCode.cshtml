@@ -1,0 +1,52 @@
+﻿@model BookShop.Models.ViewModels.SendCodeViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>فروشگاه کتاب میزفا</title>
+    <link href="~/css/styles.css" rel="stylesheet" />
+    <link href="~/vendor/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div class="page-wrapper flex-row align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card p-4">
+                        <div class="text-center text-uppercase h4 font-weight-light">
+                            انتخاب روش احراز هویت
+                        </div>
+                        <hr />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <form asp-controller="Account" asp-action="SendCode" method="post" class="form-horizontal">
+                            <input asp-for="RememberMe" type="hidden" />
+                            <ul class="alert alert-success">
+                                <li>با انتخاب احراز هویت از طریق ایمیل یک ایمیل حاوی کد اعتبارسنجی به شما ارسال می شود.</li>
+                                <li>با انتخاب احراز هویت از طریق پیامک یک پیامک حاوی کد اعتبارسنجی به شما ارسال می شود</li>
+                            </ul>
+                            <div class="row mb-4">
+                                <div class="col-md-8">
+                                    احراز هویت دو مرحله ای از طریق
+                                    <select asp-for="SelectedProvider" asp-items="Model.Providers" class="form-control input-sm d-inline-block" style="width:auto;font-size: 12px;vertical-align: -3px;"></select>
+                                    <button type="submit" class="btn btn-primary">ارسال</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
