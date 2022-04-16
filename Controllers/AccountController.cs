@@ -130,7 +130,11 @@ namespace BookShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignOut()
         {
-
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return NotFound();
+            user.LastVisitDateTime = DateTime.Now;
+            await _userManager.UpdateAsync(user);
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
@@ -299,6 +303,58 @@ namespace BookShop.Controllers
             return View(VM);
 
 
+        }
+        [HttpGet]
+        public async Task<IActionResult> ChangePassword()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return NotFound();
+            UserSideBarVieModel SideBar = new UserSideBarVieModel()
+            {
+                FullName = user.FirstName + " " + user.LastName,
+                Image = user.Image,
+                LastVisit = user.LastVisitDateTime,
+                RegisterDate = user.Register,
+            };
+            return View(new ChangePasswordViewModel { SideBar = SideBar });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel VM)
+        {
+            if (!ModelState.IsValid)
+                return NotFound();
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return NotFound();
+            var Result = await _userManager.ChangePasswordAsync(user, VM.OldPassword, VM.NewPassword);
+            if (Result.Succeeded)
+            {
+                ViewBag.MSG = "عملیات با موفقیت انجام شد";
+                UserSideBarVieModel SideBars = new UserSideBarVieModel()
+                {
+                    FullName = user.FirstName + " " + user.LastName,
+                    Image = user.Image,
+                    LastVisit = user.LastVisitDateTime,
+                    RegisterDate = user.Register,
+                };
+                VM.SideBar = SideBars;
+                return View(VM);
+            }
+            else
+                foreach (var Erorr in Result.Errors)
+                    ModelState.AddModelError(string.Empty, Erorr.Description);
+            UserSideBarVieModel SideBar = new UserSideBarVieModel()
+            {
+                FullName = user.FirstName + " " + user.LastName,
+                Image = user.Image,
+                LastVisit = user.LastVisitDateTime,
+                RegisterDate = user.Register,
+            };
+            VM.SideBar = SideBar;
+            return View(VM);
+                
         }
 
     }

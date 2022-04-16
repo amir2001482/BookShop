@@ -257,3 +257,6 @@ D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\V
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\BookShop.csprojAssemblyReference.cache
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Account\SendCode.cshtml.g.cs
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Account\VerifyCode.cshtml.g.cs
+D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Account\ChangePassword.cshtml.g.cs
+D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_UserSideBarPartial.cshtml.g.cs
+D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Pages\AdminPanel.cshtml.g.cs

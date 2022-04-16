@@ -8,8 +8,9 @@ namespace BookShop.Areas.Admin.Controllers
 {
     public class DushbordController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(string MSG)
         {
+            ViewBag.MSG = MSG;
             return View();
         }
     }

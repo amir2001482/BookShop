@@ -1,0 +1,64 @@
+﻿@model BookShop.Models.ViewModels.UserSideBarVieModel
+@inject BookShop.Classes.ConvertData convertDate
+    <div class="profile-sidebar">
+        <div class="profile-userpic">
+            @if (Model.Image == null)
+            {
+                <img src="~/images/UserPic.png" class="img-responsive" alt="">
+            }
+
+            else
+            {
+
+            }
+
+        </div>
+        <div class="profile-usertitle">
+            <div class="profile-usertitle-name">
+                @Model.FullName
+            </div>
+            <div class="profile-usertitle-job">
+                <p class="mb-1">
+                    آخرین بازدید :
+                    @if (Model.LastVisit.HasValue)
+                    {
+                        @convertDate.ConvertMiladiToShamsi((DateTime)Model.LastVisit, "d MMMM yyyy ساعت HH:mm:ss")
+                    }
+                </p>
+                <p>
+                    تاریخ عضویت :
+                    @if (Model.RegisterDate.HasValue)
+                    {
+                        @convertDate.ConvertMiladiToShamsi((DateTime)Model.RegisterDate, "d MMMM yyyy ساعت HH:mm:ss")
+                    }
+                </p>
+            </div>
+        </div>
+        <div class="profile-userbuttons">
+            <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-success btn-sm">تغییر کلمه عبور</a>
+            <button type="button" class="btn btn-danger btn-sm">مشاهده سایت</button>
+        </div>
+        <div class="profile-usermenu sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="ChangePassword" asp-controller="Account">
+                        <i class="fa fa-user"></i>
+                        تغییر کلمه عبور
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" target="_blank">
+                        <i class="fa fa-check"></i>
+                        پروفایل
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-flag"></i>
+                        سفارشات
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- END MENU -->
+    </div>
