@@ -1,0 +1,19 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<!DOCTYPE html>
+
+<div class="alert alert-warning" role="alert">
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        <strong>اگر کلید تأیید اعتبار را بازنشانی کنید، برنامه تأیید احراز هویت گوشی شما تا زمانی که شما آن را مجددا تنظیم نکنید، کار نخواهد کرد.</strong>
+    </p>
+</div>
+<div>
+    <form asp-action="ResetAuthenticator" method="post" class="form-group">
+        <button id="reset-authenticator-button" class="btn btn-danger" type="submit">تنظیم مجدد کلید تأیید هویت</button>
+    </form>
+</div>
+

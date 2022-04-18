@@ -1,0 +1,66 @@
+﻿@model BookShop.Models.ViewModels.TwoFactorAuthenticationViewModel
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<!DOCTYPE html>
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header bg-light">
+            تنظیمات احراز هویت دو مرحله ای با اپلیکشن
+        </div>
+        <div class="card-body">
+            @if (ViewBag.Alert != null)
+            {
+                <div class="alert alert-success alert-dismissable">
+                    @ViewBag.Alert
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            @if (Model.Is2FaEnabled)
+            {
+                if (Model.RecoveryCodeleft == 0)
+                {
+                    <div class="alert alert-danger">
+                        <strong>شما کد بازیابی معتبر ندارید.</strong>
+                        <a class="btn btn-danger  btn-sm mt-2" asp-action="GenerateRecoveryCodes">ایجاد کدهای بازیابی جدید</a>
+                    </div>
+                }
+                else if (Model.RecoveryCodeleft == 1)
+                {
+                    <div class="alert alert-danger">
+                        <strong>شما یک کدبازیابی معتبر دارید.</strong>
+                        <a class="btn btn-danger  btn-sm mt-2" asp-action="GenerateRecoveryCodes">ایجاد کدهای بازیابی جدید</a>
+                    </div>
+                }
+                else if (Model.RecoveryCodeleft <= 3)
+                {
+                    <div class="alert alert-warning">
+                        <strong>شما  @Model.RecoveryCodeleft کد بازیابی معتبر دارید.</strong>
+                        <a class="btn btn-danger btn-sm mt-2" asp-action="GenerateRecoveryCodes">ایجاد کدهای بازیابی جدید</a>
+                    </div>
+                }
+            }
+
+            @if (!Model.HasAuthenticator)
+            {
+                <a id="enable-authenticator" asp-action="EnableAuthenticator" class="btn btn-success">فعال کردن احراز هویت با اپلیکشن</a>
+            }
+            else
+            {
+                <a id="enable-authenticator" asp-action="EnableAuthenticator" class="btn btn-success">فعال کردن احراز هویت با اپلیکشن</a>
+                <a id="reset-authenticator" asp-action="ResetAuthenticator" class="btn btn-primary">تنظیم مجدد احراز هویت با اپلیکشن</a>
+            }
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

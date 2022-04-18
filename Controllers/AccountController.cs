@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
@@ -23,7 +24,7 @@ namespace BookShop.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IsmsSender _smsSender;
 
-        public AccountController(IApplicationRoleManager roleManager, IApplicationUserManager userManager, IEmailSender emailSender, SignInManager<ApplicationUser> signInManager , IsmsSender smsSender)
+        public AccountController(IApplicationRoleManager roleManager, IApplicationUserManager userManager, IEmailSender emailSender, SignInManager<ApplicationUser> signInManager, IsmsSender smsSender)
         {
             _roleManager = roleManager;
             _emailSender = emailSender;
@@ -101,7 +102,7 @@ namespace BookShop.Controllers
                 if (Captcha.ValidateCaptchaCode(VM.CaptchaCode, HttpContext))
                 {
                     var user = await _userManager.FindByNameAsync(VM.UserName);
-                    
+
                     if (user != null)
                     {
                         if (user.IsActive)
@@ -241,13 +242,20 @@ namespace BookShop.Controllers
         [HttpGet]
         public async Task<IActionResult> SendCode(bool RememberMe)
         {
+            var FactorOptions = new List<SelectListItem>();
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
                 return NotFound();
             var Providers = await _userManager.GetValidTwoFactorProvidersAsync(user);
-            Providers.Remove("Authenticator");
-            var FactorOption = Providers.Select(p => new SelectListItem { Text = (p == "Email" ? "ارسال ایمیل" : "ارسال پیامک"), Value = p }).ToList();
-            return View(new SendCodeViewModel { Providers = FactorOption, RememberMe = RememberMe });
+            foreach (var item in Providers)
+            {
+                if (item == "Authenticator")
+                    FactorOptions.Add(new SelectListItem { Text = "احراز هویت با اپلیکیشن", Value = item });
+                else
+                    FactorOptions.Add(new SelectListItem { Text = (item == "Email" ? "ارسال ایمیل" : "ارسال پیامک"), Value = item });
+            }
+
+            return View(new SendCodeViewModel { Providers = FactorOptions, RememberMe = RememberMe });
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -261,13 +269,13 @@ namespace BookShop.Controllers
                 var Code = await _userManager.GenerateTwoFactorTokenAsync(user, VM.SelectedProvider);
                 if (string.IsNullOrWhiteSpace(Code))
                     return View("Error");
-                var Massege  = "<p style='direction:rtl;font-size:14px;font-family:tahoma'>کد اعتبارسنجی شما :" + Code + "</p>";
-                if(VM.SelectedProvider=="Email")
+                var Massege = "<p style='direction:rtl;font-size:14px;font-family:tahoma'>کد اعتبارسنجی شما :" + Code + "</p>";
+                if (VM.SelectedProvider == "Email")
                     await _emailSender.SendEmailAsync(user.Email, "کد اعتبار سنجی", Massege);
-                else if(VM.SelectedProvider== "Phone")
+                else if (VM.SelectedProvider == "Phone")
                 {
                     string ResponsSMS = await _smsSender.SendAuthAsync(user.PhoneNumber, Code);
-                    if(ResponsSMS== "Failed")
+                    if (ResponsSMS == "Failed")
                     {
                         ModelState.AddModelError(string.Empty, "در ارسال پیامک خطایی رخ داده است");
                         return View(VM);
@@ -283,7 +291,7 @@ namespace BookShop.Controllers
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
                 return NotFound();
-            return View(new VerifyCodeViewModel { Provider = Provider , RememberMe = RememberMe });
+            return View(new VerifyCodeViewModel { Provider = Provider, RememberMe = RememberMe });
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -354,7 +362,35 @@ namespace BookShop.Controllers
             };
             VM.SideBar = SideBar;
             return View(VM);
-                
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> LoginWith2Fa(bool RememberMe)
+        {
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (user == null)
+                return NotFound();
+            
+            return View(new LoginWith2FaViewModel {RememberMe = RememberMe });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LoginWith2Fa(LoginWith2FaViewModel VM)
+        {
+            if (!ModelState.IsValid)
+                return View(VM);
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (user == null)
+                return NotFound();
+            var Code = VM.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
+            var Result = await _signInManager.TwoFactorAuthenticatorSignInAsync(Code, VM.RememberMe, VM.RememberMachine);
+            if (Result.Succeeded)
+                return RedirectToAction("Index", "Home");
+            else if (Result.IsLockedOut)
+                ModelState.AddModelError(string.Empty, " حساب کاربری شما به مدت 20 دقیقه به دلیل تلاش های ناموفق قفل شد.");
+            else
+                ModelState.AddModelError(string.Empty, "کد اعتبارسنجی شما نامعتبر است");
+            return View(VM);
         }
 
     }

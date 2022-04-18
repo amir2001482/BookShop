@@ -260,3 +260,7 @@ D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\V
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Account\ChangePassword.cshtml.g.cs
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_UserSideBarPartial.cshtml.g.cs
 D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Pages\AdminPanel.cshtml.g.cs
+D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Account\LoginWith2Fa.cshtml.g.cs
+D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Views\User\EnableAuthenticator.cshtml.g.cs
+D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Views\User\TwoFactorAuthentication.cshtml.g.cs
+D:\Amir\Programing\ASP.NetCore\exarsise\BookShop\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Views\User\GenerateRecoveryCode.cshtml.g.cs
