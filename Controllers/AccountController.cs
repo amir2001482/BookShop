@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using BookShop.Areas.Identity.Data;
@@ -392,6 +393,42 @@ namespace BookShop.Controllers
                 ModelState.AddModelError(string.Empty, "کد اعتبارسنجی شما نامعتبر است");
             return View(VM);
         }
+        [HttpPost]
+        public IActionResult GetExternallogInProvider( string Provider)
+        {
+            var CallBackUrl = Url.Action("GetCallBackAsync", "Account");
+            var Properties = _signInManager.ConfigureExternalAuthenticationProperties(Provider , CallBackUrl);
+            return Challenge(Properties, Provider);
+        }
+
+        public async Task<IActionResult> GetCallBackAsync()
+        {
+            var LogInInfo = await _signInManager.GetExternalLoginInfoAsync();
+            if (LogInInfo == null)
+                return NotFound();
+            var UserEmail = LogInInfo.Principal.FindFirst(ClaimTypes.Email);
+            var User = await _userManager.FindByEmailAsync(UserEmail.ToString());
+            if (User == null)
+                return NotFound();
+            var res = await _signInManager.ExternalLoginSignInAsync(LogInInfo.LoginProvider, LogInInfo.ProviderKey, true);
+            if (res.Succeeded)
+                return RedirectToAction("Index", "Home");
+            else if (res.IsLockedOut)
+                ModelState.AddModelError("", "حساب کاربری شما به مدت 20 دقیقه غیر فعال می باشد ");
+            else if (res.RequiresTwoFactor)
+                return RedirectToAction("SendCode");
+            else
+            {
+                await _userManager.AddLoginAsync(User, LogInInfo);
+                await _signInManager.SignInAsync(User, true);
+                return RedirectToAction("Index", "Home");
+            }
+
+
+            return View();
+
+        }
+   
 
     }
 }
