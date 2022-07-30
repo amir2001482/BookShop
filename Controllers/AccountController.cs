@@ -392,6 +392,10 @@ namespace BookShop.Controllers
                 ModelState.AddModelError(string.Empty, "کد اعتبارسنجی شما نامعتبر است");
             return View(VM);
         }
+        public async Task<IActionResult> Accenid()
+        {
+            return View();
+        }
 
     }
 }

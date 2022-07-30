@@ -5,6 +5,5 @@
     "devDependencies": {
         "md.bootstrappersiandatetimepicker": "3.3.5",
         "summernote": "0.8.15"
-       
     }
 }
