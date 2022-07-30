@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using BookShop.Areas.Identity.Data;
@@ -391,10 +392,6 @@ namespace BookShop.Controllers
             else
                 ModelState.AddModelError(string.Empty, "کد اعتبارسنجی شما نامعتبر است");
             return View(VM);
-        }
-        public async Task<IActionResult> Accenid()
-        {
-            return View();
         }
 
     }
