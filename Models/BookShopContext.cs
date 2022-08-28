@@ -18,7 +18,7 @@ namespace BookShop.Models
         {
             //optionsBuilder.UseLazyLoadingProxies().UseSqlServer(@"Server=(local);Database=BookShopDB;Trusted_Connection=True");
 
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-PS6V8FF\SQLEXPRESS;Database=BookShop;Trusted_Connection=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            optionsBuilder.UseSqlServer(@"Server=AMIRHOSSEIN\SQL110;Database=BookShop;Trusted_Connection=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -49,7 +49,7 @@ namespace BookShop.Models
                .HasOne(userRole => userRole.User)
                .WithMany(role => role.Roles).HasForeignKey(r => r.UserId);
 
-            modelBuilder.Entity<ApplicationRoleClaim>().ToTable("AspNetRoleClaim");
+            modelBuilder.Entity<ApplicationRoleClaim>().ToTable("AspNetRoleClaims");
 
             modelBuilder.Entity<ApplicationRoleClaim>()
                 .HasOne(roleclaim => roleclaim.Role)

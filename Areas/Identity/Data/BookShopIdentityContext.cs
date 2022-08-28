@@ -22,6 +22,7 @@ namespace BookShop.Data
             modelBuilder.Entity<ApplicationRole>().ToTable("AspNetRoles");
             modelBuilder.Entity<ApplicationUser>().ToTable("AspNetUsers");
             modelBuilder.Entity<ApplicationUserRole>().ToTable("AspNetUserRole");
+            modelBuilder.Entity<ApplicationRoleClaim>().ToTable("AspNetRoleClaims");
             modelBuilder.Entity<ApplicationUserRole>()
                 .HasOne(userRole => userRole.Role)
                 .WithMany(Users => Users.Users).HasForeignKey(r => r.RoleId);
