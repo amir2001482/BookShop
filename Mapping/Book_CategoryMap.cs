@@ -1,5 +1,4 @@
 ﻿using BookShop.Models;
-using BookSope2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<BookShop.Models.ViewModels.BooksIndexViewModel>
+@inject BookShop.Classes.ConvertDate convertDate
+@{
+    ViewData["Title"] = "AdvansedSearch";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                <span> نتایج جستجوی پیشرفته</span>
+                <a href="/Admin/Books/Index" style="font-size:13px;" class="float-left"><i class="fa fa-arrow-circle-left"></i>  بازگشت به لیست کتاب ها</a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ردیف</th>
+                                <th>عنوان</th>
+                                <th>نویسندگان</th>
+                                <th>مترجمان</th>
+                                <th>دسته بندی ها</th>
+                                <th>زبان</th>
+                                <th>شابک</th>
+                                <th>موجودی</th>
+                                <th>ناشر</th>
+                                <th class="text-center">قیمت</th>
+                                <th class="text-center">تاریخ انتشار در سایت</th>
+                                <th style="width:25px;">وضعیت</th>
+                                <th style="width: 120px;">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int i = 1;}
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="text-center">@i</td>
+                                    <td class="text-nowrap">@item.Title</td>
+                                    <td>@item.Author</td>
+                                    <td>@item.Translator</td>
+                                    <td>@item.Category</td>
+                                    <td>@item.Language</td>
+                                    <td>@item.ISBN</td>
+                                    <td>@item.Stock</td>
+                                    <td>@item.PublisherName</td>
+                                    <td class="text-center">@item.Price</td>
+                                    <td class="text-center">
+                                        @item.PublishDate
+                                    </td>
+                                    <td class="text-center">
+                                        <label class="badge @(item.IsPublish=="منتشر شده"?"badge-success":"badge-danger") btn-block">@item.IsPublish</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>
+                                        <a class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
+                                        <a class="btn btn-danger btn-icon"><i class="fa fa-trash text-white"></i></a>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

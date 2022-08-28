@@ -7,82 +7,76 @@ using System.Threading.Tasks;
 
 namespace BookShop.Models.Repository
 {
-    public class RepositoryBase<TEntity,TContext> : IRepositoryBase<TEntity> where TEntity : class where TContext:DbContext
+    public class RepositoryBase<TEntity,TContext> : IRepositoryBase<TEntity> where TEntity : class where TContext : DbContext
     {
-        protected TContext _context { get; set; }
-        private DbSet<TEntity> dbset;
-        public RepositoryBase(TContext context)
+        protected TContext _Context { get; set; }
+        private DbSet<TEntity> dbSet;
+        public RepositoryBase(TContext Context)
         {
-            _context = context;
-            dbset = _context.Set<TEntity>();
+            _Context = Context;
+            dbSet = _Context.Set<TEntity>();
         }
-        public async Task<IEnumerable<TEntity>> ReadAllAsync()
-        {
-            return await dbset.AsNoTracking().ToListAsync();
-        }
-        public IEnumerable<TEntity> ReadAll()
-        {
-            return dbset.AsNoTracking().ToList();
-        }
-        public async Task<TEntity> ReadByIdAsync(object Id)
-        {
-            return await dbset.FindAsync(Id);
-        }
-        public async Task<IEnumerable<TEntity>> ReadByCondition(Expression<Func<TEntity,bool>> Filter=null , Func<IQueryable<TEntity>,IOrderedQueryable<TEntity>> OrderBy=null, params Expression<Func<TEntity, object>>[] Include)
-        {
-            IQueryable<TEntity> Query = dbset;
-            if (Filter!=null)
-            {
-                Query = Query.Where(Filter);
-            }
-            if (OrderBy!=null)
-            {
-                Query = OrderBy(Query);
-            }
-            foreach(var include in Include)
-            {
-                Query = Query.Include(include);
-            }
-            return await Query.ToListAsync();
-        }
-        public async Task Create(TEntity entity) => await dbset.AddAsync(entity);
-        
-           
-        
-        public void Update(TEntity entity)=> dbset.Update(entity);
 
-
-
-        public void Delete(TEntity entity)=> dbset.Remove(entity);
-        
-          
-        
-        public async Task CreateRange(IEnumerable<TEntity> entities) => await dbset.AddRangeAsync(entities);
-        
-           
-        
-        public void UpdateRange(IEnumerable<TEntity> entities)=> dbset.UpdateRange(entities);
-        
-            
-        
-        public void DeleteRange(IEnumerable<TEntity> entities) => dbset.RemoveRange(entities);
-        public TEntity ReadbyId(object Id)
+        public async Task<IEnumerable<TEntity>> FindAllAsync()
         {
-            return dbset.Find(Id);
+            return await dbSet.AsNoTracking().ToListAsync();
         }
-        //این متد برای صفحه بندی Razor Pages  تعریف شده است
-        public async Task<List<TEntity>> GetPaginateResultasync(int CurrentPage , int PageSize)
+
+        public IEnumerable<TEntity> FindAll()
         {
-            var Entities = await ReadAllAsync();
+            return dbSet.AsNoTracking().ToList();
+        }
+
+        public async Task<TEntity> FindByIDAsync(Object id)
+        {
+            return await dbSet.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<TEntity>> FindByConditionAsync(Expression<Func<TEntity,bool>> filter=null,Func<IQueryable<TEntity>,IOrderedQueryable<TEntity>> orderBy=null,params Expression<Func<TEntity,object>>[] includes)
+        {
+            IQueryable<TEntity> query = _Context.Set<TEntity>();
+            foreach(var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            if(filter!=null)
+            {
+                query = query.Where(filter);
+            }
+
+            if(orderBy!=null)
+            {
+                query = orderBy(query);
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task CreateAsync(TEntity entity)
+        {
+            await dbSet.AddAsync(entity);
+        }
+
+        public void Update(TEntity entity) => dbSet.Update(entity);
+
+        public void Delete(TEntity entity) => dbSet.Remove(entity);
+
+        public async Task CreateRangeAsync(IEnumerable<TEntity> entities) => await dbSet.AddRangeAsync(entities);
+
+        public void UpdateRange(IEnumerable<TEntity> entities) => dbSet.UpdateRange(entities);
+
+        public void DeleteRange(IEnumerable<TEntity> entities) => dbSet.RemoveRange(entities);
+
+        public async Task<List<TEntity>> GetPaginateResultAsync(int CurrentPage,int PageSize=1)
+        {
+            var Entities = await FindAllAsync();
             return Entities.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
         }
-        //این متد برای گرفتن تعداد انتیتی های موجود در دیتابیس تعریف شده است 
-        public async Task<int> Count()
+
+        public int GetCount()
         {
-            return await dbset.CountAsync();
+            return dbSet.Count();
         }
-        
-           
-        
     }
 }

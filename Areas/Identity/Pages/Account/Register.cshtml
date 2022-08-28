@@ -2,8 +2,8 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
-    
 }
+
 
 <div class="card">
     <div class="card-header bg-light">
@@ -12,7 +12,7 @@
     <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <div class="col-md-12 text-center">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
                             <div class="fileinput-new thumbnail" style="height: 150px;">
@@ -30,40 +30,16 @@
                         </div>
                     </div>
                 </div>
-                <div class=" col-md-8">
-                    <div asp-validation-summary="All" class="text-danger col-md-6"></div>
+                <div class="col-md-9">
+                    <div asp-validation-summary="All" class="text-danger">
+
+                    </div>
                     <div class="row">
+
                         <div class="form-group col-md-6">
-                            <label asp-for="Input.Name"></label>
-                            <input asp-for="Input.Name" class="form-control" />
-                            <span asp-validation-for="Input.Name" class="text-danger" id="InputName"></span>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label asp-for="Input.Family"></label>
-                            <input asp-for="Input.Family" class="form-control" />
-                            <span asp-validation-for="Input.Family" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label asp-for="Input.userName"></label>
-                            <input asp-for="Input.userName" class="form-control" />
-                            <span asp-validation-for="Input.userName" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label asp-for="Input.PhoneNumber"></label>
-                            <input asp-for="Input.PhoneNumber" class="form-control" />
-                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label asp-for="Input.BirthDate"></label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text cursor-pointer" id="BirthDate">
-                                        <i class="fa fa-calendar"></i>
-                                    </span>
-                                </div>
-                                <input asp-for="Input.BirthDate" class="form-control" id="InputBirthDate" style="direction:ltr" />
-                                <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
-                            </div>
+                            <label asp-for="Input.UserName"></label>
+                            <input asp-for="Input.UserName" class="form-control" />
+                            <span asp-validation-for="Input.UserName" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
                             <label asp-for="Input.Email"></label>
@@ -81,42 +57,71 @@
                             <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
+                            <label asp-for="Input.Name"></label>
+                            <input asp-for="Input.Name" class="form-control" id="InputName" />
+                            <span asp-validation-for="Input.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Input.Family"></label>
+                            <input asp-for="Input.Family" class="form-control" />
+                            <span asp-validation-for="Input.Family" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label asp-for="Input.PhoneNumber"></label>
+                            <input asp-for="Input.PhoneNumber" class="form-control" />
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label asp-for="Input.BirthDate"></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text cursor-pointer" id="BirthDate">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                                <input asp-for="Input.BirthDate" class="form-control" id="InputBirthDate" style="direction:ltr" />
+                                <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
                             <div class="custom-control custom-checkbox ">
                                 <input type="checkbox" class="custom-control-input" id="login" asp-for="Input.TwoFactorEnabled">
                                 <label class="custom-control-label" for="login" asp-for="Input.TwoFactorEnabled"></label>
                             </div>
                         </div>
-                        <div class="col-md-6 form-group">
-                            <button class="btn btn-primary mb-3" type="button" data-toggle="collapse" data-target="#demo">افزودن نقش کاربر</button>
-                            <div id="demo" class="collapse">
 
+                        <div class="form-group col-md-6">
+                            <button class="btn btn-primary mb-3" type="button" data-toggle="collapse" data-target="#demo">افزودن نقش کاربر</button>
+
+                            <div id="demo" class="collapse">
                                 <ul class="list-unstyled">
-                                    @foreach (var Role in Model.Roles)
+                                    @foreach (var item in Model.GetRoles)
                                     {
                                         <li class="p-1">
-                                            <input type="checkbox" value="@Role.Name" name="userRoles" />
-                                            @Role.Name
+                                            <input type="checkbox" value="@item.Name" name="UserRoles" />
+                                            @item.Name
                                         </li>
                                     }
                                 </ul>
-
-
                             </div>
                         </div>
 
                     </div>
-
-
                 </div>
             </div>
-            <div class="card-footer clearfix bg-light">
-                <button type="submit" class="btn btn-primary float-left">عضویت</button>
-            </div>
+
         </div>
+
+        <div class="card-footer clearfix bg-light">
+            <button type="submit" class="btn btn-primary float-left">عضویت</button>
+        </div>
+
     </form>
 
 </div>
-
 
 
 @section Scripts {
@@ -125,38 +130,36 @@
 
 <script>
     $("#BirthDate").MdPersianDateTimePicker({
-         targetTextSelector:"#InputBirthDate",
-         placement:'top',
+        targetTextSelector: "#InputBirthDate",
+        placement: 'top',
     });
 
-    $(document).ready(function()
-    {
-     //Persian character and numbers (and space!)
-     Inputmask.extendDefinitions({
-        'f': {
-            validator: "[۰-۹\u060C-\u0638\u0639-\u0648\u06A9\u06AF\u06CC\u067E\u0686\u064A\u0649\u0626\u0698 ]",
-            cardinality: 1
-        },
+    $(document).ready(function () {
+        //Persian character and numbers (and space!)
+        Inputmask.extendDefinitions({
+            'f': {
+                validator: "[۰-۹\u060C-\u0638\u0639-\u0648\u06A9\u06AF\u06CC\u067E\u0686\u064A\u0649\u0626\u0698 ]",
+                cardinality: 1
+            },
 
-        'n':
-        {
-           validator:"[1-9]",
-        },
+            'n':
+            {
+                validator: "[1-9]",
+            },
 
-        'm':
-        {
-            validator:"[۰-۹]",
-        },
+            'm':
+            {
+                validator: "[۰-۹]",
+            },
 
-        'z':
-        {
-           validator:"[۱-۹]",
-        }
-     });
+            'z':
+            {
+                validator: "[۱-۹]",
+            }
+        });
 
-     $("#InputBirthDate").inputmask("(n999|zmmm)/(0n|10|11|12|۰z|۱۰|۱۱|۱۲)/(0n|19|29|30|31|۰z|۱m|۲m|۳۰|۳۱)",{"placeholder":"_"});
-     $("#InputName").inputmask( "f{*}");
+        $("#InputBirthDate").inputmask("(n999|zmmm)/(0n|10|11|12|۰z|۱۰|۱۱|۱۲)/(0n|19|29|30|31|۰z|۱m|۲m|۳۰|۳۱)", { "placeholder": "_" });
+        $("#InputName").inputmask("f{*}");
 
     });
 </script>
-

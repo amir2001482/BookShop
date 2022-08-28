@@ -4,26 +4,28 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BookShop.Models
 {
-  
     [Table("BookInfo")]
     public class Book
     {
-        //عملیات بارگذاری تنبل
-        private ILazyLoader _lazyLoader;
-        private Publisher _publisher;
-        private Language _language;
+        private Language _Language;
+        private Publisher _Publisher;
+        private ILazyLoader LazyLoader { get; set; }
         public Book()
         {
 
         }
-        public Book(ILazyLoader lazyLoader)
+
+        private Book(ILazyLoader lazyLoader)
         {
-            _lazyLoader = lazyLoader;
+            LazyLoader = lazyLoader;
         }
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
+
         [Key]
         public int BookID { get; set; }
 
@@ -39,31 +41,28 @@ namespace BookShop.Models
         public bool? IsPublish { get; set; }
         public DateTime? PublishDate { get; set; }
         public int PublishYear { get; set; }
+
         [DefaultValue("0")]
         public bool? Delete { get; set; }
         public int PublisherID { get; set; }
 
-        [Column(TypeName = "image")]
+        [Column(TypeName ="image")]
         public byte[] Image { get; set; }
         public int LanguageID { get; set; }
-        public Language Language
-        //عملیات بارگذاری تنبل
+        public virtual Language Language
         {
-
-            get => _lazyLoader.Load(this, ref _language);
-            set => _language = value;
+            get => LazyLoader.Load(this, ref _Language);
+            set => _Language = value;
         }
-        public Discount Discount { get; set; }
-        public List<Author_Book> Author_Books { get; set; }
-        public List<Order_Book> Order_Books { get; set; }
-        public List<Book_Translator> book_Tranlators { get; set; }
-        public List<Book_Category> book_Categories { get; set; }
-        public Publisher Publisher 
+        public virtual Discount Discount { get; set; }
+        public virtual List<Author_Book> Author_Books { get; set; }
+        public virtual List<Order_Book> Order_Books { get; set; }
+        public virtual List<Book_Translator> book_Tranlators { get; set; }
+        public virtual List<Book_Category> book_Categories { get; set; }
+        public virtual Publisher Publisher
         {
-
-            //عملیات بارگذاری تنبل
-            get => _lazyLoader.Load(this, ref _publisher);
-            set => _publisher = value;
+            get => LazyLoader.Load(this, ref _Publisher);
+            set => _Publisher = value;
         }
     }
 
@@ -72,8 +71,8 @@ namespace BookShop.Models
         public int BookID { get; set; }
         public int CategoryID { get; set; }
 
-        public Book Book { get; set; }
-        public Category Category { get; set; }
+        public virtual Book Book { get; set; }
+        public virtual Category Category { get; set; }
     }
 
 
@@ -81,11 +80,12 @@ namespace BookShop.Models
     {
         [Key]
         public int PublisherID { get; set; }
+
         [Display(Name ="ناشر")]
-        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+        [Required(ErrorMessage ="وارد نمودن {0} الزامی است.")]
         public string PublisherName { get; set; }
 
-        public List<Book> Books { get; set; }
+        public virtual List<Book> Books { get; set; }
     }
 
     public class Book_Translator
@@ -93,100 +93,103 @@ namespace BookShop.Models
         public int TranslatorID { get; set; }
         public int BookID { get; set; }
 
-        public Book Book { get; set; }
-        public Translator Translator { get; set; }
+        public virtual Book Book { get; set; }
+        public virtual Translator Translator { get; set; }
     }
 
     public class Translator
     {
         [Key]
         public int TranslatorID { get; set; }
-        [Display(Name ="نام")]
+
+        [Display(Name = "نام")]
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string Name { get; set; }
-        [Display(Name ="نام خانوادگی")]
+
+        [Display(Name = "نام خانوادگی")]
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string Family { get; set; }
 
-        public List<Book_Translator> book_Tranlators { get; set; }
+        public virtual List<Book_Translator> book_Tranlators { get; set; }
     }
 
     public class Author_Book
     {
-        ////عملیات بارگذاری تنبل
-        private ILazyLoader _lazyLoader;
+        private ILazyLoader LazyLoader { get; set; }
         private Book _Book;
         public Author_Book()
         {
 
         }
-        public Author_Book(ILazyLoader lazyLoader)
+
+        private Author_Book(ILazyLoader lazyLoader)
         {
-            _lazyLoader = lazyLoader;
+            LazyLoader = lazyLoader;
         }
+
         public int BookID { get; set; }
         public int AuthorID { get; set; }
 
-        public Book Book
+        public virtual Book Book
         {
-
-            //عملیات بارگذاری تنبل
-            get => _lazyLoader.Load(this, ref _Book);
+            get => LazyLoader.Load(this, ref _Book);
             set => _Book = value;
         }
-        public Author Author { get; set; }
+        public virtual Author Author { get; set; }
     }
 
     public class Author
     {
-        //عملیات بارگذاری تنبل
-        private ILazyLoader _lazylaoder;
+        private ILazyLoader LazyLoader { get; set; }
         private List<Author_Book> _Author_Books;
         public Author()
         {
 
         }
-        public Author(ILazyLoader lazyLoader)
+
+        private Author(ILazyLoader lazyLoader)
         {
-            _lazylaoder = lazyLoader;
+            LazyLoader = lazyLoader;
         }
+
         [Key]
         public int AuthorID { get; set; }
-        [Display(Name ="نام")]
+
+        [Display(Name = "نام")]
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string FirstName { get; set; }
-        [Display(Name = "نام خانوداگی")]
+
+        [Display(Name = "نام خانوادگی")]
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string LastName { get; set; }
 
-        public List<Author_Book> Author_Books
+        public virtual List<Author_Book> Author_Books
         {
-
-            //عملیات بارگذاری تنبل
-            get => _lazylaoder.Load(this, ref _Author_Books);
+            get => LazyLoader.Load(this, ref _Author_Books);
             set => _Author_Books = value;
         }
     }
 
     public class Discount
     {
-        [Key, ForeignKey("Book")]
+        [Key,ForeignKey("Book")]
         public int BookID { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public byte Percent { get; set; }
 
-        public Book Book { get; set; }
+        public virtual Book Book { get; set; }
     }
 
     public class Language
     {
         public int LanguageID { get; set; }
-        [Display(Name ="نام")]
-        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+
+        [Display(Name ="زبان")]
+        [Required(ErrorMessage ="وارد نمودن {0} الزامی است.")]
         public string LanguageName { get; set; }
 
-        public List<Book> Books { get; set; }
+        public virtual List<Book> Books { get; set; }
     }
 
     public class Category
@@ -198,9 +201,9 @@ namespace BookShop.Models
         [ForeignKey("category")]
         public int? ParentCategoryID { get; set; }
 
-        public Category category { get; set; }
-        public List<Category> categories { get; set; }
-        public List<Book_Category> book_Categories { get; set; }
+        public virtual Category category { get; set; }
+        public virtual List<Category> categories { get; set; }
+        public virtual List<Book_Category> book_Categories { get; set; }
     }
 
 
@@ -211,9 +214,9 @@ namespace BookShop.Models
         public string DispatchNumber { get; set; }
         public DateTime BuyDate { get; set; }
 
-        public OrderStatus OrderStatus { get; set; }
-        public Customer Customer { get; set; }
-        public List<Order_Book> Order_Books { get; set; }
+        public virtual OrderStatus OrderStatus { get; set; }
+        public virtual Customer Customer { get; set; }
+        public virtual List<Order_Book> Order_Books { get; set; }
     }
 
     public class Order_Book
@@ -221,8 +224,8 @@ namespace BookShop.Models
         public string OrderID { get; set; }
         public int BookID { get; set; }
 
-        public Order Order { get; set; }
-        public Book Book { get; set; }
+        public virtual Order Order { get; set; }
+        public virtual Book Book { get; set; }
     }
 
 
@@ -231,7 +234,7 @@ namespace BookShop.Models
         public int OrderStatusID { get; set; }
         public string OrderStatusName { get; set; }
 
-        public List<Order> Orders { get; set; }
+        public virtual List<Order> Orders { get; set; }
     }
 
     public class Customer
@@ -239,58 +242,48 @@ namespace BookShop.Models
         public string CustomerID { get; set; }
         public string Address1 { get; set; }
         public string Address2 { get; set; }
-        public string PostallCode1 { get; set; }
-        public string PostallCode2 { get; set; }
-        public string Mobile { get; set; }
         public string Tell { get; set; }
         public string Image { get; set; }
+
+        public string PostalCode1 { get; set; }
+        public string PostalCode2 { get; set; }
+
         public int CityID1 { get; set; }
         public int CityID2 { get; set; }
 
-        public City city1 { get; set; }
-        public City city2 { get; set; }
-        public List<Order> Orders { get; set; }
+        public virtual City city1 { get; set; }
+        public virtual City city2 { get; set; }
+        public virtual List<Order> Orders { get; set; }
     }
 
     public class Provice
     {
-        private ILazyLoader _lazylaoder;
-        private List<City> _City;
-        public Provice()
-        {
-
-        }
-        public Provice(ILazyLoader lazyLoader)
-        {
-            _lazylaoder = lazyLoader;
-        }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         public int ProvinceID { get; set; }
-        [Display(Name ="نام استان")]
+
+        [Display(Name = "استان")]
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string ProvinceName { get; set; }
 
-        public List<City> City 
-        {
-
-            get => _lazylaoder.Load(this, ref _City);
-            set => _City = value;
-        }
+        public virtual List<City> City { get; set; }
     }
-   
+
     public class City
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         public int CityID { get; set; }
-        [Display(Name ="نام شهر")]
+
+        [Display(Name = "شهر")]
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string CityName { get; set; }
+
         [ForeignKey("Provice")]
         public int? ProvinceID { get; set; }
-        public Provice Provice { get; set; }
-        public List<Customer> Customers1 { get; set; }
-        public List<Customer> Customers2 { get; set; }
+
+        public virtual Provice Provice { get; set; }
+        public virtual List<Customer> Customers1 { get; set; }
+        public virtual List<Customer> Customers2 { get; set; }
     }
 }
-

@@ -1,10 +1,8 @@
 ﻿@model BookShop.Models.ViewModels.SendCodeViewModel
-@{
+@{ 
     Layout = null;
 }
-
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -26,7 +24,7 @@
                         </div>
                         <hr />
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <form asp-controller="Account" asp-action="SendCode" method="post" class="form-horizontal">
+                        <form asp-controller="Account" asp-action="SendCode"  method="post" class="form-horizontal">
                             <input asp-for="RememberMe" type="hidden" />
                             <ul class="alert alert-success">
                                 <li>با انتخاب احراز هویت از طریق ایمیل یک ایمیل حاوی کد اعتبارسنجی به شما ارسال می شود.</li>

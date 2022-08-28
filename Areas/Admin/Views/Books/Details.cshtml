@@ -1,0 +1,93 @@
+﻿@model BookShop.Models.ViewModels.ReadAllBook
+@inject BookShop.Classes.ConvertDate convertDate
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                اطلاعات کتاب @Model.Title
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="~/images/Book.png" height="250" />
+                    </div>
+                    
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>عنوان کتاب : @Model.Title</p>
+                                <p>شابک : @Model.ISBN</p>
+                                <p>سال انتشار : @Model.PublishYear</p>
+                                <p>قیمت : @Model.Price</p>
+                                <p>موجودی : @Model.Stock</p>
+                                <p>تعداد صفحات : @Model.NumOfPages</p>
+                                <p>زبان کتاب : @Model.LanguageName</p>
+                            </div>
+                            <div class="col-md-6">
+
+                                <p>ناشر : @Model.PublisherName</p>
+                                <p>
+                                    نویسندگان : @Model.Authors
+                                    
+                                </p>
+                                <p>
+                                    مترجمان : @Model.Translators
+                                   
+                                </p>
+                                <p>
+                                    دسته بندی ها : @Model.Categories
+                                  
+                                </p>
+                                <p>
+                                    تاریخ انتشار :
+                                    @if (Model.PublishDate != null)
+                                    {
+                                        @convertDate.ConvertMiladiToShamsi((DateTime)Model.PublishDate, "yyyy/MM/dd")
+                                    }
+
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </p>
+                                <p>
+                                    وضعیت :
+                                    @if (Model.IsPublish == true)
+                                    {
+                                        <span>منتشر شده</span>
+                                    }
+
+                                    else
+                                    {
+                                        <span>پیش نویس</span>
+                                    }
+                                </p>
+
+                                <p>
+                                    وزن :
+                                    @Model.Weight
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <hr />
+                        <p>
+                            خلاصه کتاب : @Model.Summary
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

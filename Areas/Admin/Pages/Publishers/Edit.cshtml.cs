@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookShop.Models;
+using BookShop.Models.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BookSope2.Models;
-using BookShop.Models.UnitOfWork;
-using BookShop.Models;
 
 namespace BookShop.Areas.Admin.Pages.Publishers
 {
@@ -16,39 +15,53 @@ namespace BookShop.Areas.Admin.Pages.Publishers
         public EditModel(IUnitOfWork UW)
         {
             _UW = UW;
+        }
 
-        }
         [BindProperty]
-        public Publisher publisher { get; set; }
-        public async Task<IActionResult> OnGet(int? Id)
+        public Publisher Publisher { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (Id == null)
+            if(id==null)
             {
                 return NotFound();
             }
-            var publisherExist = await _UW.BaseRepository<Publisher>().ReadByIdAsync(Id);
-            if (publisherExist == null)
+
+            var IsExitPublisher = await _UW.BaseRepository<Publisher>().FindByIDAsync(id);
+            if(IsExitPublisher!=null)
+            {
+                Publisher= await _UW.BaseRepository<Publisher>().FindByIDAsync(id);
+                return Page();
+            }
+
+            else
             {
                 return NotFound();
             }
-            publisher = await _UW.BaseRepository<Publisher>().ReadByIdAsync(Id);
-            return Page();
         }
+
         public async Task<IActionResult> OnPostAsync()
         {
-            var publishers = await _UW.BaseRepository<Publisher>().ReadByIdAsync(publisher.PublisherID);
-            if (ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
-                publishers.PublisherName = publisher.PublisherName;
-                
-                await _UW.Commit();
-                return RedirectToPage("./Index");
+                return Page();
             }
-            return Page();
+
+            else
+            {
+                var Publishers = await _UW.BaseRepository<Publisher>().FindByIDAsync(Publisher.PublisherID);
+                if(Publishers!=null)
+                {
+                    Publishers.PublisherName = Publisher.PublisherName;
+                    await _UW.Commit();
+                    return RedirectToPage("./Index");
+                }
+
+                else
+                {
+                    return NotFound();
+                }
+            }
         }
-
-
-
-    }   
-
+    }
 }

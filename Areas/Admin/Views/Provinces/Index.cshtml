@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Provice>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="bg-light card-header">
+                استان ها
+            </div>
+            <div class="card-body">
+                <p>
+                    <a asp-action="Create" class="btn btn-primary">افزودن استان جدید</a>
+                </p>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th> @Html.DisplayNameFor(model => model.ProvinceName)</th>
+                            <th class="text-center">
+                                شهرهای استان
+                            </th>
+                            <th class="text-center">
+                                عملیات
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ProvinceName</td>
+                                <td class="text-center">
+                                    <a href="/Admin/Cities/Index/@item.ProvinceID" class="btn btn-sm btn-info">مشاهده شهرها</a>
+                                </td>
+                                <td class="text-center">
+                                    <a href="/Admin/Provinces/Edit/@item.ProvinceID" class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
+                                    <a href="/Admin/Provinces/Delete/@item.ProvinceID" class="btn btn-danger btn-icon"><i class="fa fa-trash text-white"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <nav>
+                    @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,5 +1,4 @@
 ﻿using BookShop.Models;
-using BookSope2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BookShop.Mapping
 {
-    public class CustomerMap : IEntityTypeConfiguration<Customer>
+    public class CustomerMap: IEntityTypeConfiguration<Customer>
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
@@ -23,6 +22,6 @@ namespace BookShop.Mapping
                   .WithMany(t => t.Customers2)
                   .HasForeignKey(p => p.CityID2).OnDelete(DeleteBehavior.Restrict);
         }
-
+       
     }
 }

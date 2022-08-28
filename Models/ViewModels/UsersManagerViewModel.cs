@@ -6,28 +6,36 @@ using System.Threading.Tasks;
 
 namespace BookShop.Models.ViewModels
 {
-    public class UsersManagerViewModel
+    public class UsersViewModel
     {
-        public string Id { get; set; }
+         public string Id { get; set; }
 
-        [Display(Name = "نام کاربری")]
+        [Required(ErrorMessage ="وارد نمودن {0} الزامی است.")]
+        [Display(Name="نام کاربری")]
         public string UserName { get; set; }
-
-        [Display(Name = "ایمیل")]
+        
+        [Display(Name ="ایمیل")]
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+        [EmailAddress(ErrorMessage ="ایمیل وارد شده صحیح نمی باشد.")]
         public string Email { get; set; }
 
         [Display(Name = "شماره موبایل")]
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string PhoneNumber { get; set; }
 
         [Display(Name = "نام")]
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string FirstName { get; set; }
 
         [Display(Name = "نام خانوادگی")]
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string LastName { get; set; }
 
         [Display(Name = "تاریخ تولد")]
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
+
         [Display(Name = "تاریخ تولد")]
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string PersianBirthDate { get; set; }
 
         [Display(Name = "تصویر پروفایل")]
@@ -42,8 +50,8 @@ namespace BookShop.Models.ViewModels
         [Display(Name = "فعال / غیرفعال")]
         public bool IsActive { get; set; }
 
-        [Display(Name = "نقش ها")]
-        public IEnumerable<string> Roles { get; set; }
+        [Display(Name ="نقش ها")]
+        public  IEnumerable<string> Roles { get; set; }
 
         public bool PhoneNumberConfirmed { get; set; }
 
@@ -58,14 +66,20 @@ namespace BookShop.Models.ViewModels
         public DateTimeOffset? LockoutEnd { get; set; }
 
     }
+
     public class UserResetPasswordViewModel
     {
         public string Id { get; set; }
+
         [Display(Name = "نام کاربری")]
         public string UserName { get; set; }
+
         [Display(Name = "ایمیل")]
         public string Email { get; set; }
-        [Display(Name ="کلمه عبور جدید")]
+
+        [Display(Name = "کلمه عبور جدید")]
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string NewPassword { get; set; }
     }
+
 }

@@ -1,0 +1,81 @@
+﻿@model BookShop.Models.ViewModels.DynamicAccessIndexViewModel
+@using BookShop.Areas.Admin.Data
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="card">
+    <div class="card-header bg-light">
+        <h5 class="mb-1"> تنظیم سطوح دسترسی پویای نقش «@Model.RoleIncludeRoleClaims.Name»</h5>
+    </div>
+    <form method="post"
+          asp-controller="DynamicAccess"
+          asp-action="Index">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="card-body">
+            <input name="RoleId" value="@Model.RoleIncludeRoleClaims.Id" type="hidden" />
+            <div class="row">
+                @{int j = 0;}
+                @foreach (var controller in Model.SecuredControllerActions.OrderBy(x => x.ControllerDisplayName))
+                {
+                    <div class="col-md-4">
+                        <div class="card">
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="@("#demo"+j)">
+                                @{
+                                    var displayName = controller.ControllerDisplayName;
+                                    if (string.IsNullOrWhiteSpace(displayName))
+                                    {
+                                        displayName = controller.ControllerName;
+                                    }
+                                }
+                                @displayName
+                            </button>
+
+                            <div id="@("demo"+j)" class="collapse">
+                                <ul class="list-group list-group-flush pr-0">
+                                    @{int i = 0;}
+                                    @foreach (var action in controller.MvcActions.OrderBy(x => x.ActionDisplayName))
+                                    {
+                                        var isSelected = Model.RoleIncludeRoleClaims.Claims
+                                            .Any(roleClaim => roleClaim.ClaimType == ConstantPolicies.DynamicPermissionClaimType &&
+                                                              roleClaim.ClaimValue == action.ActionId);
+                                        var selected = isSelected ? "checked" : "";
+                                        var actionDisplayName = action.ActionDisplayName;
+                                        if (string.IsNullOrWhiteSpace(actionDisplayName))
+                                        {
+                                            actionDisplayName = $"{action}::{action.ActionId}";
+                                        }
+                                        <li class="list-group-item" role="presentation">
+                                            <div class="toggle-switch d-block" data-ts-color="success">
+                                                <label for="@("ts"+i)" class="ts-label">@actionDisplayName</label>
+                                                <input id="@("ts"+i)" type="checkbox" name="actionIds" hidden="hidden" value="@action.ActionId" @selected>
+                                                <label for="@("ts"+i)" class="ts-helper float-left"></label>
+                                            </div>
+
+                                        </li>
+                                        i++;
+                                    }
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                    j++;
+                }
+            </div>
+
+
+        </div>
+        <div class="card-footer bg-light clearfix">
+            <button type="submit" class="btn btn-primary float-left top15">
+                اعمال تغییرات
+                <span aria-hidden="true" class="fas fa-thumbs-up"></span>
+            </button>
+        </div>
+    </form>
+
+</div>
+
+
+

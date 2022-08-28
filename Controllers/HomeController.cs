@@ -4,28 +4,31 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using BookSope2.Models;
+using BookShop.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
-namespace BookSope2.Controllers
+namespace BookShop.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
-        public IActionResult Index(string Id)
+        public IActionResult Index(string id)
         {
-            //var userInfo = User;
-            //var userId = User.FindFirst(ClaimTypes.NameIdentifier);
-            //var userName = User.FindFirst(ClaimTypes.Name);
-            //var userRole = User.FindFirst(ClaimTypes.Role);
-            if (Id !=null)
-                ViewBag.Msg = "ایمیل با موفقیت برای شما ارسال شد لطفا آنرا تایید کنیید.";
+            //var UserInfo = User;
+            //string UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //string Role = User.FindFirstValue(ClaimTypes.Role);
+
+            if (id != null)
+                ViewBag.ConfirmEmailAlert = "لینک فعال سازی حساب کاربری به ایمیل شما ارسال شد لطفا با کلیک روی این لینک حساب خود را فعال کنید.";
             return View();
         }
 
-        
 
-       
-
-       
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }

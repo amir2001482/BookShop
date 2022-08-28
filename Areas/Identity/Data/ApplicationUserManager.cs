@@ -11,94 +11,95 @@ using System.Threading.Tasks;
 
 namespace BookShop.Areas.Identity.Data
 {
-    public class ApplicationUserManager : UserManager<ApplicationUser>, IApplicationUserManager
+    public class ApplicationUserManager : UserManager<ApplicationUser>,IApplicationUserManager
     {
         private readonly ApplicationIdentityErrorDescriber _errors;
-        private readonly ILookupNormalizer _normalizer;
+        private readonly ILookupNormalizer _keyNormalizer;
         private readonly ILogger<ApplicationUserManager> _logger;
         private readonly IOptions<IdentityOptions> _options;
-        private readonly IPasswordHasher<ApplicationUser> _Password;
-        private readonly IServiceProvider _Service;
-        private readonly IUserStore<ApplicationUser> _store;
-        private readonly IEnumerable<IPasswordValidator<ApplicationUser>> _passwordvalidators;
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+        private readonly IEnumerable<IPasswordValidator<ApplicationUser>> _passwordValidators;
+        private readonly IServiceProvider _services;
+        private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IEnumerable<IUserValidator<ApplicationUser>> _userValidators;
-        public ApplicationUserManager
-            (
-                ApplicationIdentityErrorDescriber errors,
-                 ILookupNormalizer normalizer ,
-                 ILogger<ApplicationUserManager> logger ,
-                 IOptions<IdentityOptions> options,
-                 IPasswordHasher<ApplicationUser> Password,
-                 IServiceProvider Service,
-                 IUserStore<ApplicationUser> store,
-                 IEnumerable<IPasswordValidator<ApplicationUser>> passwordvalidators,
-                 IEnumerable<IUserValidator<ApplicationUser>> userValidators
-            ):base(store , options , Password, userValidators, passwordvalidators, normalizer, errors, Service, logger)
+
+        public ApplicationUserManager(
+            ApplicationIdentityErrorDescriber errors,
+            ILookupNormalizer keyNormalizer,
+            ILogger<ApplicationUserManager> logger,
+            IOptions<IdentityOptions> options,
+            IPasswordHasher<ApplicationUser> passwordHasher,
+            IEnumerable<IPasswordValidator<ApplicationUser>> passwordValidators,
+            IServiceProvider services,
+            IUserStore<ApplicationUser> userStore,
+            IEnumerable<IUserValidator<ApplicationUser>> userValidators)
+            : base(userStore,options,passwordHasher,userValidators,passwordValidators,keyNormalizer,errors,services,logger)
         {
+            _userStore = userStore;
             _errors = errors;
             _logger = logger;
-            _normalizer = normalizer;
-            _options = options;
-            _Password = Password;
-            _passwordvalidators = passwordvalidators;
-            _Service = Service;
-            _store = store;
+            _services = services;
+            _passwordHasher = passwordHasher;
             _userValidators = userValidators;
+            _options = options;
+            _keyNormalizer = keyNormalizer;
+            _passwordValidators = passwordValidators;
         }
 
         public async Task<List<ApplicationUser>> GetAllUsersAsync()
         {
             return await Users.ToListAsync();
         }
-        public async Task<List<UsersManagerViewModel>> GetAllUsersWithRolesAsync()
+
+        public async Task<List<UsersViewModel>> GetAllUsersWithRolesAsync()
         {
-            return await Users.Select(user => new UsersManagerViewModel
+            return await Users.Select(user => new UsersViewModel
             {
-                BirthDate = user.BirthDate,
-                Email = user.Email,
-                EmailConfirmed = user.EmailConfirmed,
-                FirstName = user.FirstName,
                 Id = user.Id,
-                Image = user.Image,
-                IsActive = user.IsActive,
-                LastName = user.LastName,
-                LastVisitDateTime = user.LastVisitDateTime,
-                LockoutEnabled = user.LockoutEnabled,
-                LockoutEnd = user.LockoutEnd,
-                PhoneNumber = user.PhoneNumber,
-                PhoneNumberConfirmed = user.PhoneNumberConfirmed,
-                RegisterDate = user.Register,
+                Email = user.Email,
                 UserName = user.UserName,
-                Roles = user.userRoles.Select(u => u.Role.Name),
+                PhoneNumber = user.PhoneNumber,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDate = user.BirthDate,
+                IsActive = user.IsActive,
+                LastVisitDateTime = user.LastVisitDateTime,
+                Image = user.Image,
+                RegisterDate = user.RegisterDate,
+                Roles=user.Roles.Select(u=>u.Role.Name),
+
             }).ToListAsync();
         }
-        public async Task<UsersManagerViewModel> FindUserByIdWithRolesAsync(string Id)
+
+        public async Task<UsersViewModel> FindUserWithRolesByIdAsync(string UserID)
         {
-            return await Users.Where(u => u.Id == Id).Select(user => new UsersManagerViewModel
+            return await Users.Where(u => u.Id == UserID).Select(user => new UsersViewModel
             {
-                BirthDate = user.BirthDate,
-                Email = user.Email,
-                EmailConfirmed = user.EmailConfirmed,
-                FirstName = user.FirstName,
                 Id = user.Id,
-                Image = user.Image,
-                IsActive = user.IsActive,
+                Email = user.Email,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                FirstName = user.FirstName,
                 LastName = user.LastName,
+                BirthDate = user.BirthDate,
+                IsActive = user.IsActive,
                 LastVisitDateTime = user.LastVisitDateTime,
+                Image = user.Image,
+                RegisterDate = user.RegisterDate,
+                Roles = user.Roles.Select(u => u.Role.Name),
+                AccessFailedCount = user.AccessFailedCount,
+                EmailConfirmed = user.EmailConfirmed,
                 LockoutEnabled = user.LockoutEnabled,
                 LockoutEnd = user.LockoutEnd,
-                PhoneNumber = user.PhoneNumber,
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
-                RegisterDate = user.Register,
-                UserName = user.UserName,
-                AccessFailedCount = user.AccessFailedCount,
-                Roles = user.userRoles.Select(u => u.Role.Name),
-                TwoFactorEnabled = user.TwoFactorEnabled
+                TwoFactorEnabled = user.TwoFactorEnabled,
+
             }).FirstOrDefaultAsync();
         }
-        public async Task<string> GetFullName(ClaimsPrincipal UserClaim )
+
+        public async Task<string> GetFullName(ClaimsPrincipal User)
         {
-            var UserInfo = await GetUserAsync(UserClaim);
+            var UserInfo = await GetUserAsync(User);
             return UserInfo.FirstName + " " + UserInfo.LastName;
         }
     }

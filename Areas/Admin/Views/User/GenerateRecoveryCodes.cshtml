@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "GenerateRecoveryCodes";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<h4>تولید کدهای بازیابی</h4>
+<div class="alert alert-warning" role="alert">
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        <strong>این کدها را در یک مکان امن قرار دهید.</strong>
+    </p>
+    <p>
+        اگر دستگاه خود را از دست می دهید و کدهای بازیابی ندارید، دسترسی به حساب خود را از دست خواهید داد.
+    </p>
+    <p>
+         تولید کدهای بازیابی جدید کلیدهای مورد استفاده در برنامه های تأیید هویت را تغییر نمی دهد. اگر می خواهید کلید را تغییر دهید
+        <a asp-action="ResetAuthenticator">روی این لینک کلیک کنید.</a>
+    </p>
+</div>
+<div>
+    <form asp-action="GenerateRecoveryCodes" method="post" class="form-group">
+        <button class="btn btn-danger" type="submit">تولید کدهای بازیابی</button>
+    </form>
+</div>
+
+

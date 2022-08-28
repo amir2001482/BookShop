@@ -1,5 +1,4 @@
 ﻿using BookShop.Models;
-using BookSope2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -13,8 +12,8 @@ namespace BookShop.Mapping
     {
         public void Configure(EntityTypeBuilder<Order_Book> builder)
         {
-            builder
-             .HasKey(t => new { t.OrderID, t.BookID });
+           builder
+            .HasKey(t => new { t.OrderID, t.BookID });
 
             builder
                 .HasOne(pt => pt.Book)
@@ -28,4 +27,3 @@ namespace BookShop.Mapping
         }
     }
 }
-    

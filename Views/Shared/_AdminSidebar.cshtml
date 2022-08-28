@@ -1,0 +1,159 @@
+﻿@addTagHelper*,BookShop
+
+<div class="sidebar">
+    <nav class="sidebar-nav">
+        <ul class="nav">
+            <li class="nav-title">پنل مدیریت</li>
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="icon icon-speedometer"></i> داشبورد
+                </a>
+            </li>
+            <li class="nav-item nav-dropdown">
+                <security-trimming asp-action="Index:Create" asp-controller="Books" asp-area="Admin">
+                    <a href="#" class="nav-link nav-dropdown-toggle">
+                        <i class="icon icon-book-open"></i> مدیریت کتاب ها <i class="fa fa-caret-left"></i>
+                    </a>
+                </security-trimming>
+               
+                <ul class="nav-dropdown-items">
+                    <security-trimming asp-action="Index" asp-controller="Books" asp-area="Admin">
+                        <li class="nav-item">
+                            <a href="/Admin/Books/Index" class="nav-link">
+                                <i class="icon icon-target"></i> مشاهده کتاب ها
+                            </a>
+                        </li>
+                    </security-trimming>
+                    
+                    <security-trimming asp-action="Create" asp-controller="Books" asp-area="Admin">
+                        <li class="nav-item">
+                            <a href="/Admin/Books/Create" class="nav-link">
+                                <i class="icon icon-target"></i> افزودن کتاب جدید
+                            </a>
+                        </li>
+                    </security-trimming>
+                    
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown">
+                <a href="#" class="nav-link nav-dropdown-toggle">
+                    <i class="icon icon-user"></i> مدیریت نویسندگان <i class="fa fa-caret-left"></i>
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a href="/Admin/Authors/Index" class="nav-link">
+                            <i class="icon icon-target"></i> مشاهده نویسندگان
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Authors/Create" class="nav-link">
+                            <i class="icon icon-target"></i> افزودن نویسنده جدید
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown">
+                <a href="#" class="nav-link nav-dropdown-toggle">
+                    <i class="icon icon-user"></i> مدیریت مترجمان <i class="fa fa-caret-left"></i>
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a href="/Admin/Translators/Index" class="nav-link">
+                            <i class="icon icon-target"></i> مشاهده مترجمان
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Translators/Create" class="nav-link">
+                            <i class="icon icon-target"></i> افزودن مترجم جدید
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item nav-dropdown">
+                <a href="#" class="nav-link nav-dropdown-toggle">
+                    <i class="icon icon-user"></i> مدیریت ناشرین <i class="fa fa-caret-left"></i>
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a href="/Admin/Publishers/Index" class="nav-link">
+                            <i class="icon icon-target"></i> مشاهده ناشرین
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Publishers/Create" class="nav-link">
+                            <i class="icon icon-target"></i> افزودن ناشر جدید
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item nav-dropdown">
+                <a href="#" class="nav-link nav-dropdown-toggle">
+                    <i class="icon icon-list"></i> جداول پایه <i class="fa fa-caret-left"></i>
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a href="/Admin/Languages/Index" class="nav-link">
+                            <i class="icon icon-target"></i> زبان های کتاب
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Provinces/Index" class="nav-link">
+                            <i class="icon icon-target"></i> استان ها و شهرها
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item nav-dropdown">
+                <a href="#" class="nav-link nav-dropdown-toggle">
+                    <i class="icon icon-list"></i> مدیریت کاربران <i class="fa fa-caret-left"></i>
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a href="/Admin/UsersManager/Index" class="nav-link">
+                            <i class="fa fa-users"></i> مشاهده کاربران
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Identity/Account/Register" class="nav-link">
+                            <i class="icon icon-target"></i> عضویت کاربر جدید
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item nav-dropdown">
+                <a href="#" class="nav-link nav-dropdown-toggle">
+                    <i class="icon icon-list"></i> مدیریت نقش ها <i class="fa fa-caret-left"></i>
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a href="/Admin/RolesManager/Index" class="nav-link">
+                            <i class="icon icon-target"></i> مشاهده نقش ها
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/RolesManager/AddRole" class="nav-link">
+                            <i class="icon icon-target"></i> افزودن نقش جدید
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item nav-dropdown">
+                <a href="#" class="nav-link nav-dropdown-toggle">
+                    <i class="fa fa-address-book"></i> تنظیمات حساب کاربری <i class="fa fa-caret-left"></i>
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a href="/Admin/User/TwoFactorAuthentication" class="nav-link">
+                            <i class="fa fa-mobile-alt"></i> تنظیمات احراز هویت دو مرحله با اپلیکشن
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>

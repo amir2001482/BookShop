@@ -1,0 +1,23 @@
+﻿@model IEnumerable<string>
+@{
+    ViewData["Title"] = "ShowRecoveryCodes";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<h2>کدهای بازیابی</h2>
+<p class="alert alert-warning">اگر به اپلیکشن احراز هویت دسترسی نداشتید می توانید از این کدهای بازیابی برای ورود به سایت استفاده کنید.</p>
+
+@if (ViewBag.Alert != null)
+{
+    <div class="alert alert-success alert-dismissable">
+        @ViewBag.Alert
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+@foreach (var item in Model)
+{
+    <span class="badge badge-primary">@item</span><br />
+}
+

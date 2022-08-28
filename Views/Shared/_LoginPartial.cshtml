@@ -16,11 +16,11 @@
             <li>
                 @if (User.IsInRole("کاربر") || User.IsInRole("مشتری"))
                 {
-                    <a class="nav-link text-white">ورود به پنل کاربری</a>
+                    <a asp-action="ChangePassword" asp-controller="Account" class="nav-link text-white">ورود به پنل کاربری</a>
                 }
                 else
                 {
-                    <a href="/Areas/Dushbord/Index" class="nav-link text-white">ورود به پنل مدیریت</a>
+                    <a href="/Admin/Dashboard/Index" class="nav-link text-white">ورود به پنل مدیریت</a>
                 }
             </li>
         </ul>

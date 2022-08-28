@@ -19,7 +19,7 @@ namespace BookShop.Migrations.BookShopIdentity
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("BookShop.Areas.Identity.Data.ApplicationRoles", b =>
+            modelBuilder.Entity("BookShop.Areas.Identity.Data.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -52,7 +52,7 @@ namespace BookShop.Migrations.BookShopIdentity
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<DateTime>("BirthDate");
+                    b.Property<DateTime?>("BirthDate");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -70,7 +70,7 @@ namespace BookShop.Migrations.BookShopIdentity
 
                     b.Property<string>("LastName");
 
-                    b.Property<DateTime>("LastVisitDateTime");
+                    b.Property<DateTime?>("LastVisitDateTime");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -88,7 +88,7 @@ namespace BookShop.Migrations.BookShopIdentity
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<DateTime>("Register");
+                    b.Property<DateTime>("RegisterDate");
 
                     b.Property<string>("SecurityStamp");
 
@@ -107,7 +107,7 @@ namespace BookShop.Migrations.BookShopIdentity
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AppUsers");
+                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("BookShop.Areas.Identity.Data.ApplicationUserRole", b =>
@@ -133,6 +133,9 @@ namespace BookShop.Migrations.BookShopIdentity
 
                     b.Property<string>("ClaimValue");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<string>("RoleId")
                         .IsRequired();
 
@@ -141,6 +144,8 @@ namespace BookShop.Migrations.BookShopIdentity
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRoleClaim<string>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -196,22 +201,35 @@ namespace BookShop.Migrations.BookShopIdentity
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("BookShop.Areas.Identity.Data.ApplicationRoleClaim", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>");
+
+                    b.Property<string>("RoleId1");
+
+                    b.HasIndex("RoleId1");
+
+                    b.ToTable("ApplicationRoleClaim");
+
+                    b.HasDiscriminator().HasValue("ApplicationRoleClaim");
+                });
+
             modelBuilder.Entity("BookShop.Areas.Identity.Data.ApplicationUserRole", b =>
                 {
-                    b.HasOne("BookShop.Areas.Identity.Data.ApplicationRoles", "Role")
-                        .WithMany("UserRoles")
+                    b.HasOne("BookShop.Areas.Identity.Data.ApplicationRole", "Role")
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BookShop.Areas.Identity.Data.ApplicationUser", "User")
-                        .WithMany("userRoles")
+                        .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("BookShop.Areas.Identity.Data.ApplicationRoles")
+                    b.HasOne("BookShop.Areas.Identity.Data.ApplicationRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -239,6 +257,13 @@ namespace BookShop.Migrations.BookShopIdentity
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BookShop.Areas.Identity.Data.ApplicationRoleClaim", b =>
+                {
+                    b.HasOne("BookShop.Areas.Identity.Data.ApplicationRole", "Role")
+                        .WithMany("Claims")
+                        .HasForeignKey("RoleId1");
                 });
 #pragma warning restore 612, 618
         }

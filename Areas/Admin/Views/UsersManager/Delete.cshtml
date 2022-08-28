@@ -1,0 +1,27 @@
+﻿@model BookShop.Areas.Identity.Data.ApplicationUser
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="row w-75 m-auto">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">حذف اطلاعات</div>
+            <div class="card-body">
+                <p>
+                    آیا شما میخواهید که @Model.FirstName  @Model.LastName را از لیست کاربران حذف کنید؟ (با حذف کاربر تمام اطلاعات این کاربر از قبیل سفارشات کاربر حذف خواهد شد)
+                </p>
+            </div>
+
+            <div class="card-footer bg-light text-right clearfix">
+                <form asp-action="Delete">
+                    <input type="hidden" value="@Model.Id" name="id" />
+                    <input type="submit" value="بله" class="btn btn-danger mr-2 float-left" />
+                    <a asp-action="Index" class="btn btn-info float-left">خیر</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -9,8 +9,7 @@ namespace BookShop.Classes
     {
         public string CaptchaCode { get; set; }
         public byte[] CaptchaByteData { get; set; }
-        public string CaptchaBase64data => Convert.ToBase64String(CaptchaByteData);
+        public string CaptchBase64Data => Convert.ToBase64String(CaptchaByteData);
         public DateTime Timestamp { get; set; }
-
     }
 }

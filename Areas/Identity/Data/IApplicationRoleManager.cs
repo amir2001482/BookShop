@@ -9,30 +9,32 @@ namespace BookShop.Areas.Identity.Data
 {
     public interface IApplicationRoleManager
     {
-        #region baseClass
-        IQueryable<ApplicationRoles> Roles { get; }
+        #region BaseClass
+        IQueryable<ApplicationRole> Roles { get; }
         ILookupNormalizer KeyNormalizer { get; set; }
         IdentityErrorDescriber ErrorDescriber { get; set; }
-        IList<IRoleValidator<ApplicationRoles>> RoleValidators { get; }
+        IList<IRoleValidator<ApplicationRole>> RoleValidators { get; }
         bool SupportsQueryableRoles { get; }
         bool SupportsRoleClaims { get; }
-        Task<IdentityResult> CreateAsync(ApplicationRoles role);
-        Task<IdentityResult> DeleteAsync(ApplicationRoles role);
-        Task<ApplicationRoles> FindByIdAsync(string roleId);
-        Task<ApplicationRoles> FindByNameAsync(string roleName);
+        Task<IdentityResult> CreateAsync(ApplicationRole role);
+        Task<IdentityResult> DeleteAsync(ApplicationRole role);
+        Task<ApplicationRole> FindByIdAsync(string roleId);
+        Task<ApplicationRole> FindByNameAsync(string roleName);
         string NormalizeKey(string key);
         Task<bool> RoleExistsAsync(string roleName);
-        Task<IdentityResult> UpdateAsync(ApplicationRoles role);
-        Task UpdateNormalizedRoleNameAsync(ApplicationRoles role);
-        Task<string> GetRoleNameAsync(ApplicationRoles role);
-        Task<IdentityResult> SetRoleNameAsync(ApplicationRoles role, string name);
-
+        Task<IdentityResult> UpdateAsync(ApplicationRole role);
+        Task UpdateNormalizedRoleNameAsync(ApplicationRole role);
+        Task<string> GetRoleNameAsync(ApplicationRole role);
+        Task<IdentityResult> SetRoleNameAsync(ApplicationRole role, string name);
         #endregion
 
 
         #region CustomMethod
-        List<ApplicationRoles> GetAllRoles();
-        List<RoleManagerViewModel> GetAllRolesAndUsersCount();
+        List<ApplicationRole> GetAllRoles();
+        List<RolesViewModel> GetAllRolesAndUsersCount();
+        Task<ApplicationRole> FindClaimsInRole(string RoleID);
+        Task<List<UsersViewModel>> GetUsersInRoleAsync(string RoleID);
+        Task<IdentityResult> AddOrUpdateClaimsAsync(string RoleID, string RoleClaimType, IList<string> SelectedRoleClaimValues);
         #endregion
     }
 }

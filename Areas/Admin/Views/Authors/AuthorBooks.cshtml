@@ -1,0 +1,43 @@
+﻿@model Author
+@{
+    ViewData["Title"] = "AuthorBooks";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                کتاب های @Model.FirstName   @Model.LastName
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>عنوان کتاب</th>
+                            <th>شابک</th>
+                            <th>ناشر</th>
+                            <th>زبان</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Author_Books)
+                        {
+                            @if (item.Book != null)
+                            {
+                                <tr>
+                                    <td>@item.Book.Title</td>
+                                    <td>@item.Book.ISBN</td>
+                                    <td>@item.Book.Publisher.PublisherName</td>
+                                    <td>@item.Book.Language.LanguageName</td>
+                                </tr>
+                            }
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

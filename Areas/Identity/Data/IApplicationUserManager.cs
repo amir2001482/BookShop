@@ -111,17 +111,15 @@ namespace BookShop.Areas.Identity.Data
         Task<IdentityResult> RedeemTwoFactorRecoveryCodeAsync(ApplicationUser user, string code);
         Task<int> CountRecoveryCodesAsync(ApplicationUser user);
         Task<byte[]> CreateSecurityTokenAsync(ApplicationUser user);
-        Task<ApplicationUser> GetUserAsync(ClaimsPrincipal UserClaim);
-
 
         #endregion
 
         #region CustomMethod
         Task<List<ApplicationUser>> GetAllUsersAsync();
-        Task<List<UsersManagerViewModel>> GetAllUsersWithRolesAsync();
-        Task<UsersManagerViewModel> FindUserByIdWithRolesAsync(string Id);
-        Task<string> GetFullName(ClaimsPrincipal UserClaim);
-        
+        Task<List<UsersViewModel>> GetAllUsersWithRolesAsync();
+        Task<UsersViewModel> FindUserWithRolesByIdAsync(string UserID);
+        Task<string> GetFullName(ClaimsPrincipal User);
+        Task<ApplicationUser> GetUserAsync(ClaimsPrincipal User);
         #endregion
     }
 }

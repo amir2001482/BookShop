@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using BookShop.Areas.Identity.Data;
 using BookShop.Areas.Identity.Services;
@@ -45,14 +46,15 @@ namespace BookShop
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<BookShopContext>();
             services.AddTransient<BooksRepository>();
-            services.AddTransient<ConvertData>();
-            services.AddScoped<IConvertData,ConvertData>();
+            services.AddTransient<ConvertDate>();
+            services.AddScoped<IConvertDate, ConvertDate>();
             services.AddScoped<IApplicationRoleManager, ApplicationRoleManager>();
             //services.AddScoped<ApplicationUser>();
             services.AddScoped<IApplicationUserManager, ApplicationUserManager>();
             services.AddScoped<ApplicationIdentityErrorDescriber>();
             services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<IsmsSender, smsSender>();
+            services.AddScoped<ISmsSender, SmsSender>();
+            services.AddHttpClient();
             //services.AddTransient<RoleManager<ApplicationRoles>>();
 
             //services.AddMvc(options =>

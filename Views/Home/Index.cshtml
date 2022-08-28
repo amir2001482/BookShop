@@ -2,9 +2,9 @@
     ViewData["Title"] = "Home Page";
 }
 
-    <div class="mt-4">
-        @if (ViewBag.Msg != null)
-        {
-        <p class="alert alert-info">@ViewBag.Msg</p>
-        }
-    </div>
+<div style="margin-top:90px;">
+    @if (ViewBag.ConfirmEmailAlert != null)
+    {
+        <p class="alert alert-info">@ViewBag.ConfirmEmailAlert</p>
+    }
+</div>

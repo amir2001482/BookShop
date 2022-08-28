@@ -1,10 +1,9 @@
-﻿@model BookShop.Models.ViewModels.LoginWith2FaViewModel
+﻿@model BookShop.Models.ViewModels.LoginWith2faViewModel
 @{
     Layout = null;
 }
 
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -45,7 +44,15 @@
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary float-left">ورود به سایت</button>
                             </div>
+
+
                         </form>
+                        <hr />
+
+                        <p>
+                            اگر شما به اپلیکشن احراز هویت دسترسی ندارید می توانید از کد بازیابی برای ورود به سایت استفاده کنید.
+                            <a asp-action="LoginWithRecoveryCode">ورود به سایت با کد بازیابی</a>
+                        </p>
                     </div>
                 </div>
             </div>

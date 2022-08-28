@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookShop.Models;
+using BookShop.Models.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BookSope2.Models;
-using BookShop.Models.UnitOfWork;
-using BookShop.Models;
 
 namespace BookShop.Areas.Admin.Pages.Publishers
 {
@@ -16,26 +15,27 @@ namespace BookShop.Areas.Admin.Pages.Publishers
         public CreateModel(IUnitOfWork UW)
         {
             _UW = UW;
-
         }
+
         [BindProperty]
-        public Publisher publisher { get; set; }
+        public Publisher Publisher { get; set; }
+
         public IActionResult OnGet()
         {
             return Page();
         }
+
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
                 return Page();
             }
 
-            await _UW.BaseRepository<Publisher>().Create(publisher);
+            await _UW.BaseRepository<Publisher>().CreateAsync(Publisher);
             await _UW.Commit();
+
             return RedirectToPage("./Index");
-
-
         }
     }
 }

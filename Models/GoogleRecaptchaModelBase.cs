@@ -10,7 +10,7 @@ namespace BookShop.Models
     public class GoogleRecaptchaModelBase
     {
         [GoogleRecaptchaValidation]
-        [BindProperty(Name = "g-recaptcha-response")]
+        [BindProperty(Name ="g-recaptcha-response")]
         public string GoogleRecaptchaResponse { get; set; }
     }
 }

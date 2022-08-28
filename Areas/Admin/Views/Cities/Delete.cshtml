@@ -1,0 +1,26 @@
+﻿@model BookShop.Models.City
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="row w-75 m-auto">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">حذف اطلاعات</div>
+            <div class="card-body">
+                <p>آیا شما می خواهید <span> @Model.CityName  را از لیست شهرها حذف کنید ؟ </span> </p>
+            </div>
+
+            <div class="card-footer bg-light text-right clearfix">
+                <form asp-action="Delete">
+                    <input type="hidden" value="@Model.CityID" name="id" />
+                    <input type="submit" value="بله" class="btn btn-danger mr-2 float-left" />
+                    <a asp-action="Index" class="btn btn-info float-left">خیر</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

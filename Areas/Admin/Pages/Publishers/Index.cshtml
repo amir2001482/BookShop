@@ -3,73 +3,75 @@
 @{
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header bg-light">
-                    ناشرین کتاب
-                </div>
-                <div class="card-body">
-                    <p>
-                        <a asp-page="./Create" class="btn btn-primary">افزودن ناشر جدید</a>
-                    </p>
-                    <form method="post">
-                        <table class="table table-striped table-bordered">
-                            <thead>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                ناشرین کتاب
+            </div>
+            <div class="card-body">
+                <p>
+                    <a asp-page="./Create" class="btn btn-primary">افزودن ناشر جدید</a>
+                </p>
+                <form method="post">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    ناشر
+                                </th>
+                                <th class="text-center">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Publishers)
+                            {
                                 <tr>
-                                    <th>
-                                        ناشر
-                                    </th>
-                                    <th class="text-center">عملیات</th>
+                                    <td>
+                                        @item.PublisherName
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-page="./Edit" asp-route-id="@item.PublisherID" class="btn btn-success btn-icon">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <button type="submit" asp-route-id="@item.PublisherID" asp-page-handler="Delete" class="btn btn-danger btn-icon">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.publishers)
-                                {
-                                    <tr>
-                                        <td>
-                                            @item.PublisherName
-                                        </td>
-                                        <td class="text-center">
-                                            <a asp-page="./Edit" asp-route-id="@item.PublisherID" class="btn btn-success btn-icon">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <button type="submit" asp-route-id="@item.PublisherID" asp-page-handler="Delete" class="btn btn-danger btn-icon">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                        <ul class="pagination">
-                            @if (Model.ShowProvios)
-                            {
-                                <li class="page-item">
-                                    <a asp-page="./Index" asp-route-CurrentPage="@(Model.CurrentPage-1)" class="page-link">«</a>
-                                </li>
                             }
+                        </tbody>
+                    </table>
+                    <ul class="pagination">
+                        @if(Model.ShowPrevious)
+                        {
+                            <li class="page-item">
+                                <a asp-page="./Index" asp-route-CurrentPage="@(Model.CurrentPage-1)" class="page-link">«</a>
+                            </li>
+                        }
 
-                            @for (int i = 1; i <= Model.TotalPages; i++)
-                            {
-                                <li class="page-item @(i==Model.CurrentPage?"active" : "")">
-                                    <a asp-page="./Index" asp-route-CurrentPage="@i" class="page-link">
-                                        @i
-                                    </a>
-                                </li>
-                            }
+                        @for(int i=1;i<=Model.TotalPages;i++)
+                        {
+                            <li class="page-item @(i==Model.CurrentPage?"active" : "")">
+                                <a asp-page="./Index" asp-route-CurrentPage="@i" class="page-link">
+                                    @i
+                                </a>
+                            </li>
+                        }
 
-                            @if (Model.ShowNext)
-                            {
-                                <li class="page-item">
-                                    <a asp-page="./Index" asp-route-CurrentPage="@(Model.CurrentPage+1)">
-                                        »
-                                    </a>
-                                </li>
-                            }
-                        </ul>
-                    </form>
-                </div>
+                        @if(Model.ShowNext)
+                        {
+                            <li class="page-item">
+                                <a asp-page="./Index" asp-route-CurrentPage="@(Model.CurrentPage+1)">
+                                    »
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </form>
+                
             </div>
         </div>
     </div>
+</div>
