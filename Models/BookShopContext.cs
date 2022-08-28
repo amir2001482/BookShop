@@ -18,7 +18,7 @@ namespace BookShop.Models
         {
             //optionsBuilder.UseLazyLoadingProxies().UseSqlServer(@"Server=(local);Database=BookShopDB;Trusted_Connection=True");
 
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-PS6V8FF\\SQLEXPRESS;Database=Schoolnetdb_Demo;Trusted_Connection=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-PS6V8FF\SQLEXPRESS;Database=BookShop;Trusted_Connection=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,21 +35,21 @@ namespace BookShop.Models
             modelBuilder.Entity<Book>().Property(b => b.Delete).HasDefaultValueSql("0");
             //modelBuilder.Entity<Book>().Property(b => b.PublishDate).HasDefaultValueSql("CONVERT(datetime,GetDate())");
 
-            modelBuilder.Entity<ApplicationRole>().ToTable("AspNetRoles").ToTable("AppRoles");
+            modelBuilder.Entity<ApplicationRole>().ToTable("AspNetRoles");
 
-            modelBuilder.Entity<ApplicationUserRole>().ToTable("AppUserRole");
+            modelBuilder.Entity<ApplicationUserRole>().ToTable("AspNetUserRole");
 
             modelBuilder.Entity<ApplicationUserRole>()
                 .HasOne(userRole => userRole.Role)
                 .WithMany(role => role.Users).HasForeignKey(r => r.RoleId);
 
-            modelBuilder.Entity<ApplicationUser>().ToTable("AppUsers");
+            modelBuilder.Entity<ApplicationUser>().ToTable("AspNetUsers");
 
             modelBuilder.Entity<ApplicationUserRole>()
                .HasOne(userRole => userRole.User)
                .WithMany(role => role.Roles).HasForeignKey(r => r.UserId);
 
-            modelBuilder.Entity<ApplicationRoleClaim>().ToTable("AppRoleClaim");
+            modelBuilder.Entity<ApplicationRoleClaim>().ToTable("AspNetRoleClaim");
 
             modelBuilder.Entity<ApplicationRoleClaim>()
                 .HasOne(roleclaim => roleclaim.Role)

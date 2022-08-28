@@ -23,6 +23,7 @@ namespace BookShop.Services
             services.AddTransient<IConvertDate, ConvertDate>();
             services.AddTransient<BooksRepository>();
             services.AddTransient<BookShopContext>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddHttpContextAccessor();
             services.AddHttpClient();
             services.AddLocalization(options => { options.ResourcesPath = "Resources"; });

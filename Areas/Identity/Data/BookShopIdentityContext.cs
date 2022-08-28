@@ -19,8 +19,9 @@ namespace BookShop.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ApplicationRole>().ToTable("AspNetRoles").ToTable("AppRoles");
-            modelBuilder.Entity<ApplicationUserRole>().ToTable("AppUserRoles");
+            modelBuilder.Entity<ApplicationRole>().ToTable("AspNetRoles");
+            modelBuilder.Entity<ApplicationUser>().ToTable("AspNetUsers");
+            modelBuilder.Entity<ApplicationUserRole>().ToTable("AspNetUserRole");
             modelBuilder.Entity<ApplicationUserRole>()
                 .HasOne(userRole => userRole.Role)
                 .WithMany(Users => Users.Users).HasForeignKey(r => r.RoleId);

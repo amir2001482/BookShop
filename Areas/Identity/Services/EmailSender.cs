@@ -16,8 +16,8 @@ namespace BookShop.Areas.Identity.Services
             {
                 var Credential = new NetworkCredential
                 {
-                    UserName="aspcorelearn",
-                    Password= "Arz1372Zoo",
+                    UserName="lninomls9",
+                    Password= "0925751499Al@",
                 };
 
                 Client.Credentials = Credential;
@@ -28,7 +28,7 @@ namespace BookShop.Areas.Identity.Services
                 using (var emailMessage = new MailMessage())
                 {
                     emailMessage.To.Add(new MailAddress(email));
-                    emailMessage.From = new MailAddress("aspcorelearn@gmail.com");
+                    emailMessage.From = new MailAddress("lninomls9@gmail.com");
                     emailMessage.Subject = subject;
                     emailMessage.IsBodyHtml = true;
                     emailMessage.Body = message;

@@ -1,6 +1,7 @@
 ﻿using BookShop.Areas.Identity.Data;
 using BookShop.Areas.Identity.Services;
 using BookShop.Classes;
+using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -63,11 +64,11 @@ namespace BookShop.Controllers
 
                 if (result.Succeeded)
                 {
-                    var role = _roleManager.FindByNameAsync("کاربر");
+                    var role = await _roleManager.FindByNameAsync("کاربر");
                     if (role == null)
                         await _roleManager.CreateAsync(new ApplicationRole("کاربر"));
 
-                    result = await _userManager.AddToRoleAsync(user, "کاربر");
+                    result = await _userManager.AddToRoleAsync(user , "کاربر");
                     await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.DateOfBirth, BirthDateMiladi.ToShortDateString()));
 
                     if (result.Succeeded)
@@ -75,7 +76,7 @@ namespace BookShop.Controllers
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         var callbackUrl = Url.Action("ConfirmEmail", "Account", values: new { userId = user.Id, code = code }, protocol: Request.Scheme);
 
-                        await _emailSender.SendEmailAsync(ViewModel.Email, "تایید ایمیل حساب کاربری - سایت میزفا", $"<div dir='rtl' style='font-family:tahoma;font-size:14px'>لطفا با کلیک روی لینک رویه رو ایمیل خود را تایید کنید.  <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>کلیک کنید</a></div>");
+                       // await _emailSender.SendEmailAsync(ViewModel.Email, "تایید ایمیل حساب کاربری - سایت میزفا", $"<div dir='rtl' style='font-family:tahoma;font-size:14px'>لطفا با کلیک روی لینک رویه رو ایمیل خود را تایید کنید.  <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>کلیک کنید</a></div>");
 
                         return RedirectToAction("Index", "Home", new { id = "ConfirmEmail" });
                     }
@@ -116,8 +117,8 @@ namespace BookShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignIn(SignInViewModel ViewModel)
         {
-            if (Captcha.ValidateCaptchaCode(ViewModel.CaptchaCode, HttpContext))
-            {
+            //if (Captcha.ValidateCaptchaCode(ViewModel.CaptchaCode, HttpContext))
+            //{
                 if (ModelState.IsValid)
                 {
                     var User = await _userManager.FindByNameAsync(ViewModel.UserName);
@@ -125,7 +126,7 @@ namespace BookShop.Controllers
                     {
                         if (User.IsActive)
                         {
-                            var result = await _signInManager.PasswordSignInAsync(ViewModel.UserName, ViewModel.Password, ViewModel.RememberMe, true);
+                            var result = await _signInManager.PasswordSignInAsync(ViewModel.UserName, ViewModel.Password, ViewModel.RememberMe, false);
                             if (result.Succeeded)
                             {
                                 return RedirectToAction("Index", "Home");
@@ -142,12 +143,12 @@ namespace BookShop.Controllers
                     }
                     ModelState.AddModelError(string.Empty, "نام کاربری یا کلمه عبور شما صحیح نمی باشد.");
                 }
-            }
+            //}
 
-            else
-            {
-                ModelState.AddModelError(string.Empty, "کد امنیتی صحیح نمی باشد.");
-            }
+            //else
+            //{
+            //    ModelState.AddModelError(string.Empty, "کد امنیتی صحیح نمی باشد.");
+            //}
 
             return View();
         }

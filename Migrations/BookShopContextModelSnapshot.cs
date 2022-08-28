@@ -19,6 +19,130 @@ namespace BookShop.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("BookShop.Areas.Identity.Data.ApplicationRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("BookShop.Areas.Identity.Data.ApplicationRoleClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType");
+
+                    b.Property<string>("ClaimValue");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaim");
+                });
+
+            modelBuilder.Entity("BookShop.Areas.Identity.Data.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AccessFailedCount");
+
+                    b.Property<DateTime?>("BirthDate");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("Image");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<DateTime?>("LastVisitDateTime");
+
+                    b.Property<bool>("LockoutEnabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<DateTime>("RegisterDate");
+
+                    b.Property<string>("SecurityStamp");
+
+                    b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("BookShop.Areas.Identity.Data.ApplicationUserRole", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<string>("RoleId");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRole");
+                });
+
             modelBuilder.Entity("BookShop.Models.Author", b =>
                 {
                     b.Property<int>("AuthorID")
@@ -55,7 +179,9 @@ namespace BookShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Delete");
+                    b.Property<bool?>("Delete")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("0");
 
                     b.Property<string>("File");
 
@@ -72,9 +198,7 @@ namespace BookShop.Migrations
 
                     b.Property<int>("Price");
 
-                    b.Property<DateTime?>("PublishDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("SELECT CONVERT(datetime,GETDATE())");
+                    b.Property<DateTime?>("PublishDate");
 
                     b.Property<int>("PublishYear");
 
@@ -143,11 +267,10 @@ namespace BookShop.Migrations
 
             modelBuilder.Entity("BookShop.Models.City", b =>
                 {
-                    b.Property<int>("CityID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("CityID");
 
-                    b.Property<string>("CityName");
+                    b.Property<string>("CityName")
+                        .IsRequired();
 
                     b.Property<int?>("ProvinceID");
 
@@ -173,11 +296,9 @@ namespace BookShop.Migrations
 
                     b.Property<string>("Image");
 
-                    b.Property<string>("Mobile");
+                    b.Property<string>("PostalCode1");
 
-                    b.Property<string>("PostallCode1");
-
-                    b.Property<string>("PostallCode2");
+                    b.Property<string>("PostalCode2");
 
                     b.Property<string>("Tell");
 
@@ -271,11 +392,10 @@ namespace BookShop.Migrations
 
             modelBuilder.Entity("BookShop.Models.Provice", b =>
                 {
-                    b.Property<int>("ProvinceID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ProvinceID");
 
-                    b.Property<string>("ProvinceName");
+                    b.Property<string>("ProvinceName")
+                        .IsRequired();
 
                     b.HasKey("ProvinceID");
 
@@ -311,6 +431,80 @@ namespace BookShop.Migrations
                     b.HasKey("TranslatorID");
 
                     b.ToTable("Translator");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType");
+
+                    b.Property<string>("ClaimValue");
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider");
+
+                    b.Property<string>("ProviderKey");
+
+                    b.Property<string>("ProviderDisplayName");
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<string>("LoginProvider");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("BookShop.Areas.Identity.Data.ApplicationRoleClaim", b =>
+                {
+                    b.HasOne("BookShop.Areas.Identity.Data.ApplicationRole", "Role")
+                        .WithMany("Claims")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BookShop.Areas.Identity.Data.ApplicationUserRole", b =>
+                {
+                    b.HasOne("BookShop.Areas.Identity.Data.ApplicationRole", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BookShop.Areas.Identity.Data.ApplicationUser", "User")
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("BookShop.Models.Author_Book", b =>
@@ -421,6 +615,30 @@ namespace BookShop.Migrations
                     b.HasOne("BookShop.Models.Order", "Order")
                         .WithMany("Order_Books")
                         .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("BookShop.Areas.Identity.Data.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("BookShop.Areas.Identity.Data.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("BookShop.Areas.Identity.Data.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
