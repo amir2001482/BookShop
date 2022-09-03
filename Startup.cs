@@ -76,43 +76,52 @@ namespace BookShop
                 options.IdleTimeout = TimeSpan.FromMinutes(2);
                 options.Cookie.HttpOnly = true;
             });
-        }
+            //    services.Configure<ApiBehaviorOptions>(option =>
+            //    {
+            //       option.InvalidModelStateResponseFactory  =
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
+
+
+            //    })
+            //}
+
+            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+             void Configure(IApplicationBuilder app, IHostingEnvironment env)
             {
-                app.UseDeveloperExceptionPage();
-                app.UseStaticFiles(new StaticFileOptions
+                if (env.IsDevelopment())
                 {
-                    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
-                    RequestPath = "/" + "node_modules",
+                    app.UseDeveloperExceptionPage();
+                    app.UseStaticFiles(new StaticFileOptions
+                    {
+                        FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
+                        RequestPath = "/" + "node_modules",
+                    });
+                }
+                else
+                {
+                    app.UseExceptionHandler("/Home/Error");
+                    app.UseHsts();
+                }
+
+                app.UseHttpsRedirection();
+                app.UseStaticFiles();
+                app.UseCookiePolicy();
+                app.UseAuthentication();
+                app.UseSession();
+
+
+                app.UseMvc(routes =>
+                {
+                    routes.MapRoute(
+                                        name: "areas",
+                                        template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    routes.MapRoute(
+                                        name: "default",
+                                        template: "{controller=Home}/{action=Index}/{id?}");
+
                 });
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
-            app.UseAuthentication();
-            app.UseSession();
-
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                                    name: "areas",
-                                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                routes.MapRoute(
-                                    name: "default",
-                                    template: "{controller=Home}/{action=Index}/{id?}");
-                
-            });
         }
-    }
-}
+
+ }  }    
+
