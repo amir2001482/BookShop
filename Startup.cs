@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using BookShop.Areas.Api.Controllers;
 using BookShop.Areas.Identity.Data;
 using BookShop.Areas.Identity.Services;
 using BookShop.Classes;
@@ -17,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -89,43 +91,54 @@ namespace BookShop
             //        return new BadRequestObjectResult(erorrs);
             //    };
             //});
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
+            services.AddApiVersioning(options =>
             {
-                app.UseDeveloperExceptionPage();
-                app.UseStaticFiles(new StaticFileOptions
-                {
-                    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
-                    RequestPath = "/" + "node_modules",
-                });
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
+                options.ApiVersionReader = ApiVersionReader.Combine(new QueryStringApiVersionReader(), new HeaderApiVersionReader("api-version"));
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                //options.Conventions.Controller<SampleV1Controller>().HasApiVersion(new ApiVersion(1, 0));           by this option we can set a version to some controller without ApiVersion Attribute
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
-            app.UseAuthentication();
-            app.UseSession();
-
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                                    name: "areas",
-                                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                routes.MapRoute(
-                                    name: "default",
-                                    template: "{controller=Home}/{action=Index}/{id?}");
-                
             });
         }
-    }
-}
+
+            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+            {
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                    app.UseStaticFiles(new StaticFileOptions
+                    {
+                        FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
+                        RequestPath = "/" + "node_modules",
+                    });
+                }
+                else
+                {
+                    app.UseExceptionHandler("/Home/Error");
+                    app.UseHsts();
+                }
+
+                app.UseHttpsRedirection();
+                app.UseStaticFiles();
+                app.UseCookiePolicy();
+                app.UseAuthentication();
+                app.UseSession();
+
+
+                app.UseMvc(routes =>
+                {
+                    routes.MapRoute(
+                                        name: "areas",
+                                        template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    routes.MapRoute(
+                                        name: "default",
+                                        template: "{controller=Home}/{action=Index}/{id?}");
+
+                });
+            }
+        }
+
+ }   
+

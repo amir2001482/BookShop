@@ -9,10 +9,12 @@ using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookShop.Areas.Api.Controllers
+namespace BookShop.Areas.Api.Controllers.V1
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [ApiResultFilter]
     public class BooksApiController : ControllerBase
     {
         private readonly IUnitOfWork _UW;

@@ -11,10 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BookShop.Areas.Api.Controllers
+namespace BookShop.Areas.Api.Controllers.V1
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     [ApiResultFilter]
     public class UserController : ControllerBase
     {
@@ -30,14 +31,14 @@ namespace BookShop.Areas.Api.Controllers
             _userRepository = userRepository;
         }
         [HttpGet]
-        public async Task<ApiResult<List<UsersViewModel>>> GetAllUser()
+        public virtual async Task<ApiResult<List<UsersViewModel>>> GetAllUser()
         {
             return Ok(await _userManager.GetAllUsersWithRolesAsync());
         }
 
 
         [HttpGet("{userId}")]
-        public async Task<ApiResult<UsersViewModel>> GetUserById(string userId)
+        public virtual async Task<ApiResult<UsersViewModel>> GetUserById(string userId)
         {
             var user =  await _userManager.FindUserWithRolesByIdAsync(userId);
             if (user == null)
@@ -46,7 +47,7 @@ namespace BookShop.Areas.Api.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<ApiResult<string>> Register([FromBody]RegisterBaseViewModel viewModel)
+        public virtual async Task<ApiResult<string>> Register([FromBody]RegisterBaseViewModel viewModel)
         {
             var result = await _userRepository.RegisterAsync(viewModel);
             if (result.Succeeded)
@@ -59,7 +60,7 @@ namespace BookShop.Areas.Api.Controllers
         }
 
         [HttpPost("sing-in")]
-        public async Task<ApiResult<string>> SingIn([FromBody]SingInBaseViewModel viewModel)
+        public virtual async Task<ApiResult<string>> SingIn([FromBody]SingInBaseViewModel viewModel)
         {
             var user = await _userManager.FindByNameAsync(viewModel.UserName);
             if (user == null)

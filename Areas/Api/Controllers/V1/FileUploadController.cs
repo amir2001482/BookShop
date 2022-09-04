@@ -8,10 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BookShop.Areas.Api.Controllers
+namespace BookShop.Areas.Api.Controllers.V1
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class FileUploadController : ControllerBase
     {
         private readonly IHostingEnvironment _ev;
