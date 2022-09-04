@@ -50,7 +50,20 @@ namespace BookShop.Models.ViewModels
         public bool PhoneNumberConfirmed { get; set; }
     }
 
-    public class SignInViewModel
+    public class SignInViewModel : SingInBaseViewModel
+    {
+      
+        [Display(Name = "مرا به خاطر بسپار؟")]
+        public bool RememberMe { get; set; }
+
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+        [StringLength(4, ErrorMessage = "کد امنیتی باید دارای 4 کاراکتر باشد.")]
+        [Display(Name = "کد امنیتی")]
+        public string CaptchaCode { get; set; }
+
+    }
+
+    public class SingInBaseViewModel
     {
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         [Display(Name = "نام کاربری")]
@@ -60,15 +73,6 @@ namespace BookShop.Models.ViewModels
         [DataType(DataType.Password)]
         [Display(Name = "کلمه عبور")]
         public string Password { get; set; }
-
-        [Display(Name = "مرا به خاطر بسپار؟")]
-        public bool RememberMe { get; set; }
-
-        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
-        [StringLength(4, ErrorMessage = "کد امنیتی باید دارای 4 کاراکتر باشد.")]
-        [Display(Name = "کد امنیتی")]
-        public string CaptchaCode { get; set; }
-
     }
 
     public class ForgetPasswordViewModel

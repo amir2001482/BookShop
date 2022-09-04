@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookShop.Areas.Api.Class;
 using BookShop.Models;
 using BookShop.Models.UnitOfWork;
 using BookShop.Models.ViewModels;
@@ -21,31 +22,31 @@ namespace BookShop.Areas.Api.Controllers
         }
 
         [HttpGet]
-        public List<BooksIndexViewModel> GetBooks()
+        public ApiResult<List<BooksIndexViewModel>> GetBooks()
         {
-            return _UW.BooksRepository.GetAllBooks("", "", "", "", "", "", "");
+            return Ok(_UW.BooksRepository.GetAllBooks("", "", "", "", "", "", ""));
         }
 
         [HttpPost]
-        public async Task<string> CreateBook(BooksCreateEditViewModel ViewModel)
+        public async Task<ApiResult<string>> CreateBook(BooksCreateEditViewModel ViewModel)
         {
             if (await _UW.BooksRepository.CreateBookAsync(ViewModel))
-                return "عملیات با موفقیت انجام شد.";
+                return Ok("عملیات با موفقیت انجام شد.");
             else
-                return "در انجام عملیات خطایی رخ داده است.";
+                return BadRequest("در انجام عملیات خطایی رخ داده است");
         }
 
         [HttpPut]
-        public async Task<string> EditBook(BooksCreateEditViewModel ViewModel)
+        public async Task<ApiResult<string>> EditBook(BooksCreateEditViewModel ViewModel)
         {
             if (await _UW.BooksRepository.EditBookAsync(ViewModel))
-                return "ذخیره تغییرات با موفقیت انجام شد.";
+                return Ok("ذخیره تغییرات با موفقیت انجام شد");
             else
-                return "در انجام عملیات خطایی رخ داده است.";
+                return BadRequest("در انجام عملیات خطایی رخ داده است");
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBook(int id)
+        public async Task<ApiResult> DeleteBook(int id)
         {
             var Book = await _UW.BaseRepository<Book>().FindByIDAsync(id);
             if (Book != null)

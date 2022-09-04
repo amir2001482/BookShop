@@ -47,6 +47,7 @@ namespace BookShop
             services.AddTransient<BookShopContext>();
             services.AddTransient<BooksRepository>();
             services.AddTransient<ConvertDate>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddScoped<IConvertDate, ConvertDate>();
             services.AddScoped<IApplicationRoleManager, ApplicationRoleManager>();
             //services.AddScoped<ApplicationUser>();
@@ -54,6 +55,7 @@ namespace BookShop
             services.AddScoped<ApplicationIdentityErrorDescriber>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<ISmsSender, SmsSender>();
+           
             services.AddHttpClient();
             //services.AddTransient<RoleManager<ApplicationRoles>>();
 
@@ -76,6 +78,17 @@ namespace BookShop
                 options.IdleTimeout = TimeSpan.FromMinutes(2);
                 options.Cookie.HttpOnly = true;
             });
+            // this is configuration for modelState erorrs that transfer modelState erorrs to badRequestObjectresult and implements apiController attribute
+            //services.Configure<ApiBehaviorOptions>(options =>
+            //{
+            //    options.InvalidModelStateResponseFactory = actionContext =>
+            //    {
+            //        var erorrs = actionContext.ModelState
+            //           .Where(e => e.Value.Errors.Count() != 0)
+            //           .Select(e => e.Value.Errors.First().ErrorMessage).ToList();
+            //        return new BadRequestObjectResult(erorrs);
+            //    };
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

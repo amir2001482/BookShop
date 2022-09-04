@@ -1,4 +1,5 @@
-﻿using BookShop.Areas.Identity.Data;
+﻿using BookShop.Areas.Api.Class;
+using BookShop.Areas.Identity.Data;
 using BookShop.Classes;
 using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
@@ -14,6 +15,7 @@ namespace BookShop.Areas.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiResultFilter]
     public class UserController : ControllerBase
     {
         private readonly IApplicationUserManager _userManager;
@@ -28,32 +30,45 @@ namespace BookShop.Areas.Api.Controllers
             _userRepository = userRepository;
         }
         [HttpGet]
-        public async Task<List<UsersViewModel>> GetAllUser()
+        public async Task<ApiResult<List<UsersViewModel>>> GetAllUser()
         {
-            return await _userManager.GetAllUsersWithRolesAsync();
+            return Ok(await _userManager.GetAllUsersWithRolesAsync());
         }
 
 
         [HttpGet("{userId}")]
-        public async Task<IActionResult> GetUserById(string userId)
+        public async Task<ApiResult<UsersViewModel>> GetUserById(string userId)
         {
             var user =  await _userManager.FindUserWithRolesByIdAsync(userId);
             if (user == null)
                 return NotFound();
-            return new JsonResult(user);
+            return Ok(user);
         }
 
-        [HttpPost]
-        public async Task<JsonResult> Register([FromBody]RegisterBaseViewModel viewModel)
+        [HttpPost("Register")]
+        public async Task<ApiResult<string>> Register([FromBody]RegisterBaseViewModel viewModel)
         {
             var result = await _userRepository.RegisterAsync(viewModel);
             if (result.Succeeded)
-                return new JsonResult("عملیات با موفقیت انجام شد");
+                return Ok("عملیات با موفقیت انجام شد");
             else
-                return new JsonResult(result.Errors);
+                return BadRequest(result.Errors);
 
 
 
+        }
+
+        [HttpPost("sing-in")]
+        public async Task<ApiResult<string>> SingIn([FromBody]SingInBaseViewModel viewModel)
+        {
+            var user = await _userManager.FindByNameAsync(viewModel.UserName);
+            if (user == null)
+                return BadRequest("کاربری با این ایمیل یافت نشد");
+            var result = await _userManager.CheckPasswordAsync(user, viewModel.Password);
+            if (result)
+                return Ok("احراز هویت با موفقیت انجام شد");
+            else
+                return BadRequest("نام کاربری یا کلمه عبور شما صحیح نمی باشد");
         }
     }
 }

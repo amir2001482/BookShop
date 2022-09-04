@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using BookShop.Areas.Api.Class;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,12 +20,12 @@ namespace BookShop.Areas.Api.Controllers
             _ev = ev;
         }
         [HttpPost]
-        public async Task<string> UploadeImage([FromBody]string ImageBase64)
+        public async Task<ApiResult<string>> UploadeImage([FromBody]string ImageBase64)
         {
             byte[] Bytes = Convert.FromBase64String(ImageBase64);
             var FilePath = Path.Combine($"{_ev.WebRootPath}/Files/{Guid.NewGuid()}.jpg");
             await System.IO.File.WriteAllBytesAsync(FilePath, Bytes);
-            return "آپلود عکس با موفقیت انجام شد";
+            return Ok("آپلود عکس با موفقیت انجام شد");
         }
     }
 }
