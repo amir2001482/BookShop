@@ -61,7 +61,7 @@
                     سفارشات
                 </a>
             </li>
-            @if ((await AuthorizationService.AuthorizeAsync(User, "HappyBirthDay")).Succeeded)
+            @*@if ((await AuthorizationService.AuthorizeAsync(User, "HappyBirthDay")).Succeeded)
             {
                 <li class="nav-item">
                     <a class="nav-link text-danger" href="/Account/HappyBirthDay">
@@ -69,7 +69,7 @@
                         تبریک !!! کلیک کنید
                     </a>
                 </li>
-            }
+            }*@
 
         </ul>
     </div>
