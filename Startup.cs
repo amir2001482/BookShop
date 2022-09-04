@@ -57,10 +57,39 @@ namespace BookShop
             services.AddScoped<ApplicationIdentityErrorDescriber>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<ISmsSender, SmsSender>();
-           
-            services.AddHttpClient();
             //services.AddTransient<RoleManager<ApplicationRoles>>();
 
+
+            services.AddHttpClient();
+
+            services.AddPaging(options => {
+                options.ViewName = "Bootstrap4";
+                options.HtmlIndicatorDown = "<i class='fa fa-sort-amount-down'></i>";
+                options.HtmlIndicatorUp = "<i class='fa fa-sort-amount-up'></i>";
+            });
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(2);
+                options.Cookie.HttpOnly = true;
+            });
+
+            services.AddApiVersioning(options =>
+            {
+                options.ApiVersionReader = ApiVersionReader.Combine(new QueryStringApiVersionReader(), new HeaderApiVersionReader("api-version"));
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                //options.Conventions.Controller<SampleV1Controller>().HasApiVersion(new ApiVersion(1, 0));           by this option we can set a version to some controller without ApiVersion Attribute
+
+            });
+
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "721620776951-9jmie7ee9nht9rgke7lr6aqcbn2n1dfn.apps.googleusercontent.com";
+                options.ClientSecret = "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";
+            });
             //services.AddMvc(options =>
             //{
             //    var F = services.BuildServiceProvider().GetService<IStringLocalizerFactory>();
@@ -69,17 +98,8 @@ namespace BookShop
             //     (x) => L["انتخاب یکی از موارد لیست الزامی است."]);
 
             //});
-            services.AddPaging(options => {
-                options.ViewName = "Bootstrap4";
-                options.HtmlIndicatorDown = "<i class='fa fa-sort-amount-down'></i>";
-                options.HtmlIndicatorUp = "<i class='fa fa-sort-amount-up'></i>";
-            });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(2);
-                options.Cookie.HttpOnly = true;
-            });
+
+
             // this is configuration for modelState erorrs that transfer modelState erorrs to badRequestObjectresult and implements apiController attribute
             //services.Configure<ApiBehaviorOptions>(options =>
             //{
@@ -91,15 +111,7 @@ namespace BookShop
             //        return new BadRequestObjectResult(erorrs);
             //    };
             //});
-            services.AddApiVersioning(options =>
-            {
-                options.ApiVersionReader = ApiVersionReader.Combine(new QueryStringApiVersionReader(), new HeaderApiVersionReader("api-version"));
-                options.ReportApiVersions = true;
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.DefaultApiVersion = new ApiVersion(1, 0);
-                //options.Conventions.Controller<SampleV1Controller>().HasApiVersion(new ApiVersion(1, 0));           by this option we can set a version to some controller without ApiVersion Attribute
 
-            });
         }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
