@@ -19,8 +19,10 @@ namespace BookShop.Areas.Api.Services
         }
         public async Task<string> GeneratTokenAsync(ApplicationUser user)
         {
-            var SecretKey = Encoding.UTF8.GetBytes("0123456789ALMTU@");
+            var SecretKey = Encoding.UTF8.GetBytes("0123456789ALMTU@"); // key for signing jwt token
+            var encryptKey = Encoding.UTF8.GetBytes("0123456789zxcvbn"); // key for signing payload of jwt token
             var SigningCredential = new SigningCredentials(new SymmetricSecurityKey(SecretKey), SecurityAlgorithms.HmacSha256Signature);
+            var encryptingCredential = new EncryptingCredentials(new SymmetricSecurityKey(encryptKey), SecurityAlgorithms.Aes128KW, SecurityAlgorithms.Aes128CbcHmacSha256);
             var SecurityTokenDes = new SecurityTokenDescriptor()
             {
                 Issuer = "Pangerh-No.com",
@@ -30,6 +32,7 @@ namespace BookShop.Areas.Api.Services
                 Expires = DateTime.Now.AddMinutes(20),
                 SigningCredentials = SigningCredential,
                 Subject = new ClaimsIdentity(await GetClaimsAsync(user)),
+                EncryptingCredentials = encryptingCredential,
             };
 
             var JwtTokenHandler = new JwtSecurityTokenHandler();

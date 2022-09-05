@@ -4,12 +4,14 @@ using BookShop.Areas.Identity.Data;
 using BookShop.Classes;
 using BookShop.Models.Repository;
 using BookShop.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BookShop.Areas.Api.Controllers.V1
@@ -34,8 +36,11 @@ namespace BookShop.Areas.Api.Controllers.V1
             _jwtService = jwtService;
         }
         [HttpGet]
+        [Authorize(Roles ="مدیر سایت")]
         public virtual async Task<ApiResult<List<UsersViewModel>>> GetAllUser()
         {
+            var userName = HttpContext.User.Identity.Name;
+            var phoneNumber = HttpContext.User.FindFirstValue(ClaimTypes.MobilePhone);
             return Ok(await _userManager.GetAllUsersWithRolesAsync());
         }
 
