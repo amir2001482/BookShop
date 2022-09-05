@@ -47,6 +47,7 @@
     <PackageReference Include="summernote" Version="1.0.3" />
     <PackageReference Include="summernote.editor" Version="0.8.10" />
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
   </ItemGroup>
 
   <ItemGroup>

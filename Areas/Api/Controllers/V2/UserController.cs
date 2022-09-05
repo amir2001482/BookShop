@@ -1,4 +1,5 @@
 ﻿using BookShop.Areas.Api.Class;
+using BookShop.Areas.Api.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Classes;
 using BookShop.Models.Repository;
@@ -17,8 +18,8 @@ namespace BookShop.Areas.Api.Controllers.V2
     [ApiVersion("2.0")]
     public class UserController : V1.UserController
     {
-        public UserController(IApplicationUserManager userManager, IConvertDate convertDate, IApplicationRoleManager roleManager, IUserRepository userRepository)
-            :base( userManager,  convertDate,  roleManager,  userRepository)
+        public UserController(IApplicationUserManager userManager, IConvertDate convertDate, IApplicationRoleManager roleManager, IUserRepository userRepository , IJwtService jwtService)
+            :base( userManager,  convertDate,  roleManager,  userRepository , jwtService)
         {
 
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using BookShop.Areas.Api.Controllers;
+using BookShop.Areas.Api.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Areas.Identity.Services;
 using BookShop.Classes;
@@ -50,6 +51,7 @@ namespace BookShop
             services.AddTransient<BooksRepository>();
             services.AddTransient<ConvertDate>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IJwtService, JwtService>();
             services.AddScoped<IConvertDate, ConvertDate>();
             services.AddScoped<IApplicationRoleManager, ApplicationRoleManager>();
             //services.AddScoped<ApplicationUser>();

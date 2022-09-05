@@ -1,4 +1,5 @@
 ﻿using BookShop.Areas.Api.Class;
+using BookShop.Areas.Api.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Classes;
 using BookShop.Models.Repository;
@@ -23,12 +24,14 @@ namespace BookShop.Areas.Api.Controllers.V1
         private readonly IConvertDate _convertDate;
         private readonly IApplicationRoleManager _roleManager;
         private readonly IUserRepository _userRepository;
-        public UserController(IApplicationUserManager userManager , IConvertDate convertDate , IApplicationRoleManager roleManager , IUserRepository userRepository)
+        private readonly IJwtService _jwtService;
+        public UserController(IApplicationUserManager userManager , IConvertDate convertDate , IApplicationRoleManager roleManager , IUserRepository userRepository , IJwtService jwtService)
         {
             _userManager = userManager;
             _convertDate = convertDate;
             _roleManager = roleManager;
             _userRepository = userRepository;
+            _jwtService = jwtService;
         }
         [HttpGet]
         public virtual async Task<ApiResult<List<UsersViewModel>>> GetAllUser()
@@ -64,10 +67,10 @@ namespace BookShop.Areas.Api.Controllers.V1
         {
             var user = await _userManager.FindByNameAsync(viewModel.UserName);
             if (user == null)
-                return BadRequest("کاربری با این ایمیل یافت نشد");
+                return BadRequest("نام کاربری یا کلمه عبور شما صحیح نمی باشد");
             var result = await _userManager.CheckPasswordAsync(user, viewModel.Password);
             if (result)
-                return Ok("احراز هویت با موفقیت انجام شد");
+                return Ok(await _jwtService.GeneratTokenAsync(user));
             else
                 return BadRequest("نام کاربری یا کلمه عبور شما صحیح نمی باشد");
         }
