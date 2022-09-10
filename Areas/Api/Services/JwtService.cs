@@ -1,5 +1,7 @@
 ﻿using BookShop.Areas.Admin.Data;
 using BookShop.Areas.Identity.Data;
+using BookShop.Classes;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -11,28 +13,30 @@ using System.Threading.Tasks;
 
 namespace BookShop.Areas.Api.Services
 {
-    public class JwtService : IJwtService
+    public class JwtService : IJwtService // only for generat jwt token
     {
         private readonly IApplicationUserManager _userManager;
         private readonly IApplicationRoleManager _roleManager;
-        public JwtService(IApplicationUserManager userManager , IApplicationRoleManager roleManager)
+        private readonly SiteSettings _siteSettings;
+        public JwtService(IApplicationUserManager userManager , IApplicationRoleManager roleManager , IOptionsSnapshot<SiteSettings> sitesettings)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _siteSettings = sitesettings.Value;
         }
         public async Task<string> GeneratTokenAsync(ApplicationUser user)
         {
-            var SecretKey = Encoding.UTF8.GetBytes("0123456789ALMTU@"); // key for signing jwt token
-            var encryptKey = Encoding.UTF8.GetBytes("0123456789zxcvbn"); // key for signing payload of jwt token
+            var SecretKey = Encoding.UTF8.GetBytes(_siteSettings.jwtSettings.Secretkey); // key for signing jwt token
+            var encryptKey = Encoding.UTF8.GetBytes(_siteSettings.jwtSettings.EncryptKey); // key for signing payload of jwt token
             var SigningCredential = new SigningCredentials(new SymmetricSecurityKey(SecretKey), SecurityAlgorithms.HmacSha256Signature);
             var encryptingCredential = new EncryptingCredentials(new SymmetricSecurityKey(encryptKey), SecurityAlgorithms.Aes128KW, SecurityAlgorithms.Aes128CbcHmacSha256);
             var SecurityTokenDes = new SecurityTokenDescriptor()
             {
-                Issuer = "Pangerh-No.com",
-                Audience = "Pangerh-No.com",
+                Issuer = _siteSettings.jwtSettings.Issuer,
+                Audience = _siteSettings.jwtSettings.Audience,
                 IssuedAt = DateTime.Now,
-                NotBefore = DateTime.Now,
-                Expires = DateTime.Now.AddMinutes(20),
+                NotBefore = DateTime.Now.AddMinutes(_siteSettings.jwtSettings.NotBeforeMinutes),
+                Expires = DateTime.Now.AddMinutes(_siteSettings.jwtSettings.ExpirationMinutes),
                 SigningCredentials = SigningCredential,
                 Subject = new ClaimsIdentity(await GetClaimsAsync(user)),
                 EncryptingCredentials = encryptingCredential,

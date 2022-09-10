@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using BookShop.Areas.Api.Class;
 using BookShop.Areas.Api.Controllers;
 using BookShop.Areas.Api.Middlewares;
 using BookShop.Areas.Api.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Areas.Identity.Services;
 using BookShop.Classes;
+using BookShop.Exceptions;
 using BookShop.Models;
 using BookShop.Models.Repository;
 using BookShop.Models.UnitOfWork;
@@ -34,12 +37,15 @@ namespace BookShop
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        private readonly SiteSettings _siteSettings;
+        public Startup(IConfiguration configuration )
         {
             Configuration = configuration;
+            _siteSettings = configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
         }
 
-        public IConfiguration Configuration { get; }
+     
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -50,6 +56,7 @@ namespace BookShop
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<BookShopContext>();
             services.AddTransient<BooksRepository>();
@@ -100,8 +107,8 @@ namespace BookShop
             })
                 .AddJwtBearer(options =>
                 {
-                    var secretkey = Encoding.UTF8.GetBytes("0123456789ALMTU@");
-                    var encryptionkey = Encoding.UTF8.GetBytes("0123456789zxcvbn");
+                    var secretkey = Encoding.UTF8.GetBytes(_siteSettings.jwtSettings.Secretkey);
+                    var encryptionkey = Encoding.UTF8.GetBytes(_siteSettings.jwtSettings.EncryptKey);
 
                     var validationParameters = new TokenValidationParameters
                     {
@@ -114,10 +121,10 @@ namespace BookShop
                         ValidateLifetime = true,
 
                         ValidateAudience = true, //default : false
-                        ValidAudience = "Pangerh-No.com",
+                        ValidAudience = _siteSettings.jwtSettings.Audience,
 
                         ValidateIssuer = true, //default : false
-                        ValidIssuer = "Pangerh-No.com",
+                        ValidIssuer = _siteSettings.jwtSettings.Issuer,
 
                         TokenDecryptionKey = new SymmetricSecurityKey(encryptionkey)
                     };
@@ -125,6 +132,19 @@ namespace BookShop
                     options.RequireHttpsMetadata = false;
                     options.SaveToken = true;
                     options.TokenValidationParameters = validationParameters;
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            if(context.Exception != null)
+                            {
+                                if (context.Exception != null)
+                                    throw new AppException(StatusCodeEnum.UnAuthorized, "Authentication failed.", HttpStatusCode.Unauthorized, context.Exception, null);
+                                
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
                 })
                 .AddGoogle(options =>
                 {
