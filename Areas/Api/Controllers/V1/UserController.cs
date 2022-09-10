@@ -1,4 +1,5 @@
-﻿using BookShop.Areas.Api.Class;
+﻿using BookShop.Areas.Admin.Data;
+using BookShop.Areas.Api.Class;
 using BookShop.Areas.Api.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Classes;
@@ -36,7 +37,8 @@ namespace BookShop.Areas.Api.Controllers.V1
             _jwtService = jwtService;
         }
         [HttpGet]
-        [Authorize(Roles ="مدیر سایت")]
+        //[Authorize(Roles ="مدیر سایت")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public virtual async Task<ApiResult<List<UsersViewModel>>> GetAllUser()
         {
             var userName = HttpContext.User.Identity.Name;

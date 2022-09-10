@@ -1,4 +1,5 @@
-﻿using BookShop.Areas.Identity.Data;
+﻿using BookShop.Areas.Admin.Data;
+using BookShop.Areas.Identity.Data;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,11 @@ namespace BookShop.Areas.Api.Services
     public class JwtService : IJwtService
     {
         private readonly IApplicationUserManager _userManager;
-        public JwtService(IApplicationUserManager userManager)
+        private readonly IApplicationRoleManager _roleManager;
+        public JwtService(IApplicationUserManager userManager , IApplicationRoleManager roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
         public async Task<string> GeneratTokenAsync(ApplicationUser user)
         {
@@ -52,9 +55,22 @@ namespace BookShop.Areas.Api.Services
                 
             };
 
-            var Roles = await _userManager.GetRolesAsync(user);
+            var Roles =  _roleManager.Roles.ToList();
+             
             foreach (var item in Roles)
-                Claims.Add(new Claim(ClaimTypes.Role, item));
+            {
+
+                var RoleClaims = await _roleManager.FindClaimsInRole(item.Id);
+                foreach(var claim in RoleClaims.Claims)
+                {
+                    Claims.Add(new Claim(ConstantPolicies.DynamicPermissionClaimType, claim.ClaimValue));
+                }
+            }
+            foreach(var item in Roles)
+            {
+                Claims.Add(new Claim(ClaimTypes.Role, item.Name));
+            }
+              
 
             return Claims;
         }
