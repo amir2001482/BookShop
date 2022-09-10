@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using BookShop.Areas.Api.Controllers;
+using BookShop.Areas.Api.Middlewares;
 using BookShop.Areas.Api.Services;
 using BookShop.Areas.Identity.Data;
 using BookShop.Areas.Identity.Services;
@@ -67,7 +68,8 @@ namespace BookShop
 
             services.AddHttpClient();
 
-            services.AddPaging(options => {
+            services.AddPaging(options =>
+            {
                 options.ViewName = "Bootstrap4";
                 options.HtmlIndicatorDown = "<i class='fa fa-sort-amount-down'></i>";
                 options.HtmlIndicatorUp = "<i class='fa fa-sort-amount-up'></i>";
@@ -153,43 +155,51 @@ namespace BookShop
 
         }
 
-            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-            public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), builder =>
+            {
+                builder.UseCustomExeptionHandler();  // custom Middleware for handele exeptions errors
+            });
+            app.UseWhen(context => !context.Request.Path.StartsWithSegments("/api"), builder =>
             {
                 if (env.IsDevelopment())
                 {
                     app.UseDeveloperExceptionPage();
-                    app.UseStaticFiles(new StaticFileOptions
-                    {
-                        FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
-                        RequestPath = "/" + "node_modules",
-                    });
                 }
                 else
                 {
                     app.UseExceptionHandler("/Home/Error");
                     app.UseHsts();
                 }
+            });
 
-                app.UseHttpsRedirection();
-                app.UseStaticFiles();
-                app.UseCookiePolicy();
-                app.UseAuthentication();
-                app.UseSession();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
+                RequestPath = "/" + "node_modules",
+            });
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
+            app.UseAuthentication();
+            app.UseSession();
 
 
-                app.UseMvc(routes =>
-                {
-                    routes.MapRoute(
-                                        name: "areas",
-                                        template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                    routes.MapRoute(
-                                        name: "default",
-                                        template: "{controller=Home}/{action=Index}/{id?}");
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                                    name: "areas",
+                                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                                    name: "default",
+                                    template: "{controller=Home}/{action=Index}/{id?}");
 
-                });
-            }
+            });
         }
+    }
 
- }   
+}
 

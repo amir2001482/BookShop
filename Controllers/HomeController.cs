@@ -30,5 +30,12 @@ namespace BookShop.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult test()
+        {
+            int i = 0;
+            int j = 12 / i;
+            return View();
+        }
     }
 }

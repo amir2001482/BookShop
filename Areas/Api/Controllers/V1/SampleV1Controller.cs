@@ -30,6 +30,14 @@ namespace BookShop.Areas.Api.Controllers.V1
             var apiVersion = HttpContext.GetRequestedApiVersion().ToString();
             return name + apiVersion;
         }
+
+        [HttpGet("[action]")]
+        public int test()
+        {
+            int i = 0;
+            int j =  12 / i;
+            return j;
+        }
     }
   
 }

@@ -37,8 +37,8 @@ namespace BookShop.Areas.Api.Controllers.V1
             _jwtService = jwtService;
         }
         [HttpGet]
-        //[Authorize(Roles ="مدیر سایت")]
-        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [Authorize(Roles ="مدیر سایت")]
+        //[Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public virtual async Task<ApiResult<List<UsersViewModel>>> GetAllUser()
         {
             var userName = HttpContext.User.Identity.Name;
