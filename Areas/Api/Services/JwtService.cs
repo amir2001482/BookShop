@@ -1,6 +1,7 @@
 ﻿using BookShop.Areas.Admin.Data;
 using BookShop.Areas.Identity.Data;
 using BookShop.Classes;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -54,7 +55,7 @@ namespace BookShop.Areas.Api.Services
                 new Claim(ClaimTypes.Name , user.UserName),
                 new Claim(ClaimTypes.NameIdentifier , user.Id),
                 new Claim(ClaimTypes.MobilePhone , user.PhoneNumber),
-                new Claim("SecurityStampClaimType" , user.SecurityStamp),
+                new Claim(new ClaimsIdentityOptions().SecurityStampClaimType , user.SecurityStamp),
                 new Claim(JwtRegisteredClaimNames.Jti , Guid.NewGuid().ToString()),
                 
             };

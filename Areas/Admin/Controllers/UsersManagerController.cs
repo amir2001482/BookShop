@@ -114,6 +114,8 @@ namespace BookShop.Areas.Admin.Controllers
                             User.PhoneNumber = ViewModel.PhoneNumber;
                             User.UserName = ViewModel.UserName;
                             User.BirthDate = _converDate.ConvertShamsiToMiladi(ViewModel.PersianBirthDate);
+                            
+                            await _userManager.UpdateSecurityStampAsync(User);
 
                             Result = await _userManager.UpdateAsync(User);
                             if(Result.Succeeded)
