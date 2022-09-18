@@ -527,7 +527,7 @@ namespace BookShop.Controllers
 
                 //for host
                 //var redirectUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/signin-yahoo";
-                return Redirect($"https://api.login.yahoo.com/oauth2/request_auth?client_id={client_id}&redirect_uri=https://c4aedefa.ngrok.io/yahoo-signin&response_type=code&language=en-us");
+                return Redirect($"https://api.login.yahoo.com/oauth2/request_auth?client_id={client_id}&redirect_uri=https://6568-31-57-191-168.eu.ngrok.io/yahoo-signin&response_type=code&language=en-us");
             }
             var RedirectUrl = Url.Action("GetCallBackAsync", "Account");
             var Properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, RedirectUrl);
@@ -566,7 +566,7 @@ namespace BookShop.Controllers
             //for host
             //param.Add("redirect_uri", redirectUrl);
 
-            param.Add("redirect_uri", "https://c4aedefa.ngrok.io/yahoo-signin");
+            param.Add("redirect_uri", "https://6568-31-57-191-168.eu.ngrok.io/yahoo-signin");
             param.Add("code", code);
             param.Add("grant_type", "authorization_code");
 

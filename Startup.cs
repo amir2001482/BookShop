@@ -137,11 +137,11 @@ namespace BookShop
                     {
                         OnAuthenticationFailed = context =>
                         {
-                            if(context.Exception != null)
+                            if (context.Exception != null)
                             {
                                 if (context.Exception != null)
                                     throw new AppException(StatusCodeEnum.UnAuthorized, "Authentication failed.", HttpStatusCode.Unauthorized, context.Exception, null);
-                                
+
                             }
                             return Task.CompletedTask;
                         },
@@ -178,7 +178,13 @@ namespace BookShop
                 {
                     options.ClientId = "721620776951-9jmie7ee9nht9rgke7lr6aqcbn2n1dfn.apps.googleusercontent.com";
                     options.ClientSecret = "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";
+                })
+                .AddYahoo(options =>
+                {
+                    options.ClientId = "dj0yJmk9RnJySm9leFlVNmRhJmQ9WVdrOWJGWTBWRXhrUVRZbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWU3";
+                    options.ClientSecret = "9a09ae08a9a9b0e32c3a255b9da3fea7a3090fa1";
                 });
+
             //services.AddMvc(options =>
             //{
             //    var F = services.BuildServiceProvider().GetService<IStringLocalizerFactory>();
