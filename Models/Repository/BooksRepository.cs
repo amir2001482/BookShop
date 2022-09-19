@@ -136,45 +136,46 @@ namespace BookShop.Models.Repository
             return ViewModel;
         }
 
-        public async Task<bool> CreateBookAsync(BooksCreateEditViewModel ViewModel)
+        public async Task<bool> CreateBookAsync(BooksCreateEditViewModel viewModel)
         {
             try
             {
                 byte[] Image = null;
-                if (!string.IsNullOrWhiteSpace(ViewModel.ImageBase64))
+                if (!string.IsNullOrWhiteSpace(viewModel.ImageBase64))
                 {
-                    Image = Convert.FromBase64String(ViewModel.ImageBase64);
+                    Image = Convert.FromBase64String(viewModel.ImageBase64);
                 }
                 List<Book_Translator> translators = new List<Book_Translator>();
                 List<Book_Category> categories = new List<Book_Category>();
-                if (ViewModel.TranslatorID != null)
-                    translators = ViewModel.TranslatorID.Select(a => new Book_Translator { TranslatorID = a }).ToList();
-                if (ViewModel.CategoryID != null)
-                    categories = ViewModel.CategoryID.Select(a => new Book_Category { CategoryID = a }).ToList();
+                if (viewModel.TranslatorID != null)
+                    translators = viewModel.TranslatorID.Select(a => new Book_Translator { TranslatorID = a }).ToList();
+                if (viewModel.CategoryID != null)
+                    categories = viewModel.CategoryID.Select(a => new Book_Category { CategoryID = a }).ToList();
 
                 DateTime? PublishDate = null;
-                if (ViewModel.IsPublish == true)
+                if (viewModel.IsPublish == true)
                 {
                     PublishDate = DateTime.Now;
                 }
                 Book book = new Book()
                 {
-                    ISBN = ViewModel.ISBN,
-                    IsPublish = ViewModel.IsPublish,
-                    NumOfPages = ViewModel.NumOfPages,
-                    Stock = ViewModel.Stock,
-                    Price = ViewModel.Price,
-                    LanguageID = ViewModel.LanguageID,
-                    Summary = ViewModel.Summary,
-                    Title = ViewModel.Title,
+                    ISBN = viewModel.ISBN,
+                    IsPublish = viewModel.IsPublish,
+                    NumOfPages = viewModel.NumOfPages,
+                    Stock = viewModel.Stock,
+                    Price = viewModel.Price,
+                    LanguageID = viewModel.LanguageID,
+                    Summary = viewModel.Summary,
+                    Title = viewModel.Title,
                     Image = Image,
-                    PublishYear = ViewModel.PublishYear,
+                    PublishYear = viewModel.PublishYear,
                     PublishDate = PublishDate,
-                    Weight = ViewModel.Weight,
-                    PublisherID = ViewModel.PublisherID,
-                    Author_Books = ViewModel.AuthorID.Select(a => new Author_Book { AuthorID = a }).ToList(),
+                    Weight = viewModel.Weight,
+                    PublisherID = viewModel.PublisherID,
+                    Author_Books = viewModel.AuthorID.Select(a => new Author_Book { AuthorID = a }).ToList(),
                     book_Tranlators = translators,
                     book_Categories = categories,
+                    File = viewModel.FileName
                 };
 
                 await _UW.BaseRepository<Book>().CreateAsync(book);

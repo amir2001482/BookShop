@@ -4,6 +4,7 @@ using BookShop.Models.Repository;
 using BookShop.Models.UnitOfWork;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,9 +26,11 @@ namespace BookShop.Areas.Admin.Controllers
     public class BooksController : Controller
     {
         private readonly IUnitOfWork _UW;
-        public BooksController(IUnitOfWork UW)
+        private readonly IHostingEnvironment _env;
+        public BooksController(IUnitOfWork UW , IHostingEnvironment env)
         {
             _UW = UW;
+            _env = env;
         }
 
         //[Authorize(Policy =ConstantPolicies.DynamicPermission)]
@@ -89,11 +93,23 @@ namespace BookShop.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BooksCreateEditViewModel ViewModel)
+        public async Task<IActionResult> Create(BooksCreateEditViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                if (await _UW.BooksRepository.CreateBookAsync(ViewModel))
+                if(viewModel.File != null)
+                {
+                    var FileExtention = Path.GetExtension(viewModel.File.FileName);
+                    var newFileName = string.Concat(Guid.NewGuid().ToString(), FileExtention);
+                    var FilePath = $"{_env.WebRootPath}/BooksFiles/{newFileName}";
+                    using(var strame = new FileStream(FilePath , FileMode.Create))
+                    {
+                        await viewModel.File.CopyToAsync(strame);
+                    }
+                    viewModel.FileName = newFileName;
+
+                }
+                if (await _UW.BooksRepository.CreateBookAsync(viewModel))
                     return RedirectToAction("Index");
                 else
                     ViewBag.Error = "در انجام عملیات خطایی رخ داده است.";
@@ -103,8 +119,8 @@ namespace BookShop.Areas.Admin.Controllers
             ViewBag.PublisherID = new SelectList(_UW.BaseRepository<Publisher>().FindAll(), "PublisherID", "PublisherName");
             ViewBag.AuthorID = new SelectList(_UW.BaseRepository<Author>().FindAll().Select(t => new AuthorList { AuthorID = t.AuthorID, NameFamily = t.FirstName + " " + t.LastName }), "AuthorID", "NameFamily");
             ViewBag.TranslatorID = new SelectList(_UW.BaseRepository<Translator>().FindAll().Select(t => new TranslatorList { TranslatorID = t.TranslatorID, NameFamily = t.Name + " " + t.Family }), "TranslatorID", "NameFamily");
-            ViewModel.SubCategoriesVM = new BooksSubCategoriesViewModel(_UW.BooksRepository.GetAllCategories(), ViewModel.CategoryID);
-            return View(ViewModel);
+            viewModel.SubCategoriesVM = new BooksSubCategoriesViewModel(_UW.BooksRepository.GetAllCategories(), viewModel.CategoryID);
+            return View(viewModel);
         }
 
         //[Authorize(Policy = ConstantPolicies.DynamicPermission)]

@@ -5,7 +5,7 @@
 }
 
 <div class="container-fluid">
-    <form asp-action="Create">
+    <form asp-action="Create" enctype="multipart/form-data">
         @if (ViewBag.Error != null)
         {
             <div class="alert alert-danger alert-dismissable">
@@ -203,7 +203,7 @@
                                                     <span class="fileinput-new"> انتخاب کنید </span>
                                                     <span class="fileinput-exists"> تغییر فایل </span>
                                                     <input value="" name="..." type="hidden">
-                                                    <input name="files" accept=".pdf,.doc,.docx,.zip,.rar,.jpg,.png,.gif,.jpeg,.tif,.tiff,.JPG,.PNG" type="file">
+                                                    <input asp-for="File" accept=".pdf,.doc,.docx,.zip,.rar,.jpg,.png,.gif,.jpeg,.tif,.tiff,.JPG,.PNG" type="file">
                                                 </span>
                                                 <a href="javascript:;" class="input-group-addon btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف فایل </a>
                                             </div>
