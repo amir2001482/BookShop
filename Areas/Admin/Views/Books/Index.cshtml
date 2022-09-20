@@ -126,6 +126,7 @@
                                 <th class="text-center">@Html.SortableHeaderFor(model => model.Price, "Price")</th>
                                 <th class="text-center">@Html.SortableHeaderFor(model => model.PublishDate, "PublishDate")</th>
                                 <th style="width:25px;">@Html.SortableHeaderFor(model => model.IsPublish, "IsPublish")</th>
+                                <th class="text-center">دانلود فایل</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -146,6 +147,9 @@
                                     </td>
                                     <td class="text-center">
                                         <label class="badge @(item.IsPublish=="منتشر شده"?"badge-success":"badge-danger") btn-block">@item.IsPublish</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-action="Download" asp-route-id="@item.BookID" class="btn btn-info btn-sm "></a>
                                     </td>
                                     <td class="text-center">
                                         <a href="/Admin/Books/Details/@item.BookID" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>
