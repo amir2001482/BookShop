@@ -47,7 +47,7 @@ namespace BookShop.Models.ViewModels
 
         public string ImageBase64 { get; set; }
 
-        public byte[] Image { get; set; }
+        public IFormFile Image { get; set; }
 
         [Display(Name = "تعداد صفحات")]
         public int NumOfPages { get; set; }
@@ -85,6 +85,7 @@ namespace BookShop.Models.ViewModels
         [Display(Name = "فایل")]
         public IFormFile File { get; set; }
         public string FileName { get; set; }
+        public byte[] ImageByte { get; set; }
     }
 
     public class BooksSubCategoriesViewModel

@@ -191,6 +191,7 @@ namespace BookShop.Areas.Admin.Controllers
                                          Weight = b.Weight,
                                          RecentIsPublish = (bool)b.IsPublish,
                                          PublishDate = b.PublishDate,
+                                         ImageByte = b.Image
 
                                      }).FirstAsync();
 
@@ -297,6 +298,16 @@ namespace BookShop.Areas.Admin.Controllers
             Memory.Position = 0;
             return File(Memory, FileExtentions.GetContentType(Path));
 
+        }
+
+        public async Task<IActionResult> ViewImage(int bookId)
+        {
+            var Book = await _UW.BaseRepository<Book>().FindByIDAsync(bookId);
+            if (Book == null)
+                return NotFound();
+            var memory = new MemoryStream(Book.Image);
+            return new FileStreamResult(memory, "image/png");
+           
         }
     }
 }

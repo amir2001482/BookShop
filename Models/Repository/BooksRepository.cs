@@ -4,6 +4,7 @@ using BookShop.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -177,6 +178,14 @@ namespace BookShop.Models.Repository
                     book_Categories = categories,
                     File = viewModel.FileName
                 };
+                if(viewModel.Image != null)
+                {
+                    using(var memory = new MemoryStream())
+                    {
+                        await viewModel.Image.CopyToAsync(memory);
+                        book.Image = memory.ToArray();
+                    }
+                }
 
                 await _UW.BaseRepository<Book>().CreateAsync(book);
                 await _UW.Commit();

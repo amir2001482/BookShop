@@ -38,13 +38,20 @@
                                     <div class="col-md-12 text-center">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                             <div class="fileinput-new thumbnail" style="height: 150px;">
-                                                <img src="/images/No_Image_Available.jpg" />
+                                                @if (Model.ImageByte != null)
+                                                {
+                                                    <img src="/Admin/Books/ViewImage/@Model.BookID" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="/images/No_Image_Available.jpg" />
+                                                }
                                             </div>
                                             <div class="fileinput-preview fileinput-exists thumbnail" style="height:200px"> </div>
                                             <div>
                                                 <span class="btn default btn-file">
                                                     <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
-                                                    <span class="fileinput-exists btn btn-default"> تغییر عکس </span>
+                                                    <span class="fileinput-exists btn btn-info"> تغییر عکس </span>
                                                     <input type="file" name="Image" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" />
                                                 </span>
                                                 <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
