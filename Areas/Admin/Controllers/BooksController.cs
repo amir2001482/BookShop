@@ -96,18 +96,32 @@ namespace BookShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BooksCreateEditViewModel viewModel)
         {
+
             if (ModelState.IsValid)
             {
+                bool result = false;
                 if(viewModel.File != null)
                 {
+                    var types = FileExtentions.FileType.PDF;
                     var FileExtention = Path.GetExtension(viewModel.File.FileName);
-                    var newFileName = string.Concat(Guid.NewGuid().ToString(), FileExtention);
-                    var FilePath = $"{_env.WebRootPath}/BooksFiles/{newFileName}";
-                    using(var strame = new FileStream(FilePath , FileMode.Create))
+                    using (var memory = new MemoryStream())
                     {
-                        await viewModel.File.CopyToAsync(strame);
+                        await viewModel.File.CopyToAsync(memory);
+                        result = FileExtentions.IsValidFile(memory.ToArray(), types, FileExtention.Replace(".", " "));
+
+                        if (result)
+                        {
+                            var newFileName = string.Concat(Guid.NewGuid().ToString(), FileExtention);
+                            var FilePath = $"{_env.WebRootPath}/BooksFiles/{newFileName}";
+                            using (var strame = new FileStream(FilePath, FileMode.Create))
+                            {
+                                await viewModel.File.CopyToAsync(strame);
+                            }
+                            viewModel.FileName = newFileName;
+                        }
+                      
                     }
-                    viewModel.FileName = newFileName;
+                  
 
                 }
                 if (await _UW.BooksRepository.CreateBookAsync(viewModel))

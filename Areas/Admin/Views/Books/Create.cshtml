@@ -39,6 +39,7 @@
                                                 </span>
                                                 <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
                                             </div>
+                                            <span asp-validation-for="Image" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -203,11 +204,12 @@
                                                     <span class="fileinput-new"> انتخاب کنید </span>
                                                     <span class="fileinput-exists"> تغییر فایل </span>
                                                     <input value="" name="..." type="hidden">
-                                                    <input asp-for="File" accept=".pdf,.doc,.docx,.zip,.rar,.jpg,.png,.gif,.jpeg,.tif,.tiff,.JPG,.PNG" type="file">
+                                                    <input asp-for="File" accept=".pdf,.doc" type="file">
                                                 </span>
                                                 <a href="javascript:;" class="input-group-addon btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف فایل </a>
                                             </div>
                                         </div>
+                                        <span asp-validation-for="File" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>

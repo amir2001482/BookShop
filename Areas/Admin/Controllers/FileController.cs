@@ -28,37 +28,46 @@ namespace BookShop.Areas.Admin.Controllers
         [Route("Upload")] //for ajax upload
         public async Task<IActionResult> Upload(IEnumerable<IFormFile> files)
         {
-            foreach(var item in files)
+            try
             {
-                var FileRoot = Path.Combine(_env.WebRootPath, "GalleryFiles");
-                if (!Directory.Exists(FileRoot))
-                    Directory.CreateDirectory(FileRoot);
-                var FileExtention = Path.GetExtension(item.FileName);
-                var FileName = string.Concat(Guid.NewGuid().ToString(), FileExtention);
-                var FilePath = Path.Combine(FileRoot, FileName);
-                //using(var stream = new FileStream(FilePath , FileMode.Create))
-                //{
-                //    await item.CopyToAsync(stream);
-                //}
-
-                using (var memory = new MemoryStream())
+                foreach (var item in files)
                 {
-                    await item.CopyToAsync(memory);
-                    using(var image = new MagickImage(memory.ToArray()))
+                    var FileRoot = Path.Combine(_env.WebRootPath, "GalleryFiles");
+                    if (!Directory.Exists(FileRoot))
+                        Directory.CreateDirectory(FileRoot);
+                    var FileExtention = Path.GetExtension(item.FileName);
+                    var FileName = string.Concat(Guid.NewGuid().ToString(), FileExtention);
+                    var FilePath = Path.Combine(FileRoot, FileName);
+                    //using(var stream = new FileStream(FilePath , FileMode.Create))
+                    //{
+                    //    await item.CopyToAsync(stream);
+                    //}
+
+                    using (var memory = new MemoryStream())
                     {
-                        image.Quality = 50;
-                        image.Write(FilePath);
+                        await item.CopyToAsync(memory);
+                        using (var image = new MagickImage(memory.ToArray()))
+                        {
+                            image.Resize(image.Width / 2, image.Height / 2);
+                            image.Quality = 50;
+                            image.Write(FilePath);
+                        }
                     }
+                    CompressImage(FilePath);
+
+
+
                 }
-                CompressImage(FilePath);
+                //ViewBag.Alert = "آپلود فایل با موفقیت انجام شد .";
+                //return View(); 
 
-
-
+                return new JsonResult("Success"); // for ajax upload if dont want ajax comment this and uncomment past comment.
             }
-            //ViewBag.Alert = "آپلود فایل با موفقیت انجام شد .";
-            //return View(); 
-
-            return new JsonResult("Success"); // for ajax upload if dont want ajax comment this and uncomment past comment.
+            catch
+            {
+                return new EmptyResult();
+            }
+          
 
         }
 
@@ -81,6 +90,22 @@ namespace BookShop.Areas.Admin.Controllers
             var optimaizer = new ImageOptimizer();
             optimaizer.Compress(Image);
             Image.Refresh();
+        }
+
+        public IActionResult SaveImageToPdf()
+        {
+            var FileRoot = Path.Combine(_env.WebRootPath, "GalleryFiles");
+            using(var image = new MagickImage(FileRoot + "logo-header.png"))
+            {
+                image.Write(FileRoot + "PdfImage.pdf");
+            }
+
+            var stream = new FileStream(FileRoot, FileMode.Open, FileAccess.Read);
+
+            return new FileStreamResult(stream, "application/pdf");
+            
+                
+            
         }
     }
 }

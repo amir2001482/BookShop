@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BookShop.Attributes;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -46,6 +47,7 @@ namespace BookShop.Models.ViewModels
         public int Stock { get; set; }
 
         public string ImageBase64 { get; set; }
+        [UploadFileExtensions(".jpg,.png,.gif,.jpeg" , ErrorMessage ="فرمت عکس معتبر نمی باشد")]
 
         public IFormFile Image { get; set; }
 
@@ -83,6 +85,7 @@ namespace BookShop.Models.ViewModels
         public int[] CategoryID { get; set; }
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         [Display(Name = "فایل")]
+        [UploadFileExtensions("pdf" , ErrorMessage ="این فایل نا معتبر است.")]
         public IFormFile File { get; set; }
         public string FileName { get; set; }
         public byte[] ImageByte { get; set; }
