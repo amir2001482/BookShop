@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using ImageMagick;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -35,11 +36,23 @@ namespace BookShop.Areas.Admin.Controllers
                 var FileExtention = Path.GetExtension(item.FileName);
                 var FileName = string.Concat(Guid.NewGuid().ToString(), FileExtention);
                 var FilePath = Path.Combine(FileRoot, FileName);
-                using(var stream = new FileStream(FilePath , FileMode.Create))
+                //using(var stream = new FileStream(FilePath , FileMode.Create))
+                //{
+                //    await item.CopyToAsync(stream);
+                //}
+
+                using (var memory = new MemoryStream())
                 {
-                    await item.CopyToAsync(stream);
+                    await item.CopyToAsync(memory);
+                    using(var image = new MagickImage(memory.ToArray()))
+                    {
+                        image.Quality = 50;
+                        image.Write(FilePath);
+                    }
                 }
-               
+                CompressImage(FilePath);
+
+
 
             }
             //ViewBag.Alert = "آپلود فایل با موفقیت انجام شد .";
@@ -47,6 +60,27 @@ namespace BookShop.Areas.Admin.Controllers
 
             return new JsonResult("Success"); // for ajax upload if dont want ajax comment this and uncomment past comment.
 
+        }
+
+        public  IActionResult ImageProcess()
+        {
+            var FolderPath = $"{_env.ContentRootPath}/Images";
+            using (var Image = new MagickImage(FolderPath + "avatar-1.png")) 
+            {
+                Image.Resize(300, 300);
+                Image.Quality = 50;
+                Image.Write(FolderPath + "OutPutImage");
+            }
+            return View();
+
+        }
+
+        public void CompressImage(string path)
+        {
+            var Image = new FileInfo(path);
+            var optimaizer = new ImageOptimizer();
+            optimaizer.Compress(Image);
+            Image.Refresh();
         }
     }
 }
