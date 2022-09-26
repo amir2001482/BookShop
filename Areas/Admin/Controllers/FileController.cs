@@ -1,4 +1,6 @@
-﻿using ImageMagick;
+﻿using BookShop.Classes;
+using BookShop.Models.ViewModels;
+using ImageMagick;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -106,6 +108,41 @@ namespace BookShop.Areas.Admin.Controllers
             
                 
             
+        }
+
+        [HttpGet]
+        public IActionResult UploadLargeFile()
+        {
+            return View();
+        }
+        [HttpPost , ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadLargeFile(UploadLargeFileViewModel model) 
+        {
+            if (ModelState.IsValid)
+            {
+                var FileRoot = Path.Combine(_env.WebRootPath, "LargeFiles");
+                if (!Directory.Exists(FileRoot))
+                    Directory.CreateDirectory(FileRoot);
+              
+                var FileExtention = Path.GetExtension(model.File.FileName);
+                var types = FileExtentions.FileType.PDF;
+               
+                using (var memory = new MemoryStream())
+                {
+                    var result = FileExtentions.IsValidFile(memory.ToArray(), types, FileExtention.Replace(".", " "));
+                    if (result)
+                    {
+                        var FileName = string.Concat(Guid.NewGuid().ToString(), FileExtention);
+                        var FilePath = Path.Combine(FileRoot, FileName);
+                        using (var strame = new FileStream(FilePath, FileMode.Create))
+                        {
+                            await model.File.CopyToAsync(strame);
+                        }
+                    }
+                   
+                }
+            }
+            return View();
         }
     }
 }

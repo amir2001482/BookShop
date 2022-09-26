@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -184,6 +185,12 @@ namespace BookShop
                     options.ClientId = "dj0yJmk9RnJySm9leFlVNmRhJmQ9WVdrOWJGWTBWRXhrUVRZbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWU3";
                     options.ClientSecret = "9a09ae08a9a9b0e32c3a255b9da3fea7a3090fa1";
                 });
+            // this service for handeling erorr of multipart body lenght limit when trying to upload file.
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = long.MaxValue;
+                options.ValueLengthLimit = int.MaxValue;
+            });
 
             //services.AddMvc(options =>
             //{
