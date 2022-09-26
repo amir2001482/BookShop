@@ -99,35 +99,28 @@ namespace BookShop.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                bool result = false;
-                if(viewModel.File != null)
+                UploadFileResult result = new UploadFileResult();
+                if (viewModel.File != null)
                 {
-                    var types = FileExtentions.FileType.PDF;
-                    var FileExtention = Path.GetExtension(viewModel.File.FileName);
-                    using (var memory = new MemoryStream())
+                    string NewFileName = _UW.BooksRepository.CheckFileName(viewModel.File.FileName);
+                    var FilePath = $"{_env.WebRootPath}/BooksFiles/{NewFileName}";
+                    result = await _UW.BooksRepository.UploadFileAsync(viewModel.File, FilePath);
+                    if (result.IsSuccess == true || result == null)
                     {
-                        await viewModel.File.CopyToAsync(memory);
-                        result = FileExtentions.IsValidFile(memory.ToArray(), types, FileExtention.Replace(".", " "));
-
-                        if (result)
-                        {
-                            var newFileName = string.Concat(Guid.NewGuid().ToString(), FileExtention);
-                            var FilePath = $"{_env.WebRootPath}/BooksFiles/{newFileName}";
-                            using (var strame = new FileStream(FilePath, FileMode.Create))
-                            {
-                                await viewModel.File.CopyToAsync(strame);
-                            }
-                            viewModel.FileName = newFileName;
-                        }
-                      
+                        if (await _UW.BooksRepository.CreateBookAsync(viewModel))
+                            return RedirectToAction("Index");
+                        else
+                            ViewBag.Error = "در انجام عملیات خطایی رخ داده است.";
                     }
-                  
-
+                    else
+                    {
+                        foreach(var erorr in result.Errors)
+                        {
+                            ModelState.AddModelError(null, erorr);
+                        }
+                    }
                 }
-                if (await _UW.BooksRepository.CreateBookAsync(viewModel))
-                    return RedirectToAction("Index");
-                else
-                    ViewBag.Error = "در انجام عملیات خطایی رخ داده است.";
+                
             }
 
             ViewBag.LanguageID = new SelectList(_UW.BaseRepository<Language>().FindAll(), "LanguageID", "LanguageName");
@@ -154,6 +147,12 @@ namespace BookShop.Areas.Admin.Controllers
             var Book =await _UW.BaseRepository<Book>().FindByIDAsync(id);
             if (Book != null)
             {
+                var Path = $"{_env.WebRootPath}/BooksFiles/{Book.File}";
+                if (System.IO.File.Exists(Path))
+                {
+                    System.IO.File.Delete(Path);
+                }
+                Book.File = null;
                 Book.Delete = true;
                 await _UW.Commit();
                 return RedirectToAction("Index");

@@ -10,4 +10,19 @@ namespace BookShop.Models.ViewModels
     {
         public IFormFile File { get; set; }
     }
+
+    public class UploadFileResult
+    {
+        public UploadFileResult()
+        {
+
+        }
+        public UploadFileResult(bool isSuccess , List<string> errors)
+        {
+            IsSuccess = isSuccess;
+            Errors = errors;
+        }
+        public bool? IsSuccess { get; set; }
+        public List<string> Errors { get; set; }
+    }
 }

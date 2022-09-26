@@ -1,4 +1,5 @@
 ﻿using BookShop.Models.ViewModels;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace BookShop.Models.Repository
         Task<bool> CreateBookAsync(BooksCreateEditViewModel ViewModel);
         Task<bool> EditBookAsync(BooksCreateEditViewModel ViewModel);
         List<BooksIndexViewModel> GetAllBooks(string title, string ISBN, string Language, string Publisher, string Author, string Translator, string Category);
+        Task<UploadFileResult> UploadFileAsync(IFormFile file, string path);
+        string CheckFileName(string fileName);
     }
 }
