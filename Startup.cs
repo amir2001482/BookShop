@@ -59,38 +59,14 @@ namespace BookShop
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<BookShopContext>();
-            services.AddTransient<BooksRepository>();
-            services.AddTransient<ConvertDate>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IJwtService, JwtService>();
-            services.AddScoped<IConvertDate, ConvertDate>();
-            services.AddScoped<IApplicationRoleManager, ApplicationRoleManager>();
-            //services.AddScoped<ApplicationUser>();
-            services.AddScoped<IApplicationUserManager, ApplicationUserManager>();
-            services.AddScoped<ApplicationIdentityErrorDescriber>();
-            services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<ISmsSender, SmsSender>();
-            //services.AddTransient<RoleManager<ApplicationRoles>>();
-
-
-            services.AddHttpClient();
-
-            services.AddPaging(options =>
-            {
-                options.ViewName = "Bootstrap4";
-                options.HtmlIndicatorDown = "<i class='fa fa-sort-amount-down'></i>";
-                options.HtmlIndicatorUp = "<i class='fa fa-sort-amount-up'></i>";
-            });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.AddCustomPolicies();
+            services.AddCustomIdentityServices(_siteSettings);
+            services.AddCustomApplicationServices();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(2);
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
                 options.Cookie.HttpOnly = true;
             });
-
             services.AddApiVersioning(options =>
             {
                 options.ApiVersionReader = ApiVersionReader.Combine(new QueryStringApiVersionReader(), new HeaderApiVersionReader("api-version"));
@@ -100,108 +76,21 @@ namespace BookShop
                 //options.Conventions.Controller<SampleV1Controller>().HasApiVersion(new ApiVersion(1, 0));           by this option we can set a version to some controller without ApiVersion Attribute
 
             });
-
-            services.AddAuthentication(options =>
-            {
-                //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                //options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme; 
-            })
-                .AddJwtBearer(options =>
-                {
-                    var secretkey = Encoding.UTF8.GetBytes(_siteSettings.jwtSettings.Secretkey);
-                    var encryptionkey = Encoding.UTF8.GetBytes(_siteSettings.jwtSettings.EncryptKey);
-
-                    var validationParameters = new TokenValidationParameters
-                    {
-                        RequireSignedTokens = true,
-
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(secretkey),
-
-                        RequireExpirationTime = true,
-                        ValidateLifetime = true,
-
-                        ValidateAudience = true, //default : false
-                        ValidAudience = _siteSettings.jwtSettings.Audience,
-
-                        ValidateIssuer = true, //default : false
-                        ValidIssuer = _siteSettings.jwtSettings.Issuer,
-
-                        TokenDecryptionKey = new SymmetricSecurityKey(encryptionkey)
-                    };
-
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
-                    options.TokenValidationParameters = validationParameters;
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnAuthenticationFailed = context =>
-                        {
-                            if (context.Exception != null)
-                            {
-                                if (context.Exception != null)
-                                    throw new AppException(StatusCodeEnum.UnAuthorized, "Authentication failed.", HttpStatusCode.Unauthorized, context.Exception, null);
-
-                            }
-                            return Task.CompletedTask;
-                        },
-                        OnTokenValidated = async context =>
-                        {
-                            var userRepository = context.HttpContext.RequestServices.GetRequiredService<IApplicationUserManager>();
-
-                            var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
-                            if (claimsIdentity.Claims?.Any() != true)
-                                context.Fail("This token has no claims.");
-
-                            var securityStamp = claimsIdentity.FindFirstValue(new ClaimsIdentityOptions().SecurityStampClaimType);
-                            if (!securityStamp.HasValue())
-                                context.Fail("This token has no secuirty stamp");
-
-                            var userId = claimsIdentity.GetUserId<string>();
-                            var user = await userRepository.GetUserAsync(context.Principal);
-
-                            if (user.SecurityStamp != securityStamp)
-                                context.Fail("Token secuirty stamp is not valid.");
-
-                            if (!user.IsActive)
-                                context.Fail("User is not active.");
-                        },
-                        OnChallenge = context =>
-                        {
-                            if (context.AuthenticateFailure != null)
-                                throw new AppException(StatusCodeEnum.UnAuthorized, "Authenticate failure.", HttpStatusCode.Unauthorized, context.AuthenticateFailure, null);
-                            throw new AppException(StatusCodeEnum.UnAuthorized, "You are unauthorized to access this resource.", HttpStatusCode.Unauthorized);
-                        }
-                    };
-                })
-                .AddGoogle(options =>
-                {
-                    options.ClientId = "721620776951-9jmie7ee9nht9rgke7lr6aqcbn2n1dfn.apps.googleusercontent.com";
-                    options.ClientSecret = "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";
-                })
-                .AddYahoo(options =>
-                {
-                    options.ClientId = "dj0yJmk9RnJySm9leFlVNmRhJmQ9WVdrOWJGWTBWRXhrUVRZbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWU3";
-                    options.ClientSecret = "9a09ae08a9a9b0e32c3a255b9da3fea7a3090fa1";
-                });
-            // this service for handeling erorr of multipart body lenght limit when trying to upload file.
             services.Configure<FormOptions>(options =>
             {
                 options.MultipartBodyLengthLimit = long.MaxValue;
                 options.ValueLengthLimit = int.MaxValue;
             });
-
-            //services.AddMvc(options =>
-            //{
-            //    var F = services.BuildServiceProvider().GetService<IStringLocalizerFactory>();
-            //    var L = F.Create("ModelBindingMessages", "BookShop");
-            //    options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
-            //     (x) => L["انتخاب یکی از موارد لیست الزامی است."]);
-
-            //});
-
-
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/SignIn";
+                //options.AccessDeniedPath = "/Home/AccessDenied";
+            });
+            services.AddPaging(options => {
+                options.ViewName = "Bootstrap4";
+                options.HtmlIndicatorDown = "<i class='fa fa-sort-amount-down'></i>";
+                options.HtmlIndicatorUp = "<i class='fa fa-sort-amount-up'></i>";
+            });
             // this is configuration for modelState erorrs that transfer modelState erorrs to badRequestObjectresult and implements apiController attribute
             //services.Configure<ApiBehaviorOptions>(options =>
             //{
@@ -245,10 +134,8 @@ namespace BookShop
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            app.UseAuthentication();
+            app.UseCustomIdentityServices();
             app.UseSession();
-
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

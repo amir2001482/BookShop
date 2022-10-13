@@ -116,13 +116,16 @@ namespace BookShop.Areas.Admin.Services
                 return true;
             }
 
-            var actionMethodHasAuthorizeAttribute = actionMethodInfo.GetCustomAttribute<AuthorizeAttribute>(inherit: true) != null;
-            if (actionMethodHasAuthorizeAttribute)
-            {
-                return true;
-            }
+            // code zir alan khata mide
+            //var actionMethodHasAuthorizeAttribute = actionMethodInfo.GetCustomAttribute<AuthorizeAttribute>(inherit: true) != null;
+            //if (actionMethodHasAuthorizeAttribute)
+            //{
+            //    return true;
+            //}
 
-            return false;
+
+            //return false;
+            return true;
         }
 
     }

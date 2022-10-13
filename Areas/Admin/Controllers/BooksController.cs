@@ -22,19 +22,18 @@ using System.Threading.Tasks;
 namespace BookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize]
     [DisplayName("مدیریت کتاب ها")]
     public class BooksController : Controller
     {
         private readonly IUnitOfWork _UW;
         private readonly IHostingEnvironment _env;
-        public BooksController(IUnitOfWork UW , IHostingEnvironment env)
+        public BooksController(IUnitOfWork UW, IHostingEnvironment env)
         {
             _UW = UW;
             _env = env;
         }
 
-        //[Authorize(Policy =ConstantPolicies.DynamicPermission)]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         [DisplayName("مشاهده کتاب ها")]
         public IActionResult Index(int page = 1, int row = 10, string sortExpression = "Title", string title = "")
         {
@@ -78,7 +77,7 @@ namespace BookShop.Areas.Admin.Controllers
             return View(Books);
         }
 
-        //[Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         [DisplayName("افزودن کتاب جدید")]
         public IActionResult Create()
         {
@@ -100,27 +99,29 @@ namespace BookShop.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 UploadFileResult result = new UploadFileResult();
+                string NewFileName = null;
                 if (viewModel.File != null)
                 {
-                    string NewFileName = _UW.BooksRepository.CheckFileName(viewModel.File.FileName);
+                    NewFileName = _UW.BooksRepository.CheckFileName(viewModel.File.FileName);
                     var FilePath = $"{_env.WebRootPath}/BooksFiles/{NewFileName}";
                     result = await _UW.BooksRepository.UploadFileAsync(viewModel.File, FilePath);
-                    if (result.IsSuccess == true || result == null)
-                    {
-                        if (await _UW.BooksRepository.CreateBookAsync(viewModel))
-                            return RedirectToAction("Index");
-                        else
-                            ViewBag.Error = "در انجام عملیات خطایی رخ داده است.";
-                    }
+                }
+                if (result.IsSuccess == true || result.IsSuccess == null)
+                {
+                    viewModel.FileName = NewFileName;
+                    if (await _UW.BooksRepository.CreateBookAsync(viewModel))
+                        return RedirectToAction("Index");
                     else
+                        ViewBag.Error = "در انجام عملیات خطایی رخ داده است.";
+                }
+                else
+                {
+                    foreach (var erorr in result.Errors)
                     {
-                        foreach(var erorr in result.Errors)
-                        {
-                            ModelState.AddModelError(null, erorr);
-                        }
+                        ModelState.AddModelError(null, erorr);
                     }
                 }
-                
+
             }
 
             ViewBag.LanguageID = new SelectList(_UW.BaseRepository<Language>().FindAll(), "LanguageID", "LanguageName");
@@ -130,21 +131,22 @@ namespace BookShop.Areas.Admin.Controllers
             viewModel.SubCategoriesVM = new BooksSubCategoriesViewModel(_UW.BooksRepository.GetAllCategories(), viewModel.CategoryID);
             return View(viewModel);
         }
-
-        //[Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         [DisplayName("مشاهده جزئیات کتاب")]
         public IActionResult Details(int id)
         {
-            var BookInfo = _UW._Context.Query<ReadAllBook>().Where(b => b.BookID == id).First();
-
-            return View(BookInfo);
+            //ReadAllBook yek query dar data base ast
+            //var BookInfo = _UW._Context.Query<ReadAllBook>().Where(b => b.BookID == id).First();
+            //var BookInfo = _UW.BaseRepository<Book>().FindByIDAsync(id);
+            //return View(BookInfo);
+            return View(new ReadAllBook());
         }
 
-        //[Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         [DisplayName("حذف کتاب")]
         public async Task<IActionResult> Delete(int id)
         {
-            var Book =await _UW.BaseRepository<Book>().FindByIDAsync(id);
+            var Book = await _UW.BaseRepository<Book>().FindByIDAsync(id);
             if (Book != null)
             {
                 var Path = $"{_env.WebRootPath}/BooksFiles/{Book.File}";
@@ -166,7 +168,7 @@ namespace BookShop.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         [DisplayName("ویرایش اطلاعات کتاب")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -185,7 +187,7 @@ namespace BookShop.Areas.Admin.Controllers
 
                 else
                 {
-                    var ViewModel = (from b in _UW._Context.Books.Include(l => l.Language)
+                    var ViewModel = await( from b in _UW._Context.Books.Include(l => l.Language)
                                      .Include(p => p.Publisher)
                                      where (b.BookID == id)
                                      select new BooksCreateEditViewModel
@@ -204,6 +206,7 @@ namespace BookShop.Areas.Admin.Controllers
                                          Weight = b.Weight,
                                          RecentIsPublish = (bool)b.IsPublish,
                                          PublishDate = b.PublishDate,
+                                         FileName = b.File,
                                          ImageByte = b.Image
 
                                      }).FirstAsync();
@@ -220,50 +223,81 @@ namespace BookShop.Areas.Admin.Controllers
                                                    where (c.BookID == id)
                                                    select c.CategoryID).ToArrayAsync();
 
-                    ViewModel.Result.AuthorID = AuthorsArray;
-                    ViewModel.Result.TranslatorID = TranslatorsArray;
-                    ViewModel.Result.CategoryID = CategoriesArray;
+                    ViewModel.AuthorID = AuthorsArray;
+                    ViewModel.TranslatorID = TranslatorsArray;
+                    ViewModel.CategoryID = CategoriesArray;
 
                     ViewBag.LanguageID = new SelectList(_UW.BaseRepository<Language>().FindAll(), "LanguageID", "LanguageName");
                     ViewBag.PublisherID = new SelectList(_UW.BaseRepository<Publisher>().FindAll(), "PublisherID", "PublisherName");
                     ViewBag.AuthorID = new SelectList(_UW.BaseRepository<Author>().FindAll().Select(t => new AuthorList { AuthorID = t.AuthorID, NameFamily = t.FirstName + " " + t.LastName }), "AuthorID", "NameFamily");
                     ViewBag.TranslatorID = new SelectList(_UW.BaseRepository<Translator>().FindAll().Select(t => new TranslatorList { TranslatorID = t.TranslatorID, NameFamily = t.Name + " " + t.Family }), "TranslatorID", "NameFamily");
-                    ViewModel.Result.SubCategoriesVM = new BooksSubCategoriesViewModel(_UW.BooksRepository.GetAllCategories(), CategoriesArray);
+                    ViewModel.SubCategoriesVM = new BooksSubCategoriesViewModel(_UW.BooksRepository.GetAllCategories(), CategoriesArray);
 
-                    return View(await ViewModel);
+                    return View(ViewModel);
                 }
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(BooksCreateEditViewModel ViewModel)
+        public async Task<IActionResult> Edit(BooksCreateEditViewModel viewModel)
         {
             ViewBag.LanguageID = new SelectList(_UW.BaseRepository<Language>().FindAll(), "LanguageID", "LanguageName");
             ViewBag.PublisherID = new SelectList(_UW.BaseRepository<Publisher>().FindAll(), "PublisherID", "PublisherName");
             ViewBag.AuthorID = new SelectList(_UW.BaseRepository<Author>().FindAll().Select(t => new AuthorList { AuthorID = t.AuthorID, NameFamily = t.FirstName + " " + t.LastName }), "AuthorID", "NameFamily");
             ViewBag.TranslatorID = new SelectList(_UW.BaseRepository<Translator>().FindAll().Select(t => new TranslatorList { TranslatorID = t.TranslatorID, NameFamily = t.Name + " " + t.Family }), "TranslatorID", "NameFamily");
-            ViewModel.SubCategoriesVM = new BooksSubCategoriesViewModel(_UW.BooksRepository.GetAllCategories(), ViewModel.CategoryID);
+            viewModel.SubCategoriesVM = new BooksSubCategoriesViewModel(_UW.BooksRepository.GetAllCategories(), viewModel.CategoryID);
 
             if (ModelState.IsValid)
             {
-                if (await _UW.BooksRepository.EditBookAsync(ViewModel))
+                UploadFileResult result = new UploadFileResult();
+                string Path;
+                string NewFileName = viewModel.FileName;
+                if (viewModel.File != null)
                 {
-                    ViewBag.MsgSuccess = "ذخیره تغییرات با موفقیت انجام شد.";
-                    return View(ViewModel);
+                    NewFileName = _UW.BooksRepository.CheckFileName(viewModel.File.FileName);
+                    Path = $"{_env.WebRootPath}/BooksFiles/{NewFileName}";
+                    result = await _UW.BooksRepository.UploadFileAsync(viewModel.File, Path);
+                }
+                if (result.IsSuccess == true || result.IsSuccess == null)
+                {
+                    if(result.IsSuccess == true)
+                    {
+                        Path = $"{_env.WebRootPath}/BooksFiles/{viewModel.File.FileName}"; // file gadimi bayad hazf shavad
+                        if (System.IO.File.Exists(Path))
+                        {
+                            System.IO.File.Delete(Path);
+                        }
+
+                    }
+                    viewModel.FileName = NewFileName;
+                    if (await _UW.BooksRepository.EditBookAsync(viewModel))
+                    {
+                        ViewBag.MsgSuccess = "ذخیره تغییرات با موفقیت انجام شد.";
+                        return View(viewModel);
+                    }
+                    else
+                    {
+                        ViewBag.MsgFailed = "در ذخیره تغییرات خطایی رخ داده است.";
+                        return View(viewModel);
+                    }
                 }
                 else
                 {
-                    ViewBag.MsgFailed = "در ذخیره تغییرات خطایی رخ داده است.";
-                    return View(ViewModel);
+                    foreach (var erorr in result.Errors)
+                    {
+                        ModelState.AddModelError(null, erorr);
+                    }
+
+                    return View(viewModel);
                 }
             }
-
             else
             {
                 ViewBag.MsgFailed = "اطلاعات فرم نامعتبر است.";
-                return View(ViewModel);
+                return View(viewModel);
             }
+
         }
 
         public async Task<IActionResult> SearchByIsbn(string ISBN)
@@ -295,14 +329,14 @@ namespace BookShop.Areas.Admin.Controllers
 
         }
 
-        public async Task<IActionResult> Download(int bookId)
+        public async Task<IActionResult> Download(int id)
         {
-            var Book = await _UW.BaseRepository<Book>().FindByIDAsync(bookId);
+            var Book = await _UW.BaseRepository<Book>().FindByIDAsync(id);
             if (Book == null)
                 return NotFound();
             var Path = $"{_env.WebRootPath}/BooksFiles/{Book.File}";
             var Memory = new MemoryStream();
-            using(var stream = new FileStream(Path , FileMode.Open))
+            using (var stream = new FileStream(Path, FileMode.Open))
             {
                 await stream.CopyToAsync(Memory);
 
@@ -313,14 +347,14 @@ namespace BookShop.Areas.Admin.Controllers
 
         }
 
-        public async Task<IActionResult> ViewImage(int bookId)
+        public async Task<IActionResult> ViewImage(int id)
         {
-            var Book = await _UW.BaseRepository<Book>().FindByIDAsync(bookId);
+            var Book = await _UW.BaseRepository<Book>().FindByIDAsync(id);
             if (Book == null)
                 return NotFound();
             var memory = new MemoryStream(Book.Image);
             return new FileStreamResult(memory, "image/png");
-           
+
         }
     }
 }

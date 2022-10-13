@@ -5,7 +5,7 @@
 }
 
 <div class="container-fluid">
-    <form asp-action="Edit">
+    <form asp-action="Edit" enctype="multipart/form-data">
         @if (ViewBag.MsgSuccess != null)
         {
             <div class="alert alert-success alert-dismissable">
@@ -34,6 +34,7 @@
                                 ویرایش تصویر جلد کتاب
                             </div>
                             <div class="card-body">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
@@ -111,6 +112,7 @@
                             <div class="row">
                                 <input type="hidden" asp-for="BookID" />
                                 <input type="hidden" asp-for="RecentIsPublish" />
+                                <input type="hidden" asp-for="FileName" />
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-control-label" asp-for="Title"></label>
@@ -223,26 +225,67 @@
                                         <label asp-for="IsPublish" class="form-control-label"> </label>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="form-control-label">بارگزاری فایل کتاب</label>
-                                        <div class="fileinput fileinput-custom fileinput-new" data-provides="fileinput">
-                                            <div class="input-group input-large">
-                                                <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
-                                                    <i class="fa fa-file fileinput-exists"></i>&nbsp;
-                                                    <span class="fileinput-filename"></span>
+                                @if (Model.FileName != null)
+                                {
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td>دانلود فایل</td>
+                                                <td>ویرایش فایل</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <a asp-action="Download" asp-route-id="@Model.BookID" class="btn btn-info btn-sm">دانلود</a>
+                                                </td>
+                                                <td>
+                                                    <div class="fileinput fileinput-custom fileinput-new" data-provides="fileinput">
+                                                        <div class="input-group input-large">
+                                                            <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                                                <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                                                <span class="fileinput-filename"></span>
+                                                            </div>
+                                                            <span class="input-group-addon btn default btn-file">
+                                                                <span class="fileinput-new"> انتخاب کنید </span>
+                                                                <span class="fileinput-exists"> تغییر فایل </span>
+                                                                <input value="" name="..." type="hidden">
+                                                                <input asp-for="File" accept=".pdf" type="file">
+                                                            </span>
+                                                            <a href="javascript:;" class="input-group-addon btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف فایل </a>
+                                                        </div>
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-control-label">بارگزاری فایل کتاب</label>
+                                            <div class="fileinput fileinput-custom fileinput-new" data-provides="fileinput">
+                                                <div class="input-group input-large">
+                                                    <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                                        <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                                        <span class="fileinput-filename"></span>
+                                                    </div>
+                                                    <span class="input-group-addon btn default btn-file">
+                                                        <span class="fileinput-new"> انتخاب کنید </span>
+                                                        <span class="fileinput-exists"> تغییر فایل </span>
+                                                        <input value="" name="..." type="hidden">
+                                                        <input asp-for="File" accept=".pdf,.doc" type="file">
+                                                    </span>
+                                                    <a href="javascript:;" class="input-group-addon btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف فایل </a>
                                                 </div>
-                                                <span class="input-group-addon btn default btn-file">
-                                                    <span class="fileinput-new"> انتخاب کنید </span>
-                                                    <span class="fileinput-exists"> تغییر فایل </span>
-                                                    <input value="" name="..." type="hidden">
-                                                    <input name="files" accept=".pdf,.doc,.docx,.zip,.rar,.jpg,.png,.gif,.jpeg,.tif,.tiff,.JPG,.PNG" type="file">
-                                                </span>
-                                                <a href="javascript:;" class="input-group-addon btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف فایل </a>
                                             </div>
+                                            <span asp-validation-for="File" class="text-danger"></span>
                                         </div>
                                     </div>
-                                </div>
+                                }
+
                             </div>
                         </div>
                     </div>
