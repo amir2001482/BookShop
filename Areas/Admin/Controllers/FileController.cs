@@ -1,6 +1,5 @@
 ﻿using BookShop.Classes;
 using BookShop.Models.ViewModels;
-using ImageMagick;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -48,14 +47,18 @@ namespace BookShop.Areas.Admin.Controllers
                     using (var memory = new MemoryStream())
                     {
                         await item.CopyToAsync(memory);
-                        using (var image = new MagickImage(memory.ToArray()))
-                        {
-                            image.Resize(image.Width / 2, image.Height / 2);
-                            image.Quality = 50;
-                            image.Write(FilePath);
-                        }
+
+                        // install Magic.Net version 7.12.0 !!!!!!!
+
+
+                        //using (var image = new MagickImage(memory.ToArray()))
+                        //{
+                        //    image.Resize(image.Width / 2, image.Height / 2);
+                        //    image.Quality = 50;
+                        //    image.Write(FilePath);
+                        //}
                     }
-                    CompressImage(FilePath);
+                    //CompressImage(FilePath);
 
 
 
@@ -76,31 +79,40 @@ namespace BookShop.Areas.Admin.Controllers
         public  IActionResult ImageProcess()
         {
             var FolderPath = $"{_env.ContentRootPath}/Images";
-            using (var Image = new MagickImage(FolderPath + "avatar-1.png")) 
-            {
-                Image.Resize(300, 300);
-                Image.Quality = 50;
-                Image.Write(FolderPath + "OutPutImage");
-            }
+
+            // install package Magic.Net version 7.12.0 !!!!!!!!!!!!!
+
+
+            //using (var Image = new MagickImage(FolderPath + "avatar-1.png")) 
+            //{
+            //    Image.Resize(300, 300);
+            //    Image.Quality = 50;
+            //    Image.Write(FolderPath + "OutPutImage");
+            //}
             return View();
 
         }
 
-        public void CompressImage(string path)
-        {
-            var Image = new FileInfo(path);
-            var optimaizer = new ImageOptimizer();
-            optimaizer.Compress(Image);
-            Image.Refresh();
-        }
+        // install package Magic.Net version 7.12.0 !!!!!!!!!!!!!
+
+        //public void CompressImage(string path)
+        //{
+        //    var Image = new FileInfo(path);
+        //    var optimaizer = new ImageOptimizer();
+        //    optimaizer.Compress(Image);
+        //    Image.Refresh();
+        //}
 
         public IActionResult SaveImageToPdf()
         {
             var FileRoot = Path.Combine(_env.WebRootPath, "GalleryFiles");
-            using(var image = new MagickImage(FileRoot + "logo-header.png"))
-            {
-                image.Write(FileRoot + "PdfImage.pdf");
-            }
+
+            // install package Magic.Net version 7.12.0 !!!!!!!!!!!!!
+
+            //using(var image = new MagickImage(FileRoot + "logo-header.png"))
+            //{
+            //    image.Write(FileRoot + "PdfImage.pdf");
+            //}
 
             var stream = new FileStream(FileRoot, FileMode.Open, FileAccess.Read);
 
