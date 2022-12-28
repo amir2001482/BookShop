@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="node_modules\almond\package.json" />
     <Content Include="node_modules\jquery-mousewheel\LICENSE.txt" />
     <Content Include="node_modules\jquery-mousewheel\package.json" />

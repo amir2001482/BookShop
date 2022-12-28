@@ -155,7 +155,8 @@
                                             <a asp-action="Download" asp-route-id="@item.BookID" class="btn btn-info btn-sm">دانلود</a>
                                         </td>
                                         <td class="text-center">
-                                            <a href="/Admin/Books/Details/@item.BookID" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>
+                                            <a onclick="Detail(@item.BookID)" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>
+                                            @*<a href="/Admin/Books/Details/@item.BookID" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>*@
                                             <security-trimming asp-action="Edit" asp-controller="Books" asp-area="Admin">
                                                 <a href="/Admin/Books/Edit/@item.BookID" class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
                                             </security-trimming>
@@ -206,5 +207,18 @@ jQuery(document).ready(function($) {
 		comboTree2 = $('#justAnotherInputBox').comboTree({
 			source : SampleJSONData,
 			isMultiple: false
-		});
+        });
+
+    function Detail (id) {
+
+        $.ajax({
+            url: "Details/" + id,
+            type ="get"
+        }).done(function (result) {
+            $("#myModal").modal("show");
+            $(".modal-title").html("اطلاعات کتاب");
+            $(".modal-body").html(result);
+        })
+
+    }
 });</script>

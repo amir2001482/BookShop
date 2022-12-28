@@ -43,20 +43,43 @@
                     @*<span>@convertDate.ConvertMiladiToShamsi(DateTime.Now, "dddd d MMMM yyyy")</span>*@
                 </li>
                 <li class="nav-item dropdown">
-                   <partial name="_AdminLoginPartial"/>
+                    <partial name="_AdminLoginPartial" />
                 </li>
 
             </ul>
         </nav>
         <div class="main-container">
-            <partial name="_AdminSidebar"/>
+            <partial name="_AdminSidebar" />
             <div class="content">
                 @RenderBody()
             </div>
         </div>
     </div>
-   
-   
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+               
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    
+                </div>
+
+         
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
     <script src="/vendor/chart.js/chart.min.js"></script>
     <script src="/js/carbon.js"></script>
     <script src="/js/demo.js"></script>
@@ -78,6 +101,6 @@
         $('.demo1').bonsai();
 
     </script>
-    @RenderSection("Scripts",false)
+    @RenderSection("Scripts", false)
 </body>
 </html>
