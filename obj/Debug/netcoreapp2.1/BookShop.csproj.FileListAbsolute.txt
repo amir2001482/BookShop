@@ -380,7 +380,6 @@ D:\Poragraming\ASP.NetCore\BookShop2\BookShop\bin\Debug\netcoreapp2.1\BookShop.d
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\bin\Debug\netcoreapp2.1\BookShop.pdb
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\bin\Debug\netcoreapp2.1\BookShop.Views.dll
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\bin\Debug\netcoreapp2.1\BookShop.Views.pdb
-D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\BookShop.csproj.AssemblyReference.cache
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\BookShop.GeneratedMSBuildEditorConfig.editorconfig
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\BookShop.AssemblyInfoInputs.cache
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\BookShop.AssemblyInfo.cs
@@ -491,3 +490,4 @@ D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\View
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Products\BannedBooks.cshtml.g.cs
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_AdminSidebar.cshtml.g.cs
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_UserSidebar.cshtml.g.cs
+D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\BookShop.csproj.AssemblyReference.cache

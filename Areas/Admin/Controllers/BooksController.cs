@@ -133,13 +133,22 @@ namespace BookShop.Areas.Admin.Controllers
         }
         [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         [DisplayName("مشاهده جزئیات کتاب")]
+        [HttpGet]
         public IActionResult Details(int id)
         {
-            //ReadAllBook yek query dar data base ast
-            var BookInfo = _UW._Context.Query<ReadAllBook>().Where(b => b.BookID == id).First();
-            //var BookInfo = _UW.BaseRepository<Book>().FindByIDAsync(id);
-            //return View(BookInfo);
-            return PartialView(BookInfo);
+            try
+            {
+                //ReadAllBook yek query dar data base ast
+                var BookInfo = _UW._Context.Query<ReadAllBook>().Where(b => b.BookID == id).First();
+                //var BookInfo = _UW.BaseRepository<Book>().FindByIDAsync(id);
+                //return View(BookInfo);
+                return PartialView(BookInfo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [Authorize(Policy = ConstantPolicies.DynamicPermission)]

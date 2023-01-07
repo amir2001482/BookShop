@@ -18,7 +18,7 @@ namespace BookShop.Models
         {
             //optionsBuilder.UseLazyLoadingProxies().UseSqlServer(@"Server=(local);Database=BookShopDB;Trusted_Connection=True");
 
-            optionsBuilder.UseSqlServer(@"Server=AMIRHOSSEIN\\SQL110;Database=BookShop;Trusted_Connection=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            optionsBuilder.UseSqlServer(@"Server=AMIRHOSSEIN\SQL110;Database=BookShopDB;Trusted_Connection=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,21 +35,21 @@ namespace BookShop.Models
             modelBuilder.Entity<Book>().Property(b => b.Delete).HasDefaultValueSql("0");
             //modelBuilder.Entity<Book>().Property(b => b.PublishDate).HasDefaultValueSql("CONVERT(datetime,GetDate())");
 
-            modelBuilder.Entity<ApplicationRole>().ToTable("AspNetRoles");
+            modelBuilder.Entity<ApplicationRole>().ToTable("AppRoles");
 
-            modelBuilder.Entity<ApplicationUserRole>().ToTable("AspNetUserRole");
+            modelBuilder.Entity<ApplicationUserRole>().ToTable("AppUserRoles");
 
             modelBuilder.Entity<ApplicationUserRole>()
                 .HasOne(userRole => userRole.Role)
                 .WithMany(role => role.Users).HasForeignKey(r => r.RoleId);
 
-            modelBuilder.Entity<ApplicationUser>().ToTable("AspNetUsers");
+            modelBuilder.Entity<ApplicationUser>().ToTable("AppUsers");
 
             modelBuilder.Entity<ApplicationUserRole>()
                .HasOne(userRole => userRole.User)
                .WithMany(role => role.Roles).HasForeignKey(r => r.UserId);
 
-            modelBuilder.Entity<ApplicationRoleClaim>().ToTable("AspNetRoleClaim");
+            modelBuilder.Entity<ApplicationRoleClaim>().ToTable("AspNetRoleClaims");
 
             modelBuilder.Entity<ApplicationRoleClaim>()
                 .HasOne(roleclaim => roleclaim.Role)

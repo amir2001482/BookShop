@@ -177,7 +177,7 @@ namespace BookShop.Models.ViewModels
         public int PublishYear { get; set; }
         public string LanguageName { get; set; }
         public string PublisherName { get; set; }
-        public string Authors { get; set; }
+        public string Aouthers { get; set; }
         public string Translators { get; set; }
         public string Categories { get; set; }
         public DateTime? PublishDate { get; set; }

@@ -8,6 +8,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
+<div id="modal-placeHolder"></div>
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -155,7 +156,8 @@
                                             <a asp-action="Download" asp-route-id="@item.BookID" class="btn btn-info btn-sm">دانلود</a>
                                         </td>
                                         <td class="text-center">
-                                            <a onclick="Detail(@item.BookID)" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>
+                                            <button type="button" class="btn btn-info btn-icon deteail" data-toggle="ajax-modal" data-url="@Url.Action("Details" , "Books" , values: new {id = item.BookID})"><i class="fa fa-eye text-white"></i></button>
+                                            @*<a onclick="Detail(@item.BookID)" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>*@
                                             @*<a href="/Admin/Books/Details/@item.BookID" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>*@
                                             <security-trimming asp-action="Edit" asp-controller="Books" asp-area="Admin">
                                                 <a href="/Admin/Books/Edit/@item.BookID" class="btn btn-success btn-icon"><i class="fa fa-edit text-white"></i></a>
@@ -209,16 +211,29 @@ jQuery(document).ready(function($) {
 			isMultiple: false
         });
 
-    function Detail (id) {
+    //function Detail (id) {
 
-        $.ajax({
-            url: "Details/" + id,
-            type ="get"
-        }).done(function (result) {
-            $("#myModal").modal("show");
-            $(".modal-title").html("اطلاعات کتاب");
-            $(".modal-body").html(result);
-        })
+    //    $.ajax({
+    //        url: "Details/" + id,
+    //        type ="get"
+    //    }).done(function (result) {
+    //        $("#myModal").modal("show");
+    //        $(".modal-title").html("اطلاعات کتاب");
+    //        $(".modal-body").html(result);
+    //    })
+    //}
 
-    }
+    $("button[data-toggle='ajax-modal']").click(function () {
+
+        
+
+        var placeholder = $("#modal-placeHolder");
+        var url = $(this).data("url");
+        $.get(url).done(function (result) {
+
+            placeholder.html(result);
+            placeholder.find(".modal").modal("show");
+        });
+
+    });
 });</script>

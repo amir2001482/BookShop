@@ -4,83 +4,106 @@
     ViewData["Title"] = "Details";
     Layout = null;
 }
-<div class="row">
 
-    <div class="col-md-3">
-        @if (Model.Image != null)
-        {
-            <img src="/Admin/Books/ViewImage/@Model.BookID" height="250" />
-        }
-        else
-        {
-            <img src="~/images/Book.png" height="250" />
-        }
-    </div>
-    <div class="col-md-9">
-        <div class="row">
-            <div class="col-md-6">
-                <p>عنوان کتاب : @Model.Title</p>
-                <p>شابک : @Model.ISBN</p>
-                <p>سال انتشار : @Model.PublishYear</p>
-                <p>قیمت : @Model.Price</p>
-                <p>موجودی : @Model.Stock</p>
-                <p>تعداد صفحات : @Model.NumOfPages</p>
-                <p>زبان کتاب : @Model.LanguageName</p>
+<style>
+    .modal-dialog {
+        max-width: 64% !important;
+    }
+</style>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">جزئیات کتاب</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <div class="col-md-6">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        @if (Model.Image != null)
+                        {
+                            <img src="/Admin/Books/ViewImage/@Model.BookID" height="250" width="210" />
+                        }
+                        else
+                        {
+                            <img src="~/images/No_Image_Available.jpg" height="250" width="210" />
+                        }
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>عنوان کتاب : @Model.Title</p>
+                                <p>شابک : @Model.ISBN</p>
+                                <p>سال انتشار : @Model.PublishYear</p>
+                                <p>قیمت : @Model.Price</p>
+                                <p>موجودی : @Model.Stock</p>
+                                <p>تعداد صفحات : @Model.NumOfPages</p>
+                                <p>زبان کتاب : @Model.LanguageName</p>
+                            </div>
+                            <div class="col-md-6">
 
-                <p>ناشر : @Model.PublisherName</p>
-                <p>
-                    نویسندگان : @Model.Authors
+                                <p>ناشر : @Model.PublisherName</p>
+                                <p>
+                                    نویسندگان : @Model.Aouthers
 
-                </p>
-                <p>
-                    مترجمان : @Model.Translators
+                                </p>
+                                <p>
+                                    مترجمان : @Model.Translators
 
-                </p>
-                <p>
-                    دسته بندی ها : @Model.Categories
+                                </p>
+                                <p>
+                                    دسته بندی ها : @Model.Categories
 
-                </p>
-                <p>
-                    تاریخ انتشار :
-                    @if (Model.PublishDate != null)
-                    {
-                        @convertDate.ConvertMiladiToShamsi((DateTime)Model.PublishDate, "yyyy/MM/dd")
-                    }
+                                </p>
+                                <p>
+                                    تاریخ انتشار :
+                                    @if (Model.PublishDate != null)
+                                    {
+                                        @convertDate.ConvertMiladiToShamsi((DateTime)Model.PublishDate, "yyyy/MM/dd")
+                                    }
 
-                    else
-                    {
-                        <span>-</span>
-                    }
-                </p>
-                <p>
-                    وضعیت :
-                    @if (Model.IsPublish == true)
-                    {
-                        <span>منتشر شده</span>
-                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </p>
+                                <p>
+                                    وضعیت :
+                                    @if (Model.IsPublish == true)
+                                    {
+                                        <span>منتشر شده</span>
+                                    }
 
-                    else
-                    {
-                        <span>پیش نویس</span>
-                    }
-                </p>
+                                    else
+                                    {
+                                        <span>پیش نویس</span>
+                                    }
+                                </p>
 
-                <p>
-                    وزن :
-                    @Model.Weight
-                </p>
+                                <p>
+                                    وزن :
+                                    @Model.Weight
+                                </p>
 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <hr />
+                        <p>
+                            خلاصه کتاب : @Model.Summary
+                        </p>
+                    </div>
+
+                </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
+            </div>
+
         </div>
     </div>
-
-    <div class="col-md-12">
-        <hr />
-        <p>
-            خلاصه کتاب : @Model.Summary
-        </p>
-    </div>
-
 </div>
+
