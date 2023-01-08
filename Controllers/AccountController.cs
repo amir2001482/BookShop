@@ -1,7 +1,9 @@
 ﻿using BookShop.Areas.Identity.Data;
 using BookShop.Areas.Identity.Services;
 using BookShop.Classes;
+using BookShop.Models;
 using BookShop.Models.Repository;
+using BookShop.Models.UnitOfWork;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -34,7 +36,17 @@ namespace BookShop.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConvertDate _convertDate;
-        public AccountController(IApplicationRoleManager roleManager, IApplicationUserManager userManager, IEmailSender emailSender, SignInManager<ApplicationUser> signInManager, ISmsSender smsSender, IConfiguration configuration, IHttpClientFactory httpClientFactory, IConvertDate convertDate)
+        private readonly IUnitOfWork _UW;
+        public AccountController(
+            IApplicationRoleManager roleManager,
+            IApplicationUserManager userManager,
+            IEmailSender emailSender,
+            SignInManager<ApplicationUser> signInManager,
+            ISmsSender smsSender,
+            IConfiguration configuration,
+            IHttpClientFactory httpClientFactory,
+            IConvertDate convertDate ,
+            IUnitOfWork UW)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -44,6 +56,7 @@ namespace BookShop.Controllers
             _configuration = configuration;
             _httpClientFactory = httpClientFactory;
             _convertDate = convertDate;
+            _UW = UW;
         }
 
         [HttpGet]
@@ -664,6 +677,30 @@ namespace BookShop.Controllers
         public IActionResult HappyBirthDay()
         {
             return View();
+        }
+
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return NotFound();
+
+            UserSidebarViewModel Sidebar = new UserSidebarViewModel()
+            {
+                FullName = user.FirstName + " " + user.LastName,
+                LastVisit = user.LastVisitDateTime,
+                RegisterDate = user.RegisterDate,
+                Image = user.Image,
+            };
+
+            ViewBag.CityID = new SelectList(_UW.BaseRepository<City>().FindAll(), "CityID", "CityName");
+            ViewBag.ProvinceID = new SelectList(_UW.BaseRepository<Provice>().FindAll(), "ProvinceID", "ProvinceName");
+            return View(new ProfileViewModel { UserSidebar = Sidebar });
+        }
+        public async Task<IActionResult> UpdateCity(int provinceId)
+        {
+            var cities = await _UW.BaseRepository<City>().FindByConditionAsync(d => d.ProvinceID == provinceId);
+            return Json(JsonConvert.SerializeObject(cities));
         }
     }
 }

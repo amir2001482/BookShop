@@ -39,7 +39,7 @@ namespace BookShop.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]

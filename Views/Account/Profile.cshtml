@@ -1,0 +1,68 @@
+﻿@model BookShop.Models.ViewModels.ProfileViewModel
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container content mt-5">
+    <div class="row profile">
+        <div class="col-md-4">
+            <partial name="_UserSidebar" model="@Model.UserSidebar" />
+        </div>
+        <div class="col-md-8">
+            <div class="profile-content">
+                <div class="card-header p-0 ">
+                    <h5> پروفایل </h5>
+                </div>
+                <hr />
+                @if (ViewBag.Alert != null)
+                {
+                    <div class="alert alert-success alert-dismissable">
+                        @ViewBag.Alert
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
+                <div class="card-body">
+                    <div class="form-group">
+                        <label asp-for="ProvinceID"></label>
+                            <select asp-for="ProvinceID" asp-items="@ViewBag.ProvinceID" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="CityID"></label>
+                            <select asp-for="CityID" asp-items="@ViewBag.CityID" class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<script>
+     $("#ProvinceID").change(function () {
+         $.ajax({
+             url:"@Url.Action("UpdateCity")",
+             data: { provinceId: $(this).val() },
+             dataType: "json",
+             success: function (result) {
+                 var cityDropDown = $("#CityID");
+                 cityDropDown.empty();
+                 var jsonArray = JSON.parse(result);
+                 for (var i = 0; i < jsonArray.length; i++) {
+                     cityDropDown.append(
+                         $("<option/>").attr("value", jsonArray[i]["CityID"]).text(jsonArray[i]["CityName"])
+                     );
+                 }
+             },
+             error: function () {
+                 alert("Erorr");
+             }
+         });
+     });
+</script>

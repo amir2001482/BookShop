@@ -16,5 +16,6 @@
     <WebStackScaffolding_DbContextTypeFullName>BookSope2.Models.BookShopContext</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_DbContextDialogWidth>600</WebStackScaffolding_DbContextDialogWidth>
     <WebStackScaffolding_IdentityDialogWidth>600</WebStackScaffolding_IdentityDialogWidth>
+    <WebStackScaffolding_LayoutPageFile>~/Views/Shared/_Layout.cshtml</WebStackScaffolding_LayoutPageFile>
   </PropertyGroup>
 </Project>

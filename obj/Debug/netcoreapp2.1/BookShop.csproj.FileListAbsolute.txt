@@ -441,7 +441,6 @@ D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\BookShop.g
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\BookShop.csproj.CopyComplete
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\bin\Debug\netcoreapp2.1\web.config
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Views\Authors\AuthorBooks.cshtml.g.cs
-D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Views\Authors\Create.cshtml.g.cs
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Views\Authors\Delete.cshtml.g.cs
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Views\Authors\Details.cshtml.g.cs
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Views\Authors\Edit.cshtml.g.cs
@@ -491,3 +490,4 @@ D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\View
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_AdminSidebar.cshtml.g.cs
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_UserSidebar.cshtml.g.cs
 D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\BookShop.csproj.AssemblyReference.cache
+D:\Poragraming\ASP.NetCore\BookShop2\BookShop\obj\Debug\netcoreapp2.1\Razor\Views\Account\Profile.cshtml.g.cs

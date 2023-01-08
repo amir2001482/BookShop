@@ -210,30 +210,4 @@ jQuery(document).ready(function($) {
 			source : SampleJSONData,
 			isMultiple: false
         });
-
-    //function Detail (id) {
-
-    //    $.ajax({
-    //        url: "Details/" + id,
-    //        type ="get"
-    //    }).done(function (result) {
-    //        $("#myModal").modal("show");
-    //        $(".modal-title").html("اطلاعات کتاب");
-    //        $(".modal-body").html(result);
-    //    })
-    //}
-
-    $("button[data-toggle='ajax-modal']").click(function () {
-
-        
-
-        var placeholder = $("#modal-placeHolder");
-        var url = $(this).data("url");
-        $.get(url).done(function (result) {
-
-            placeholder.html(result);
-            placeholder.find(".modal").modal("show");
-        });
-
-    });
 });</script>

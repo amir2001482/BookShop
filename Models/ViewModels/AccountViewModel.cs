@@ -183,5 +183,21 @@ namespace BookShop.Models.ViewModels
         public string RecoveryCode { get; set; }
     }
 
+    public class ProfileViewModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+
+        [Display(Name = "استان")]
+        public int ProvinceID { get; set; }
+
+        [Display(Name = "شهر")]
+        public int CityID { get; set; }
+        public UserSidebarViewModel UserSidebar { get; set; }
+    }
+
 
 }
