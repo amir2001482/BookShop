@@ -5,7 +5,9 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
+<div id="modal-placeHolder">
 
+</div>
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -14,8 +16,11 @@
             </div>
             <div class="card-body">
                 <p>
-                    <a asp-action="Create" class="btn btn-primary">افزودن نویسنده جدید</a>
+                    <button data-url="@Url.Action("Create")" data-toggle='ajax-modal' class="btn btn-info btn-icon">
+                        <i class="fa fa-plus text-white"></i> | افزودن نویسنده جدید
+                    </button>
                 </p>
+                <div id="notification" data-url="@Url.Action("Notifacation")"></div>
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>

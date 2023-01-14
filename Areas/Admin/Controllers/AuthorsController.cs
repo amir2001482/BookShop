@@ -39,7 +39,7 @@ namespace BookShop.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
-            return PartialView();
+            return PartialView("_Create");
         }
 
         [HttpPost]
@@ -50,9 +50,9 @@ namespace BookShop.Areas.Admin.Controllers
             {
                 await _UW.BaseRepository<Author>().CreateAsync(author);
                 await _UW.Commit();
-                return RedirectToAction(nameof(Index));
+                TempData["notification"] = "درج اطلاعات با موفقیت انجام شد.";
             }
-            return View(author);
+            return PartialView("_Create", author);
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -171,6 +171,11 @@ namespace BookShop.Areas.Admin.Controllers
                 return View(await Author);
             }
           
+        }
+
+        public IActionResult Notifacation()
+        {
+            return PartialView("_Notifacation",TempData["notification"]);
         }
     }
 }
