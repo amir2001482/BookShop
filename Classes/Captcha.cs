@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BookShop.Classes
 {
-    public class Captcha
+    public static class Captcha
     {
         const string Letters = "2346789ABCDEFGHJKLMNPRTUVWXYZ";
 
@@ -30,7 +30,7 @@ namespace BookShop.Classes
             return sb.ToString();
         }
 
-        public static bool ValidateCaptchaCode(string userInputCaptcha, HttpContext context)
+        public static bool ValidateCaptchaCode(string userInputCaptcha , HttpContext context)
         {
             var isValid = userInputCaptcha == context.Session.GetString("CaptchaCode");
             context.Session.Remove("CaptchaCode");
