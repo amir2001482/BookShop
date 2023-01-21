@@ -17,6 +17,7 @@ namespace BookShop.Areas.Admin.Controllers
     public class AuthorsController : Controller
     {
         private readonly IUnitOfWork _UW;
+        private readonly string NotFoundMessage ="چنین نویسنده ای وجود ندارد.";
 
         public AuthorsController(IUnitOfWork UW)
         {
@@ -58,15 +59,13 @@ namespace BookShop.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
-                return NotFound();
-            }
+                ModelState.AddModelError(string.Empty, NotFoundMessage);
 
             var author = await _UW.BaseRepository<Author>().FindByIDAsync(id);
+
             if (author == null)
-            {
-                return NotFound();
-            }
+                ModelState.AddModelError(string.Empty, NotFoundMessage);
+
             return View(author);
         }
 
@@ -76,9 +75,7 @@ namespace BookShop.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("AuthorID,FirstName,LastName")] Author author)
         {
             if (id != author.AuthorID)
-            {
-                return NotFound();
-            }
+                ModelState.AddModelError(string.Empty, NotFoundMessage);
 
             if (ModelState.IsValid)
             {
@@ -90,13 +87,7 @@ namespace BookShop.Areas.Admin.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (await _UW.BaseRepository<Author>().FindByIDAsync(author.AuthorID)==null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                        ModelState.AddModelError(string.Empty, NotFoundMessage);
                 }
                 return RedirectToAction(nameof(Index));
             }

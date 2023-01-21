@@ -2129,7 +2129,7 @@ pre {
     }
 
 select.form-control:not([size]):not([multiple]) {
-    height: calc(2.0625rem + 2px);
+    height: calc(2.0625rem + 10px);
 }
 
 select.form-control:focus::-ms-value {
