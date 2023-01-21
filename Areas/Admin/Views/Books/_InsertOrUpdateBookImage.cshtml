@@ -1,0 +1,52 @@
+﻿@model BookShop.Models.ViewModels.ImageBookViewModel
+    <style>
+        /*chon modal dar har jayie momken ast baz shavad var ejra shavad style shadow track datalist styles.css nmizarim*/
+        .modal-header .close {
+            padding: 1rem;
+            margin: -1rem 0rem -1rem 0;
+        }
+    </style>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">ویرایش تصویر جلد کتاب</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form asp-action="InsertOrUpdateBookImage" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="BookID" />
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                        <div class="fileinput-new thumbnail" style="height: 200px;">
+                            @if (Model.ImageByte != null)
+                            {
+                                <img src="/Admin/Books/ViewImage/@Model.BookID?DateTime=@DateTime.Now" />
+                            }
+                            else
+                            {
+                                <img src="/images/No_Image_Available.jpg" />
+                            }
+
+                        </div>
+                        <div class="fileinput-preview fileinput-exists thumbnail" style="height:200px"> </div>
+                        <div>
+                            <span class="btn default btn-file">
+                                <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
+                                <span class="fileinput-exists btn btn-info"> تغییر عکس </span>
+                                <input type="file" asp-for="Image" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" />
+                            </span>
+                            <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary ml-1" data-save="modal">افزودن</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>

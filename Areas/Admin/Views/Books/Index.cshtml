@@ -156,6 +156,7 @@
                                             <a asp-action="Download" asp-route-id="@item.BookID" class="btn btn-info btn-sm">دانلود</a>
                                         </td>
                                         <td class="text-center">
+                                            <button type="button" class="btn btn-primary btn-icon deteail" data-toggle="ajax-modal" data-url="@Url.Action("InsertOrUpdateBookImage" , "Books" , values: new {id = item.BookID})"><i class="fa fa-image text-white"></i></button>
                                             <button type="button" class="btn btn-info btn-icon deteail" data-toggle="ajax-modal" data-url="@Url.Action("Details" , "Books" , values: new {id = item.BookID})"><i class="fa fa-eye text-white"></i></button>
                                             @*<a onclick="Detail(@item.BookID)" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>*@
                                             @*<a href="/Admin/Books/Details/@item.BookID" class="btn btn-info btn-icon"><i class="fa fa-eye text-white"></i></a>*@
