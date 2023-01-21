@@ -130,8 +130,8 @@ namespace BookShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignIn(SignInViewModel ViewModel)
         {
-            //if (Captcha.ValidateCaptchaCode(ViewModel.CaptchaCode, HttpContext))
-            //{
+            if (Captcha.ValidateCaptchaCode(ViewModel.CaptchaCode , HttpContext))
+            {
                 if (ModelState.IsValid)
                 {
                     var User = await _userManager.FindByNameAsync(ViewModel.UserName);
@@ -156,12 +156,12 @@ namespace BookShop.Controllers
                     }
                     ModelState.AddModelError(string.Empty, "نام کاربری یا کلمه عبور شما صحیح نمی باشد.");
                 }
-            //}
+            }
 
-            //else
-            //{
-            //    ModelState.AddModelError(string.Empty, "کد امنیتی صحیح نمی باشد.");
-            //}
+            else
+            {
+                ModelState.AddModelError(string.Empty, "کد امنیتی صحیح نمی باشد.");
+            }
 
             return View();
         }
@@ -179,7 +179,7 @@ namespace BookShop.Controllers
         }
 
         [Route("get-captcha-image")]
-        public IActionResult GetCaptchaImage()
+        public IActionResult GetCaptchaImage()  // hengam init shodan form bar asas Route farakhani mishavad baray sakhtan cptchaCode
         {
             int width = 100;
             int height = 36;
