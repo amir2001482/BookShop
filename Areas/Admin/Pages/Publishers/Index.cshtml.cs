@@ -22,7 +22,7 @@ namespace BookShop.Areas.Admin.Pages.Publishers
         public int CurrentPage { get; set; } = 1;
 
         public int Count { get; set; }
-        public int PageSize { get; set; } = 3;
+        public int PageSize { get; set; } = 5;
         public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
         public bool ShowPrevious => CurrentPage > 1;
         public bool ShowNext => CurrentPage < TotalPages;
@@ -37,9 +37,7 @@ namespace BookShop.Areas.Admin.Pages.Publishers
         public async Task<IActionResult> OnPostDeleteAsync(int? id)
         {
             if(id==null)
-            {
                 return NotFound();
-            }
 
             else
             {
@@ -62,8 +60,8 @@ namespace BookShop.Areas.Admin.Pages.Publishers
         {
             await _UW.BaseRepository<Publisher>().CreateAsync(model);
             await _UW.Commit();
-
-            return new JsonResult(JsonConvert.SerializeObject(await _UW.BaseRepository<Publisher>().GetPaginateResultAsync(CurrentPage, PageSize)));
+            // baray pagination ba ajax ien parametr ha ro ersal mikonim.
+            return new JsonResult(JsonConvert.SerializeObject(  new { publishers = await _UW.BaseRepository<Publisher>().GetPaginateResultAsync(CurrentPage, PageSize), currentPage = CurrentPage , totalPages = TotalPages }));
         }
     }
 }

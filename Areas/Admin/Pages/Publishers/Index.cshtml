@@ -90,7 +90,7 @@
         var obj = {};
         obj.PublisherName = $("#nameInput").val();
         $.ajax({
-            url: "/Admin/Publishers/Index?handler=Insert",
+            url: "/Admin/Publishers/Index/@Model.CurrentPage?handler=Insert",
             type: "post",
             data: JSON.stringify(obj),
             dataType : "json" ,
@@ -100,7 +100,8 @@
                 $("body").preloader();
             },
             success: function (response) {
-                BindData(response);
+                alert("hooooo");
+                BindData(response.publishers, response.currentPage, response.totalPages);
             },
             failure: function (response) {
                 alert(response);
@@ -111,9 +112,27 @@
         });
     }
 
-    function BindData(tableData) {
+    function BindData(tableData, currentPage, totalPage) {
+        alert("hiiiiiiii");
         var tbody = $("#table tbody");
+        var pagingUl = $(".pagination");
         tbody.empty();
+        pagingUl.empty();
+        if (currentPage > 1)
+            pagination.append('<li class="page-item"><a class= "page-link" href = "/Admin/Publishers/' + parseInt(currentPage - 1) + '" >«</a></li>')
+
+        for (var i = 1; i <= totalPage; i++) {
+            var activeClass = "";
+            if (i == currentPage)
+                activeClass = "active";
+
+            var htmlLi = ['<li class="page-item ', activeClass, '">', '<a class="page-link" href="/Admin/Publishers/ ', i, '">', i, '</a>', '</li>'];
+            pagination.append(htmlLi.join(''));
+        }
+
+        if (currentPage < totalPage)
+            pagination.append('<li class="page-item"><a class= "page-link" href = "/Admin/Publishers/' + parseInt(currentPage + 1) + '" >»</a></li>')
+
         $('thead tr:nth-child(2)').remove();
 
         var JsonArray = JSON.parse(tableData);
@@ -121,5 +140,6 @@
             var htmlRow = ['<tr>', '<td>', JsonArray[i]["PublisherName"], '</td>', '<td class="text-center"> <a asp-page="./Edit" asp-route-id="' + JsonArray[i]["PublisherID"] + '" class="btn btn-success btn-icon text-white"><i class="fa fa-edit"></i></a> <button type="submit" asp-route-id="' + JsonArray[i]["PublisherID"] + '" asp-page-handler="Delete" class="btn btn-danger btn-icon"><i class="fa fa-trash"></i></button></td>', '</tr>'];
             tbody.append(htmlRow.join(''));
         }
+        
     }
 </script>
