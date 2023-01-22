@@ -1,8 +1,9 @@
 ﻿$(function () {
     // show modal
     var placeholder = $("#modal-placeHolder");
-    $("button[data-toggle='ajax-modal']").click(function () {
+    $(document).on("click", "button[data-toggle='ajax-modal']", function () {
         var url = $(this).data("url");
+        // send get request for get partial view
         $.ajax({
             url: url,
             beforeSend: function () {
@@ -22,12 +23,11 @@
     });
 
     placeholder.on("click", "button[data-save='modal']", function () {
-
+        $("body").preloader();
         var form = $(this).parents(".modal").find("form");
         var url = form.attr("action");
         var formdata = new FormData(form.get(0));
-        $("body").preloader();
-        // send post request for create
+        // send post request
         $.ajax({
             url: url,
             type: "post",
@@ -52,16 +52,29 @@
                 }).done(function (result) {
                     notiPlaceHolder.html(result);
                 });
+                var tableElement = $("#mytable");
+                var url = tableElement.data("url");
+                $.ajax({
+                    url: url,
+                    error: function () {
+                        showAlert();
+                    }
+                }).done(function (result) {
+                    $("#tableContent").html(result);
+                });
+
+                placeholder.find(".modal").modal('hide');
             }
         });
         $("body").preloader("remove");
     })
 });
 
-function showAlert() {
+function showAlert(){
     Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong!',
+        type: 'error',
+        title: 'خطایی رخ داده است !!!',
+        text: 'لطفا تا برطرف شدن خطا شکیبا باشید.',
+        confirmButtonText: 'بستن'
     });
-}
+};

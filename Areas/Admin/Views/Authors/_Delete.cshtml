@@ -1,0 +1,32 @@
+﻿@model BookShop.Models.Author
+    <style>
+        /*chon modal dar har jayie momken ast baz shavad var ejra shavad style shadow track datalist styles.css nmizarim*/
+        .modal-header .close {
+            padding: 0rem;
+            margin: 0rem 0rem 0rem 0;
+        }
+    </style>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">حذف کتاب</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>آیا شما می خواهید <span> @Model.FirstName  @Model.LastName را از لیست نویسندگان حذف کنید ؟ </span> </p>
+                <form asp-action="Delete">
+                    <input type="hidden" value="@Model.AuthorID" name="id" />
+                    <input type="hidden" name="IsValid" value="True" />
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success ml-1" data-save="modal">بله</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">خیر</button>
+            </div>
+        </div>
+    </div>
+</div>

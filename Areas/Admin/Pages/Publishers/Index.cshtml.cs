@@ -6,6 +6,7 @@ using BookShop.Models;
 using BookShop.Models.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 
 namespace BookShop.Areas.Admin.Pages.Publishers
 {
@@ -55,6 +56,14 @@ namespace BookShop.Areas.Admin.Pages.Publishers
                     return RedirectToPage("./Index");
                 }
             }
+        }
+
+        public async Task<IActionResult> OnPostInsertAsync([FromBody]Publisher model)
+        {
+            await _UW.BaseRepository<Publisher>().CreateAsync(model);
+            await _UW.Commit();
+
+            return new JsonResult(JsonConvert.SerializeObject(await _UW.BaseRepository<Publisher>().GetPaginateResultAsync(CurrentPage, PageSize)));
         }
     }
 }

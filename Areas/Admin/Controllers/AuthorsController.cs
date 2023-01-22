@@ -28,14 +28,19 @@ namespace BookShop.Areas.Admin.Controllers
         public async Task<IActionResult> Index(int page = 1, int row = 10)
         {
             var Authors = _UW.BaseRepository<Author>().FindAllAsync();
-
-            //var Authors = _UW.BaseRepository<Author>().FindByConditionAsync(o => o.FirstName.Contains("آرزو"),o=>o.OrderByDescending(k=>k.LastName),o=>o.Author_Books);
             var PagingModel = PagingList.Create(await Authors, row, page);
             PagingModel.RouteValue = new RouteValueDictionary
             {
                 {"row",row},
             };
+
+            var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            if (isAjax)
+                return PartialView("_AuthorsTable", PagingModel);
+
+
             return View("Index",PagingModel);
+
         }
 
         public IActionResult Create()
@@ -65,8 +70,7 @@ namespace BookShop.Areas.Admin.Controllers
 
             if (author == null)
                 ModelState.AddModelError(string.Empty, NotFoundMessage);
-
-            return View(author);
+            return PartialView("_Edit", author);
         }
 
 
@@ -74,6 +78,7 @@ namespace BookShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AuthorID,FirstName,LastName")] Author author)
         {
+
             if (id != author.AuthorID)
                 ModelState.AddModelError(string.Empty, NotFoundMessage);
 
@@ -86,28 +91,29 @@ namespace BookShop.Areas.Admin.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (await _UW.BaseRepository<Author>().FindByIDAsync(author.AuthorID)==null)
-                        ModelState.AddModelError(string.Empty, NotFoundMessage);
+                    if (await _UW.BaseRepository<Author>().FindByIDAsync(author.AuthorID) == null)
+                        return NotFound();
+                    else
+                        throw;
+                        
                 }
-                return RedirectToAction(nameof(Index));
+                TempData["notification"] = "ویرایش اطلاعات با موفقیت انجام شد.";
             }
-            return View(author);
+            return PartialView("_Edit", author);
         }
 
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
-                return NotFound();
-            }
-
+                ModelState.AddModelError(string.Empty, NotFoundMessage);
             var author = await _UW.BaseRepository<Author>().FindByIDAsync(id);
             if (author == null)
             {
+                ModelState.AddModelError(string.Empty, NotFoundMessage);
                 return NotFound();
             }
 
-            return View(author);
+            return PartialView("_Delete", author);
         }
 
 
@@ -117,15 +123,14 @@ namespace BookShop.Areas.Admin.Controllers
         {
             var Author= await _UW.BaseRepository<Author>().FindByIDAsync(id);
             if(Author==null)
-            {
                 return NotFound();
-            }
 
             else
             {
                 _UW.BaseRepository<Author>().Delete(Author);
                 await _UW.Commit();
-                return RedirectToAction(nameof(Index));
+                TempData["notification"] = "حذف اطلاعات با موفقیت انجام شد.";
+                return PartialView("_Delete", Author);
             }
         }
 

@@ -92,6 +92,7 @@ namespace BookShop
                 options.HtmlIndicatorDown = "<i class='fa fa-sort-amount-down'></i>";
                 options.HtmlIndicatorUp = "<i class='fa fa-sort-amount-up'></i>";
             });
+            services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
             // this is configuration for modelState erorrs that transfer modelState erorrs to badRequestObjectresult and implements apiController attribute
             //services.Configure<ApiBehaviorOptions>(options =>
             //{
