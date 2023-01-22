@@ -3,7 +3,18 @@
     var placeholder = $("#modal-placeHolder");
     $("button[data-toggle='ajax-modal']").click(function () {
         var url = $(this).data("url");
-        $.get(url).done(function (result) {
+        $.ajax({
+            url: url,
+            beforeSend: function () {
+                $("body").preloader();
+            },
+            complete: function () {
+                $("body").preloader("remove");
+            },
+            Error: function () {
+                showAlert();
+            }
+        }).done(function (result) {
 
             placeholder.html(result);
             placeholder.find(".modal").modal("show");
@@ -15,12 +26,17 @@
         var form = $(this).parents(".modal").find("form");
         var url = form.attr("action");
         var formdata = new FormData(form.get(0));
+        $("body").preloader();
+        // send post request for create
         $.ajax({
             url: url,
             type: "post",
             data: formdata,
             processData: false,
             contentType: false,
+            Error: function () {
+                showAlert();
+            }
         }).done(function (result) {
             var newBody = $(".modal-body", result);
             placeholder.find(".modal-body").replaceWith(newBody);
@@ -28,11 +44,24 @@
             if (isValid) {
                 var notiPlaceHolder = $("#notification");
                 var url = notiPlaceHolder.data("url");
-                $.get(url).done(function (result) {
+                $.ajax({
+                    url: url,
+                    Error: function () {
+                        showAlert();
+                    }
+                }).done(function (result) {
                     notiPlaceHolder.html(result);
                 });
             }
-        })
-
+        });
+        $("body").preloader("remove");
     })
 });
+
+function showAlert() {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+    });
+}

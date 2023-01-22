@@ -134,6 +134,7 @@ namespace BookShop
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseNodeModule(env.ContentRootPath);
             app.UseCookiePolicy();
             app.UseCustomIdentityServices();
             app.UseSession();

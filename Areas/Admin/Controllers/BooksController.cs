@@ -146,7 +146,7 @@ namespace BookShop.Areas.Admin.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            
+
         }
 
         [Authorize(Policy = ConstantPolicies.DynamicPermission)]
@@ -194,29 +194,29 @@ namespace BookShop.Areas.Admin.Controllers
 
                 else
                 {
-                    var ViewModel = await( from b in _UW._Context.Books.Include(l => l.Language)
+                    var ViewModel = await (from b in _UW._Context.Books.Include(l => l.Language)
                                      .Include(p => p.Publisher)
-                                     where (b.BookID == id)
-                                     select new BooksCreateEditViewModel
-                                     {
-                                         BookID = b.BookID,
-                                         Title = b.Title,
-                                         ISBN = b.ISBN,
-                                         NumOfPages = b.NumOfPages,
-                                         Price = b.Price,
-                                         Stock = b.Stock,
-                                         IsPublish = (bool)b.IsPublish,
-                                         LanguageID = b.LanguageID,
-                                         PublisherID = b.Publisher.PublisherID,
-                                         PublishYear = b.PublishYear,
-                                         Summary = b.Summary,
-                                         Weight = b.Weight,
-                                         RecentIsPublish = (bool)b.IsPublish,
-                                         PublishDate = b.PublishDate,
-                                         FileName = b.File,
-                                         ImageByte = b.Image
+                                           where (b.BookID == id)
+                                           select new BooksCreateEditViewModel
+                                           {
+                                               BookID = b.BookID,
+                                               Title = b.Title,
+                                               ISBN = b.ISBN,
+                                               NumOfPages = b.NumOfPages,
+                                               Price = b.Price,
+                                               Stock = b.Stock,
+                                               IsPublish = (bool)b.IsPublish,
+                                               LanguageID = b.LanguageID,
+                                               PublisherID = b.Publisher.PublisherID,
+                                               PublishYear = b.PublishYear,
+                                               Summary = b.Summary,
+                                               Weight = b.Weight,
+                                               RecentIsPublish = (bool)b.IsPublish,
+                                               PublishDate = b.PublishDate,
+                                               FileName = b.File,
+                                               ImageByte = b.Image
 
-                                     }).FirstAsync();
+                                           }).FirstAsync();
 
                     int[] AuthorsArray = await (from a in _UW._Context.Author_Books
                                                 where (a.BookID == id)
@@ -268,7 +268,7 @@ namespace BookShop.Areas.Admin.Controllers
                 }
                 if (result.IsSuccess == true || result.IsSuccess == null)
                 {
-                    if(result.IsSuccess == true)
+                    if (result.IsSuccess == true)
                     {
                         Path = $"{_env.WebRootPath}/BooksFiles/{viewModel.File.FileName}"; // file gadimi bayad hazf shavad
                         if (System.IO.File.Exists(Path))
@@ -362,6 +362,46 @@ namespace BookShop.Areas.Admin.Controllers
             var memory = new MemoryStream(Book.Image);
             return new FileStreamResult(memory, "image/png");
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> InsertOrUpdateBookImage(int id)
+        {
+            var book = await _UW._Context.Books.Where(e => e.BookID == id).Select(d => new ImageBookViewModel
+            {
+                BookID = d.BookID,
+                ImageByte = d.Image
+            }).FirstOrDefaultAsync();
+
+            if (book == null)
+                ModelState.AddModelError(string.Empty, "چنین کتابی وجود ندارد.");
+            return PartialView("_InsertOrUpdateBookImage", book);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> InsertOrUpdateBookImage(ImageBookViewModel ViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var Book = await _UW.BaseRepository<Book>().FindByIDAsync(ViewModel.BookID);
+                using (var memorySteam = new MemoryStream())
+                {
+                    string FileExtension = Path.GetExtension(ViewModel.Image.FileName);
+                    await ViewModel.Image.CopyToAsync(memorySteam);
+                    var types = FileExtentions.FileType.Image;
+                    bool result = FileExtentions.IsValidFile(memorySteam.ToArray(), types, FileExtension.Replace('.', ' '));
+                    if (result)
+                    {
+                        Book.Image = memorySteam.ToArray();
+                        await _UW.Commit();
+                        ViewModel.ImageByte = memorySteam.ToArray();
+                        TempData["Notifications"] = "آپلود فایل با موفقیت انجام شد.";
+                    }
+                    else
+                        ModelState.AddModelError("", "فایل تصویر کتاب نامعتبر است.");
+                }
+            }
+            return PartialView("_InsertOrUpdateBookImage", ViewModel);
         }
     }
 }

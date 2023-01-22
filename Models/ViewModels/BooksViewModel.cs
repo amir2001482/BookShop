@@ -184,6 +184,15 @@ namespace BookShop.Models.ViewModels
         public byte[] Image { get; set; }
     }
 
+    public class ImageBookViewModel
+    {
+        public int BookID { get; set; }
+
+        [Required(ErrorMessage = "وارد نمودن تصویر الزامی است.")]
+        public IFormFile Image { get; set; }
+        public byte[] ImageByte { get; set; }
+    }
+
 
 
 }
