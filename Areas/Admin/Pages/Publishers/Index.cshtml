@@ -12,10 +12,10 @@
             </div>
             <div class="card-body">
                 <p>
-                    <a id="insert"  class="btn btn-primary text-white">افزودن ناشر جدید</a>
+                    <a id="addRow"  class="btn btn-primary text-white">افزودن ناشر جدید</a>
                 </p>
                 <form method="post">
-                    <table id="table" class="table table-striped table-bordered">
+                    <table id="mytable" class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>
@@ -77,13 +77,13 @@
 </div>
 
 <script>
-    $("#insert").click(function () {
+    $("#addRow").click(function () {
         if ($("#nameInput").length == 0)
-            $("#table tr:first").after("<tr><td><input id='nameInput' type='text' class='form-control' placeholder='نام ناشر را وارد کنید.' /></td><td class='text-center'><a class='btn btn-success btn-sm text-white' onclick='Insert()'>افزودن</a> <a class='btn btn-danger btn-sm text-white' onclick='cancel()'>انصراف</a> </td></tr>")
+            $("#mytable tr:first").after("<tr><td><input id='nameInput' type='text' class='form-control' placeholder='نام ناشر را وارد کنید.' /></td><td class='text-center'><a class='btn btn-success btn-sm text-white' onclick='Insert()'>افزودن</a> <a class='btn btn-danger btn-sm text-white' onclick='cancel()'>انصراف</a> </td></tr>");
     });
 
     function cancel() {
-        $("#table thead tr:nth-child(2)").remove();
+        $("#mytable thead tr:nth-child(2)").remove();
     }
 
     function Insert() {
@@ -100,8 +100,7 @@
                 $("body").preloader();
             },
             success: function (response) {
-                alert("hooooo");
-                BindData(response.publishers, response.currentPage, response.totalPages);
+                BindData(response.publishers, response.totalPage, response.currentPage);
             },
             failure: function (response) {
                 alert(response);
@@ -112,14 +111,14 @@
         });
     }
 
-    function BindData(tableData, currentPage, totalPage) {
-        alert("hiiiiiiii");
-        var tbody = $("#table tbody");
+    function BindData(tableData, totalPage, currentPage) {
+       
+        var tbody = $("#myTable tbody");
         var pagingUl = $(".pagination");
         tbody.empty();
         pagingUl.empty();
         if (currentPage > 1)
-            pagination.append('<li class="page-item"><a class= "page-link" href = "/Admin/Publishers/' + parseInt(currentPage - 1) + '" >«</a></li>')
+            pagingUl.append('<li class="page-item"><a class= "page-link" href = "/Admin/Publishers/' + parseInt(currentPage - 1) + '" >«</a></li>')
 
         for (var i = 1; i <= totalPage; i++) {
             var activeClass = "";
@@ -127,11 +126,11 @@
                 activeClass = "active";
 
             var htmlLi = ['<li class="page-item ', activeClass, '">', '<a class="page-link" href="/Admin/Publishers/ ', i, '">', i, '</a>', '</li>'];
-            pagination.append(htmlLi.join(''));
+            pagingUl.append(htmlLi.join(''));
         }
 
         if (currentPage < totalPage)
-            pagination.append('<li class="page-item"><a class= "page-link" href = "/Admin/Publishers/' + parseInt(currentPage + 1) + '" >»</a></li>')
+            pagingUl.append('<li class="page-item"><a class= "page-link" href = "/Admin/Publishers/' + parseInt(currentPage + 1) + '" >»</a></li>')
 
         $('thead tr:nth-child(2)').remove();
 
@@ -140,6 +139,5 @@
             var htmlRow = ['<tr>', '<td>', JsonArray[i]["PublisherName"], '</td>', '<td class="text-center"> <a asp-page="./Edit" asp-route-id="' + JsonArray[i]["PublisherID"] + '" class="btn btn-success btn-icon text-white"><i class="fa fa-edit"></i></a> <button type="submit" asp-route-id="' + JsonArray[i]["PublisherID"] + '" asp-page-handler="Delete" class="btn btn-danger btn-icon"><i class="fa fa-trash"></i></button></td>', '</tr>'];
             tbody.append(htmlRow.join(''));
         }
-        
     }
 </script>

@@ -61,7 +61,8 @@ namespace BookShop.Areas.Admin.Pages.Publishers
             await _UW.BaseRepository<Publisher>().CreateAsync(model);
             await _UW.Commit();
             // baray pagination ba ajax ien parametr ha ro ersal mikonim.
-            return new JsonResult(JsonConvert.SerializeObject(  new { publishers = await _UW.BaseRepository<Publisher>().GetPaginateResultAsync(CurrentPage, PageSize), currentPage = CurrentPage , totalPages = TotalPages }));
+            Count = _UW.BaseRepository<Publisher>().GetCount();
+            return new JsonResult(new { publishers = JsonConvert.SerializeObject(await _UW.BaseRepository<Publisher>().GetPaginateResultAsync(CurrentPage, PageSize)), totalPage = TotalPages, currentPage = CurrentPage });
         }
     }
 }
