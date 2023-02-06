@@ -1,0 +1,24 @@
+[
+  {
+    "outputFileName": "wwwroot/css/styles.min.css",
+    "inputFiles": [ "wwwroot/css/styles.css" ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/css/custom-styles.min.css",
+    "inputFiles": [ "wwwroot/css/bootstrap-fileinput.css", "wwwroot/css/comboTreePlugin.css" ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/bootstrap-fileinput.min.js",
+    "inputFiles": [ "wwwroot/js/bootstrap-fileinput.js"],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  }
+]
