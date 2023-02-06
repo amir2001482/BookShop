@@ -47,7 +47,6 @@ namespace BookShop
             _siteSettings = configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
         }
 
-     
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -110,6 +109,7 @@ namespace BookShop
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var cachePeriod = env.IsDevelopment() ? "600" : "605800"; // this variable is for max-age cache static file
             app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), builder =>
             {
                 builder.UseCustomExeptionHandler();  // custom Middleware for handele exeptions errors
@@ -134,7 +134,25 @@ namespace BookShop
             });
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                // add cache-controle to files in wwwroot/Cachefiles
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "CacheFiles")),
+                OnPrepareResponse = staticFileResponseContext =>
+                {
+                    staticFileResponseContext.Context.Response.Headers.Append("Cache-Control", $"public,max-age={cachePeriod}");
+                },
+                RequestPath = "/cacheFiles",
+
+            }); ;
+            app.UseStaticFiles(new StaticFileOptions {
+                //OnPrepareResponse = staticFileResponseContext =>
+                //{
+                //    staticFileResponseContext.Context.Response.Headers.Append("Cache-Control", $"public,max-age={cachePeriod}");
+                //},
+                //RequestPath = "/images",
+            
+            });
             app.UseNodeModule(env.ContentRootPath);
             app.UseCookiePolicy();
             app.UseCustomIdentityServices();
