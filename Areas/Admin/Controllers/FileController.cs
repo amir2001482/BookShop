@@ -1,5 +1,6 @@
 ﻿using BookShop.Classes;
 using BookShop.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -155,6 +156,14 @@ namespace BookShop.Areas.Admin.Controllers
                 }
             }
             return View();
+        }
+
+        [Authorize]
+        [Route("{fileName}")]
+        public IActionResult Video(string fileName)
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Videos", fileName);
+            return PhysicalFile(path, "application/octet-stream");
         }
     }
 }
