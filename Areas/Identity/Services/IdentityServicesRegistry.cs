@@ -18,12 +18,25 @@ namespace BookShop.Areas.Identity.Services
             services.AddScoped<ApplicationIdentityErrorDescriber>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<ISmsSender, SmsSender>();
+            services.AddScoped<IIdentityDbInitializer, IdentityDbInitializer>();
         }
 
         public static void UseCustomIdentityServices(this IApplicationBuilder app)
         {
             app.UseAuthentication();
+            app.CallDbInitializer();
         }
 
+        //this middlewere is for caling db intializer
+        private static void CallDbInitializer(this IApplicationBuilder app)
+        {
+            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var identityDbInitialize = scope.ServiceProvider.GetService<IIdentityDbInitializer>();
+                identityDbInitialize.Initialize();
+                identityDbInitialize.SeedData();
+            }
+        }
     }
 }

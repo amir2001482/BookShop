@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BookShop.Classes
@@ -37,6 +39,33 @@ namespace BookShop.Classes
         public static string GetUserName(this IIdentity identity)
         {
             return identity?.FindFirstValue(ClaimTypes.Name);
+        }
+
+        // for convert identity error to string
+        public static string DumpErrors(this IdentityResult result, bool useHtmlNewLine = false)
+        {
+            var results = new StringBuilder();
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    var errorDescription = error.Description;
+                    if (string.IsNullOrWhiteSpace(errorDescription))
+                    {
+                        continue;
+                    }
+
+                    if (!useHtmlNewLine)
+                    {
+                        results.AppendLine(errorDescription);
+                    }
+                    else
+                    {
+                        results.AppendLine($"{errorDescription}<br/>");
+                    }
+                }
+            }
+            return results.ToString();
         }
     }
 }
