@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,8 @@ namespace BookShop.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConvertDate _convertDate;
         private readonly IUnitOfWork _UW;
+        private readonly ILogger<AccountController> _logger;
+        private readonly IHttpContextAccessor _Accessor;
         public AccountController(
             IApplicationRoleManager roleManager,
             IApplicationUserManager userManager,
@@ -46,7 +49,9 @@ namespace BookShop.Controllers
             IConfiguration configuration,
             IHttpClientFactory httpClientFactory,
             IConvertDate convertDate ,
-            IUnitOfWork UW)
+            IUnitOfWork UW ,
+            ILogger<AccountController> logger ,
+            IHttpContextAccessor Accessor)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -57,6 +62,8 @@ namespace BookShop.Controllers
             _httpClientFactory = httpClientFactory;
             _convertDate = convertDate;
             _UW = UW;
+            _logger = logger;
+            _Accessor = Accessor;
         }
 
         [HttpGet]
@@ -154,6 +161,7 @@ namespace BookShop.Controllers
                                 return RedirectToAction("SendCode", new { RememberMe = ViewModel.RememberMe });
                         }
                     }
+                    _logger.LogWarning($"user with ip Adress ({_Accessor.HttpContext?.Connection.RemoteIpAddress.ToString()}) userName {ViewModel.UserName} and password {ViewModel.Password} try to sign in");
                     ModelState.AddModelError(string.Empty, "نام کاربری یا کلمه عبور شما صحیح نمی باشد.");
                 }
             }
