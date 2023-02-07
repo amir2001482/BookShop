@@ -37,5 +37,10 @@ namespace BookShop.Controllers
             int j = 12 / i;
             return View();
         }
+
+        public IActionResult Error404()
+        {
+            return View();
+        }
     }
 }
