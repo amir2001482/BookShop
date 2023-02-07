@@ -17,7 +17,7 @@
             <input name="RoleId" value="@Model.RoleIncludeRoleClaims.Id" type="hidden" />
             <div class="row">
                 @{int j = 0;}
-                @foreach (var controller in Model.SecuredControllerActions.OrderBy(x => x.ControllerDisplayName))
+                @foreach (var controller in Model.SecuredControllerActions.Where(x=>!x.ControllerName.Contains("Api")).OrderBy(x => x.ControllerDisplayName))
                 {
                     <div class="col-md-4">
                         <div class="card">
@@ -48,9 +48,9 @@
                                         }
                                         <li class="list-group-item" role="presentation">
                                             <div class="toggle-switch d-block" data-ts-color="success">
-                                                <label for="@("ts"+i)" class="ts-label">@actionDisplayName</label>
-                                                <input id="@("ts"+i)" type="checkbox" name="actionIds" hidden="hidden" value="@action.ActionId" @selected>
-                                                <label for="@("ts"+i)" class="ts-helper float-left"></label>
+                                                <label for="@(controller.ControllerName+i)" class="ts-label">@actionDisplayName</label>
+                                                <input id="@(controller.ControllerName+i)" type="checkbox" name="actionIds" hidden="hidden" value="@action.ActionId" @selected>
+                                                <label for="@(controller.ControllerName+i)" class="ts-helper float-left"></label>
                                             </div>
 
                                         </li>

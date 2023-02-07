@@ -7,10 +7,10 @@
         $.ajax({
             url: url,
             beforeSend: function () {
-                $("body").preloader();
+                ShowLoading();
             },
             complete: function () {
-                $("body").preloader("remove");
+                window.loading_screen.finish();
             },
             Error: function () {
                 showAlert();
@@ -23,7 +23,7 @@
     });
 
     placeholder.on("click", "button[data-save='modal']", function () {
-        $("body").preloader();
+        ShowLoading();
         var form = $(this).parents(".modal").find("form");
         var url = form.attr("action");
         var formdata = new FormData(form.get(0));
@@ -66,7 +66,7 @@
                 placeholder.find(".modal").modal('hide');
             }
         });
-        $("body").preloader("remove");
+        window.loading_screen.finish();
     })
 });
 
@@ -78,3 +78,10 @@ function showAlert(){
         confirmButtonText: 'بستن'
     });
 };
+
+function ShowLoading() {
+    window.loading_screen = window.pleaseWait({
+        backgroundColor: 'rgba(255, 255, 255, 0.63)',
+        loadingHtml: "<div class='sk-spinner sk-spinner-wave'><img src='/images/loading.gif' width='128' /></div><p class='loading-message'>لطفا صبر کنید...</p>"
+    });
+}

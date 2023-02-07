@@ -32,7 +32,7 @@ namespace BookShop.Areas.Admin.Controllers
         }
 
 
-        //[Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         [DisplayName("مشاهده کاربران")]
         public async Task<IActionResult> Index(string Msg,int page=1,int row=10)
         {
@@ -47,7 +47,7 @@ namespace BookShop.Areas.Admin.Controllers
         }
 
 
-        //[Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         [DisplayName("مدیریت کاربر")]
         public async Task<IActionResult> Details(string id)
         {
@@ -63,7 +63,7 @@ namespace BookShop.Areas.Admin.Controllers
             }
         }
 
-        //[Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         [DisplayName("ویرایش اطلاعات کاربر")]
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
@@ -140,7 +140,7 @@ namespace BookShop.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         [DisplayName("حذف کاربر")]
         public async Task<IActionResult> Delete(string id)
         {
